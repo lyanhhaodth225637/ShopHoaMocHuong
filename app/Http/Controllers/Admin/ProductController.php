@@ -70,4 +70,8 @@ class ProductController extends Controller
             ->route('admin.product.index')
             ->with('success', 'Xóa sản phẩm thành công.');
     }
+
+    public function khachHang(){
+        return view('admin.customer.index');
+    }
 }

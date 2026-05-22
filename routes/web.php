@@ -39,6 +39,9 @@ Route::prefix('admin')->middleware(['auth', 'role:super-admin'])->name('admin.')
     Route::post('/san-pham/them-moi', [AdminProduct::class, 'store'])->name('product.store');
     Route::put('/san-pham/cap-nhat/{id}-{slug}', [AdminProduct::class, 'update'])->name('product.update');
     Route::delete('/san-pham/xoa/{id}', [AdminProduct::class, 'destroy'])->name('product.destroy');
+
+    Route::get('/khach-hang', [AdminProduct::class, 'khachHang'])->name('product.khachhang');
+
 });
 
 Route::prefix('/')->name('frontend.')->group(function () {
