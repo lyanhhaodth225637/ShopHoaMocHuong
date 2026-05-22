@@ -21,7 +21,7 @@ jobs:
           REMOTE_PORT: ${{ secrets.SSH_PORT }}
           
           # Thư mục đích trên cPanel chứa web của bạn
-          TARGET: "/home/h5r9pensgj41/public_html/"
+          TARGET: TARGET: "/home/h5r9pensgj41/public_html/mochuong/"
           
           # Loại trừ các file không cần thiết đưa lên server
           EXCLUDE: "/.git/, /.github/, /node_modules/"
