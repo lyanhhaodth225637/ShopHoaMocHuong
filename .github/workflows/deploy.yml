@@ -12,17 +12,23 @@ jobs:
       - name: Lấy code mới nhất từ GitHub
         uses: actions/checkout@v4
 
+      - name: Cài đặt Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build giao diện (Vite)
+        run: |
+          npm install
+          npm run build
+
       - name: Đồng bộ code lên cPanel qua FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          
-          # Đẩy thẳng vào thư mục hiện tại của tài khoản FTP (chính là public_html/mochuong)
           server-dir: ./ 
-          
-          # Loại trừ các file không cần thiết đưa lên web
           exclude: |
             **/.git*
             **/.git*/**
