@@ -5,20 +5,29 @@
         'theo_dip' => 'Theo dịp',
         'theo_mau' => 'Theo màu sắc',
         'dac_biet' => 'Đặc biệt',
+
         'hoa_co_dau' => 'Cô dâu & chú rể',
         'phu_kien_cuoi' => 'Phụ kiện cưới',
         'trang_tri_cuoi' => 'Trang trí',
         'dich_vu_cuoi' => 'Dịch vụ trọn gói',
+
         'lan' => 'Lan hồ điệp',
         'cay_xanh' => 'Cây xanh',
         'qua_tang_cay' => 'Quà tặng cây',
+
         'combo_hoa' => 'Combo hoa + quà',
         'gio_qua' => 'Giỏ & hộp quà',
         'hop_qua' => 'Hộp quà',
         'phu_kien' => 'Phụ kiện & khác',
+
         'banh' => 'Bánh kem',
         'combo' => 'Combo đặc biệt',
         'do_uong' => 'Đồ uống',
+        'do_go' => 'Đồ gỗ',
+        'vat_tu_hoa' => 'Vật từ hoa',
+        'goi_hoa' => 'Gói hoa',
+        'trang_tri' => 'Trang trí',
+
         'khac' => 'Khác',
     ];
 @endphp

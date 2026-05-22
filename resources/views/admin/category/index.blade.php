@@ -187,10 +187,21 @@
                                                                     Xem
                                                                 </a>
 
-                                                                <a class="dropdown-item"
+                                                                <a class="dropdown-item btn-edit-category"
                                                                     href="#"
                                                                     data-bs-toggle="modal"
-                                                                    data-bs-target="#modal-edit-category-{{ $item->id }}">
+                                                                    data-bs-target="#modal-edit-category"
+                                                                    data-update-url="{{ route('admin.category.update', ['id' => $item->id, 'slug' => $item->slug]) }}"
+                                                                    data-id="{{ $item->id }}"
+                                                                    data-name="{{ $item->name }}"
+                                                                    data-parent-id="{{ $item->parent_id }}"
+                                                                    data-mega-section="{{ $item->mega_section }}"
+                                                                    data-icon="{{ $item->icon }}"
+                                                                    data-sort-order="{{ $item->sort_order }}"
+                                                                    data-is-active="{{ $item->is_active ? 1 : 0 }}"
+                                                                    data-description="{{ $item->description }}"
+                                                                    data-meta-title="{{ $item->meta_title }}"
+                                                                    data-meta-description="{{ $item->meta_description }}">
                                                                     Cập nhật
                                                                 </a>
 
@@ -232,12 +243,9 @@
 
     </div>
     @include('admin.category.create')
-    @foreach ($categories as $item)
-        @include('admin.category.edit', [
-            'category' => $item,
-            'parentCategories' => $parentCategories,
-        ])
-    @endforeach
+    @include('admin.category.edit', [
+        'parentCategories' => $parentCategories,
+    ])
 @endsection
 
 {{-- ==================== JAVASCRIPT ==================== --}}
@@ -245,20 +253,51 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const tables = document.querySelectorAll('.datatable');
+
             tables.forEach(table => {
                 if (typeof Tabler !== 'undefined' && typeof Tabler.Table !== 'undefined') {
                     new Tabler.Table(table);
                 }
             });
-        });
-        document.querySelector('input[aria-label="Search invoice"]')
-            .addEventListener('input', function () {
-                const keyword = this.value.toLowerCase();
-                document.querySelectorAll('.datatable tbody tr').forEach(row => {
-                    row.style.display = row.textContent.toLowerCase().includes(keyword) ? '' : 'none';
+
+            const searchInput = document.querySelector('input[aria-label="Search invoice"]');
+
+            if (searchInput) {
+                searchInput.addEventListener('input', function () {
+                    const keyword = this.value.toLowerCase();
+
+                    document.querySelectorAll('.datatable tbody tr').forEach(row => {
+                        row.style.display = row.textContent.toLowerCase().includes(keyword) ? '' : 'none';
+                    });
+                });
+            }
+
+            const editForm = document.getElementById('editCategoryForm');
+            const editParentSelect = document.getElementById('edit_parent_id');
+
+            document.querySelectorAll('.btn-edit-category').forEach(button => {
+                button.addEventListener('click', function () {
+                    if (!editForm) return;
+
+                    editForm.action = this.dataset.updateUrl;
+
+                    document.getElementById('edit_name').value = this.dataset.name || '';
+                    document.getElementById('edit_parent_id').value = this.dataset.parentId || '';
+                    document.getElementById('edit_mega_section').value = this.dataset.megaSection || '';
+                    document.getElementById('edit_icon').value = this.dataset.icon || '';
+                    document.getElementById('edit_sort_order').value = this.dataset.sortOrder || 0;
+                    document.getElementById('edit_description').value = this.dataset.description || '';
+                    document.getElementById('edit_meta_title').value = this.dataset.metaTitle || '';
+                    document.getElementById('edit_meta_description').value = this.dataset.metaDescription || '';
+                    document.getElementById('edit_is_active').checked = this.dataset.isActive == 1;
+
+                    if (editParentSelect) {
+                        [...editParentSelect.options].forEach(option => {
+                            option.disabled = option.value !== '' && option.value == this.dataset.id;
+                        });
+                    }
                 });
             });
-
-        
+        });
     </script>
 @endsection

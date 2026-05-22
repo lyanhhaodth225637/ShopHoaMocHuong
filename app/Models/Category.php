@@ -59,4 +59,16 @@ class Category extends Model
     {
         return $query->orderBy('sort_order')->orderBy('name');
     }
+
+    public function products()
+    {
+        return $this->belongsToMany(
+            Product::class,
+            'category_product',
+            'category_id',
+            'product_id',
+            'id',
+            'id'
+        );
+    }
 }

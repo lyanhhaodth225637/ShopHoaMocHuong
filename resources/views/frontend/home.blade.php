@@ -37,7 +37,7 @@
                 <div class="col-lg-6 d-none d-lg-flex justify-content-center">
                     <div class="hero-img-wrapper">
                         <div class="flower-circle">
-                            <img src="assets/img/shop/01.png" alt="Hoa tươi" />
+                            <img src="{{ asset('storage/baner/baner.jpg ') }}" alt="Hoa tươi" />
                         </div>
                         <div class="hero-float-badge top-right">
                             <strong>⭐ 4.9/5</strong>
@@ -178,8 +178,8 @@
         </div>
     </section>
     <!-- ═══════════════════════════════════════
-                     FEATURED PRODUCTS
-                    ═══════════════════════════════════════ -->
+                                 FEATURED PRODUCTS
+                                ═══════════════════════════════════════ -->
     <section class="section-py bg-pale">
         <div class="container">
             <div class="d-flex align-items-end justify-content-between mb-4">
@@ -188,182 +188,86 @@
                     <h2 class="section-title mb-0">Sản phẩm nổi bật</h2>
                     <div class="divider-leaf"></div>
                 </div>
-                <a href="#" class="btn-outline-green d-none d-md-inline-block">Xem tất cả <i
-                        class="bi bi-arrow-right ms-1"></i></a>
+                <a href="{{ route('frontend.product.index') }}" class="btn-outline-green d-none d-md-inline-block">
+                    Xem tất cả
+                    <i class="bi bi-arrow-right ms-1"></i>
+                </a>
             </div>
 
             <!-- Filter tabs -->
-            <ul class="nav filter-tabs mb-4 gap-2 flex-wrap">
-                <li class="nav-item"><a class="nav-link active" href="#">Tất cả</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Hoa hồng</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Hoa cưới</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Sinh nhật</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Lan hồ điệp</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Giỏ quà</a></li>
+            <ul class="nav filter-tabs mb-4 gap-2 flex-wrap" role="tablist">
+                @foreach ($parentCategories as $parentCategory)
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link {{ $loop->first ? 'active' : '' }}" id="product-tab-{{ $parentCategory->id }}"
+                            data-bs-toggle="tab" data-bs-target="#product-category-{{ $parentCategory->id }}" type="button"
+                            role="tab">
+                            {{ $parentCategory->name }}
+                        </button>
+                    </li>
+                @endforeach
             </ul>
 
-            <div class="row g-3">
-                <!-- Product 1 -->
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="product-card h-100">
-                        <div class="img-wrap">
-                            <img src="assets/img/shop/01.png" alt="Bó hoa hồng đỏ" />
-                            <span class="product-badge bg-danger text-white">Bán chạy</span>
-                            <button class="product-wishlist"><i class="bi bi-heart"></i></button>
-                        </div>
-                        <div class="product-body">
-                            <div class="product-stars mb-1">★★★★★ <span style="color:#aaa;font-size:.75rem">(128)</span>
-                            </div>
-                            <div class="product-name">Bó hoa hồng đỏ tình yêu – 30 bông nhung</div>
-                            <div class="mt-2 mb-3">
-                                <span class="product-price">380.000đ</span>
-                                <span class="product-price-old">480.000đ</span>
-                            </div>
-                            <button class="btn-add-cart"><i class="bi bi-bag-plus me-1"></i> Thêm vào giỏ</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="tab-content">
+                @foreach ($parentCategories as $parentCategory)
+                    <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
+                        id="product-category-{{ $parentCategory->id }}" role="tabpanel"
+                        aria-labelledby="product-tab-{{ $parentCategory->id }}">
 
-                <!-- Product 2 -->
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="product-card h-100">
-                        <div class="img-wrap">
-                            <img src="assets/img/shop/02.png" alt="Giỏ hoa sinh nhật" />
-                            <span class="product-badge bg-warning text-dark">Mới</span>
-                            <button class="product-wishlist"><i class="bi bi-heart"></i></button>
-                        </div>
-                        <div class="product-body">
-                            <div class="product-stars mb-1">★★★★★ <span style="color:#aaa;font-size:.75rem">(94)</span>
-                            </div>
-                            <div class="product-name">Giỏ hoa sinh nhật pastel dễ thương</div>
-                            <div class="mt-2 mb-3">
-                                <span class="product-price">450.000đ</span>
-                            </div>
-                            <button class="btn-add-cart"><i class="bi bi-bag-plus me-1"></i> Thêm vào giỏ</button>
-                        </div>
-                    </div>
-                </div>
+                        <div class="row g-3">
+                            @forelse ($productsByCategory[$parentCategory->id] ?? [] as $product)
+                                <div class="col-6 col-md-4 col-lg-3">
+                                    <div class="product-card h-100">
+                                        <div class="img-wrap">
+                                            @if ($product->main_image)
+                                                <img src="{{ asset('storage/' . $product->main_image) }}" alt="{{ $product->name }}">
+                                            @else
+                                                <img src="{{ asset('assets/img/no-image.png') }}" alt="{{ $product->name }}">
+                                            @endif
 
-                <!-- Product 3 -->
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="product-card h-100">
-                        <div class="img-wrap">
-                            <img src="assets/img/shop/03.png" alt="Hoa lan hồ điệp" />
-                            <span class="product-badge" style="background:var(--green-main);color:#fff;">Phổ biến</span>
-                            <button class="product-wishlist"><i class="bi bi-heart"></i></button>
-                        </div>
-                        <div class="product-body">
-                            <div class="product-stars mb-1">★★★★☆ <span style="color:#aaa;font-size:.75rem">(76)</span>
-                            </div>
-                            <div class="product-name">Chậu lan hồ điệp trắng – 3 cành sang trọng</div>
-                            <div class="mt-2 mb-3">
-                                <span class="product-price">750.000đ</span>
-                                <span class="product-price-old">900.000đ</span>
-                            </div>
-                            <button class="btn-add-cart"><i class="bi bi-bag-plus me-1"></i> Thêm vào giỏ</button>
-                        </div>
-                    </div>
-                </div>
+                                            @if ($product->is_featured)
+                                                <span class="product-badge bg-danger text-white">
+                                                    Nổi bật
+                                                </span>
+                                            @endif
 
-                <!-- Product 4 -->
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="product-card h-100">
-                        <div class="img-wrap">
-                            <img src="assets/img/shop/04.png" alt="Hộp hoa cưới" />
-                            <button class="product-wishlist"><i class="bi bi-heart"></i></button>
-                        </div>
-                        <div class="product-body">
-                            <div class="product-stars mb-1">★★★★★ <span style="color:#aaa;font-size:.75rem">(211)</span>
-                            </div>
-                            <div class="product-name">Hộp hoa cưới cao cấp – hồng phấn & trắng</div>
-                            <div class="mt-2 mb-3">
-                                <span class="product-price">680.000đ</span>
-                            </div>
-                            <button class="btn-add-cart"><i class="bi bi-bag-plus me-1"></i> Thêm vào giỏ</button>
-                        </div>
-                    </div>
-                </div>
+                                            <button class="product-wishlist">
+                                                <i class="bi bi-heart"></i>
+                                            </button>
+                                        </div>
 
-                <!-- Product 5 -->
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="product-card h-100">
-                        <div class="img-wrap">
-                            <img src="assets/img/shop/01.png" alt="Kệ hoa khai trương" />
-                            <span class="product-badge bg-info text-white">Hot</span>
-                            <button class="product-wishlist"><i class="bi bi-heart"></i></button>
-                        </div>
-                        <div class="product-body">
-                            <div class="product-stars mb-1">★★★★★ <span style="color:#aaa;font-size:.75rem">(63)</span>
-                            </div>
-                            <div class="product-name">Kệ hoa khai trương đứng – màu đỏ may mắn</div>
-                            <div class="mt-2 mb-3">
-                                <span class="product-price">1.200.000đ</span>
-                                <span class="product-price-old">1.500.000đ</span>
-                            </div>
-                            <button class="btn-add-cart"><i class="bi bi-bag-plus me-1"></i> Thêm vào giỏ</button>
-                        </div>
-                    </div>
-                </div>
+                                        <div class="product-body">
+                                            <div class="product-stars mb-1">
+                                                ★★★★★
+                                                <span style="color:#aaa;font-size:.75rem">(0)</span>
+                                            </div>
 
-                <!-- Product 6 -->
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="product-card h-100">
-                        <div class="img-wrap">
-                            <img src="assets/img/shop/02.png" alt="Bó hoa hướng dương" />
-                            <button class="product-wishlist"><i class="bi bi-heart"></i></button>
-                        </div>
-                        <div class="product-body">
-                            <div class="product-stars mb-1">★★★★☆ <span style="color:#aaa;font-size:.75rem">(47)</span>
-                            </div>
-                            <div class="product-name">Bó hoa hướng dương rực rỡ – 15 bông tươi</div>
-                            <div class="mt-2 mb-3">
-                                <span class="product-price">290.000đ</span>
-                            </div>
-                            <button class="btn-add-cart"><i class="bi bi-bag-plus me-1"></i> Thêm vào giỏ</button>
-                        </div>
-                    </div>
-                </div>
+                                            <div class="product-name">
+                                                {{ $product->name }}
+                                            </div>
 
-                <!-- Product 7 -->
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="product-card h-100">
-                        <div class="img-wrap">
-                            <img src="assets/img/shop/03.png" alt="Giỏ quà tết" />
-                            <span class="product-badge bg-danger text-white">-20%</span>
-                            <button class="product-wishlist"><i class="bi bi-heart"></i></button>
-                        </div>
-                        <div class="product-body">
-                            <div class="product-stars mb-1">★★★★★ <span style="color:#aaa;font-size:.75rem">(88)</span>
-                            </div>
-                            <div class="product-name">Giỏ quà tết cao cấp – lan + quà + bánh</div>
-                            <div class="mt-2 mb-3">
-                                <span class="product-price">980.000đ</span>
-                                <span class="product-price-old">1.200.000đ</span>
-                            </div>
-                            <button class="btn-add-cart"><i class="bi bi-bag-plus me-1"></i> Thêm vào giỏ</button>
-                        </div>
-                    </div>
-                </div>
+                                            <div class="mt-2 mb-3">
+                                                <span class="product-price">
+                                                    {{ number_format($product->price, 0, ',', '.') }}đ
+                                                </span>
+                                            </div>
 
-                <!-- Product 8 -->
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="product-card h-100">
-                        <div class="img-wrap">
-                            <img src="assets/img/shop/04.png" alt="Hoa sáp thơm" />
-                            <span class="product-badge" style="background:var(--gold);color:#fff;">Độc đáo</span>
-                            <button class="product-wishlist"><i class="bi bi-heart"></i></button>
-                        </div>
-                        <div class="product-body">
-                            <div class="product-stars mb-1">★★★★★ <span style="color:#aaa;font-size:.75rem">(155)</span>
-                            </div>
-                            <div class="product-name">Bó hoa sáp thơm – lưu giữ mãi mãi</div>
-                            <div class="mt-2 mb-3">
-                                <span class="product-price">550.000đ</span>
-                            </div>
-                            <button class="btn-add-cart"><i class="bi bi-bag-plus me-1"></i> Thêm vào giỏ</button>
+                                            <button class="btn-add-cart">
+                                                <i class="bi bi-bag-plus me-1"></i>
+                                                Thêm vào giỏ
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="col-12">
+                                    <div class="text-center text-muted py-5">
+                                        Chưa có sản phẩm trong danh mục này.
+                                    </div>
+                                </div>
+                            @endforelse
                         </div>
                     </div>
-                </div>
+                @endforeach
             </div>
 
             <div class="text-center mt-4 d-md-none">
@@ -374,8 +278,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                     PROMO BANNERS
-                    ═══════════════════════════════════════ -->
+                                 PROMO BANNERS
+                ═══════════════════════════════════════ -->
     <section class="section-py">
         <div class="container">
             <div class="row g-3">
@@ -440,8 +344,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                     TESTIMONIALS
-                    ═══════════════════════════════════════ -->
+                                 TESTIMONIALS
+                                ═══════════════════════════════════════ -->
     <section class="section-py bg-pale">
         <div class="container">
             <div class="text-center mb-5">
@@ -506,8 +410,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                     BLOG / TIN TỨC
-                    ═══════════════════════════════════════ -->
+                                 BLOG / TIN TỨC
+                                ═══════════════════════════════════════ -->
     <section class="section-py">
         <div class="container">
             <div class="d-flex align-items-end justify-content-between mb-4">
@@ -562,8 +466,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                     NEWSLETTER
-                    ═══════════════════════════════════════ -->
+                                 NEWSLETTER
+                                ═══════════════════════════════════════ -->
     <section class="py-5">
         <div class="container">
             <div class="newsletter-section p-5 text-center">

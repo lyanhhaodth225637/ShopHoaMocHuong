@@ -1,6 +1,6 @@
-<div class="modal modal-blur fade" id="modal-edit-category-{{ $category->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal modal-blur fade" id="modal-edit-category" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <form action="{{ route('admin.category.update', ['id'=>$category->id, 'slug'=>$category->slug]) }}" method="POST" class="modal-content">
+        <form method="POST" id="editCategoryForm" class="modal-content">
             @csrf
             @method('PUT')
 
@@ -19,8 +19,8 @@
                                 Tên danh mục <span class="text-danger">*</span>
                             </label>
 
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                                value="{{ old('name', $category->name) }}" placeholder="Ví dụ: Hoa sinh nhật">
+                            <input type="text" id="edit_name" class="form-control @error('name') is-invalid @enderror" name="name"
+                                value="{{ old('name') }}" placeholder="Ví dụ: Hoa sinh nhật">
 
                             @error('name')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -33,16 +33,13 @@
                         <div class="mb-3">
                             <label class="form-label">Danh mục cha</label>
 
-                            <select name="parent_id" class="form-select @error('parent_id') is-invalid @enderror">
+                            <select id="edit_parent_id" name="parent_id" class="form-select @error('parent_id') is-invalid @enderror">
                                 <option value="">Không có - là danh mục cha</option>
 
                                 @foreach ($parentCategories as $parent)
-                                    @if ($parent->id !== $category->id)
-                                        <option value="{{ $parent->id }}"
-                                            @selected(old('parent_id', $category->parent_id) == $parent->id)>
-                                            {{ $parent->name }}
-                                        </option>
-                                    @endif
+                                    <option value="{{ $parent->id }}" @selected(old('parent_id') == $parent->id)>
+                                        {{ $parent->name }}
+                                    </option>
                                 @endforeach
                             </select>
 
@@ -57,46 +54,46 @@
                         <div class="mb-3">
                             <label class="form-label">Mega section</label>
 
-                            <select name="mega_section" class="form-select @error('mega_section') is-invalid @enderror">
+                            <select id="edit_mega_section" name="mega_section" class="form-select @error('mega_section') is-invalid @enderror">
                                 <option value="">Không thuộc mega section</option>
 
-                                <option value="kieu_dang" @selected(old('mega_section', $category->mega_section) == 'kieu_dang')>
+                                <option value="kieu_dang" @selected(old('mega_section') == 'kieu_dang')>
                                     Kiểu dáng
                                 </option>
 
-                                <option value="loai_hoa" @selected(old('mega_section', $category->mega_section) == 'loai_hoa')>
+                                <option value="loai_hoa" @selected(old('mega_section') == 'loai_hoa')>
                                     Loại hoa
                                 </option>
 
-                                <option value="theo_dip" @selected(old('mega_section', $category->mega_section) == 'theo_dip')>
+                                <option value="theo_dip" @selected(old('mega_section') == 'theo_dip')>
                                     Theo dịp
                                 </option>
 
-                                <option value="theo_mau" @selected(old('mega_section', $category->mega_section) == 'theo_mau')>
+                                <option value="theo_mau" @selected(old('mega_section') == 'theo_mau')>
                                     Theo màu
                                 </option>
 
-                                <option value="dac_biet" @selected(old('mega_section', $category->mega_section) == 'dac_biet')>
+                                <option value="dac_biet" @selected(old('mega_section') == 'dac_biet')>
                                     Đặc biệt
                                 </option>
 
-                                <option value="hoa_co_dau" @selected(old('mega_section', $category->mega_section) == 'hoa_co_dau')>
+                                <option value="hoa_co_dau" @selected(old('mega_section') == 'hoa_co_dau')>
                                     Hoa cô dâu
                                 </option>
 
-                                <option value="trang_tri_cuoi" @selected(old('mega_section', $category->mega_section) == 'trang_tri_cuoi')>
+                                <option value="trang_tri_cuoi" @selected(old('mega_section') == 'trang_tri_cuoi')>
                                     Trang trí cưới
                                 </option>
 
-                                <option value="lan" @selected(old('mega_section', $category->mega_section) == 'lan')>
+                                <option value="lan" @selected(old('mega_section') == 'lan')>
                                     Lan
                                 </option>
 
-                                <option value="cay_xanh" @selected(old('mega_section', $category->mega_section) == 'cay_xanh')>
+                                <option value="cay_xanh" @selected(old('mega_section') == 'cay_xanh')>
                                     Cây xanh
                                 </option>
 
-                                <option value="combo_hoa" @selected(old('mega_section', $category->mega_section) == 'combo_hoa')>
+                                <option value="combo_hoa" @selected(old('mega_section') == 'combo_hoa')>
                                     Combo hoa
                                 </option>
                             </select>
@@ -116,8 +113,8 @@
                         <div class="mb-3">
                             <label class="form-label">Icon</label>
 
-                            <input type="text" class="form-control @error('icon') is-invalid @enderror" name="icon"
-                                value="{{ old('icon', $category->icon) }}"
+                            <input type="text" id="edit_icon" class="form-control @error('icon') is-invalid @enderror" name="icon"
+                                value="{{ old('icon') }}"
                                 placeholder="Ví dụ: ti ti-flower hoặc fa-solid fa-gift">
 
                             @error('icon')
@@ -135,8 +132,8 @@
                         <div class="mb-3">
                             <label class="form-label">Thứ tự sắp xếp</label>
 
-                            <input type="number" class="form-control @error('sort_order') is-invalid @enderror"
-                                name="sort_order" value="{{ old('sort_order', $category->sort_order) }}" min="0">
+                            <input type="number" id="edit_sort_order" class="form-control @error('sort_order') is-invalid @enderror"
+                                name="sort_order" value="{{ old('sort_order', 0) }}" min="0">
 
                             @error('sort_order')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -152,8 +149,8 @@
                             <label class="form-check form-switch">
                                 <input type="hidden" name="is_active" value="0">
 
-                                <input class="form-check-input" type="checkbox" name="is_active" value="1"
-                                    @checked(old('is_active', $category->is_active))>
+                                <input id="edit_is_active" class="form-check-input" type="checkbox" name="is_active" value="1"
+                                    @checked(old('is_active', 1))>
 
                                 <span class="form-check-label">Hiển thị danh mục</span>
                             </label>
@@ -169,8 +166,8 @@
                         <div class="mb-3">
                             <label class="form-label">Mô tả</label>
 
-                            <textarea name="description" class="form-control @error('description') is-invalid @enderror"
-                                rows="3" placeholder="Nhập mô tả ngắn cho danh mục">{{ old('description', $category->description) }}</textarea>
+                            <textarea id="edit_description" name="description" class="form-control @error('description') is-invalid @enderror"
+                                rows="3" placeholder="Nhập mô tả ngắn cho danh mục">{{ old('description') }}</textarea>
 
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -183,8 +180,8 @@
                         <div class="mb-3">
                             <label class="form-label">Meta title</label>
 
-                            <input type="text" class="form-control @error('meta_title') is-invalid @enderror"
-                                name="meta_title" value="{{ old('meta_title', $category->meta_title) }}"
+                            <input type="text" id="edit_meta_title" class="form-control @error('meta_title') is-invalid @enderror"
+                                name="meta_title" value="{{ old('meta_title') }}"
                                 placeholder="Tiêu đề SEO">
 
                             @error('meta_title')
@@ -198,9 +195,9 @@
                         <div class="mb-3">
                             <label class="form-label">Meta description</label>
 
-                            <textarea name="meta_description"
+                            <textarea id="edit_meta_description" name="meta_description"
                                 class="form-control @error('meta_description') is-invalid @enderror" rows="3"
-                                placeholder="Mô tả SEO">{{ old('meta_description', $category->meta_description) }}</textarea>
+                                placeholder="Mô tả SEO">{{ old('meta_description') }}</textarea>
 
                             @error('meta_description')
                                 <div class="invalid-feedback">{{ $message }}</div>

@@ -38,7 +38,7 @@ return [
 
         [
             'text' => 'Sản phẩm',
-            'url' => '/admin/products',
+            'url' => '/admin/san-pham',
             'icon' => 'ti ti-package',
         ],
 
