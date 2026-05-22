@@ -1,0 +1,27 @@
+name: Deploy Website via SSH
+
+on:
+  push:
+    branches:
+      - main 
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lấy code mới nhất từ GitHub
+        uses: actions/checkout@v4
+
+      - name: Đồng bộ code lên cPanel qua SSH
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_USERNAME }}
+          REMOTE_PORT: ${{ secrets.SSH_PORT }}
+          
+          # Thư mục đích trên cPanel chứa web của bạn
+          TARGET: "/home/h5r9pensgj41/public_html/mochuong/"
+          
+          # Loại trừ các file không cần thiết đưa lên server
+          EXCLUDE: "/.git/, /.github/, /node_modules/"
