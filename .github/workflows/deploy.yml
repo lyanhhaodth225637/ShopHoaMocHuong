@@ -1,4 +1,4 @@
-name: Deploy Website via SSH
+name: Deploy Website via FTP
 
 on:
   push:
@@ -9,19 +9,25 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Lấy code mới nhất từ GitHub
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Đồng bộ code lên cPanel qua SSH
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          REMOTE_HOST: ${{ secrets.SSH_HOST }}
-          REMOTE_USER: ${{ secrets.SSH_USERNAME }}
-          REMOTE_PORT: ${{ secrets.SSH_PORT }}
-          
-          # Thư mục đích trên cPanel chứa web của bạn
-          TARGET: "/home/h5r9pensgj41/public_html/mochuong/"
-          
-          # Loại trừ các file không cần thiết đưa lên server
-          EXCLUDE: "/.git/, /.github/, /node_modules/"
+      - name: Cài đặt Node.js & Build Vite
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: |
+          npm install
+          npm run build
+
+      - name: Nén code thành file zip
+        run: zip -r deploy.zip . -x "*.git*" "node_modules/*" ".github/*"
+
+      - name: Đẩy file zip lên hosting
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ./
+          local-dir: ./
+          include: deploy.zip
