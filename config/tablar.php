@@ -58,7 +58,7 @@ return [
 
         [
             'text' => 'Khách hàng',
-            'url' => '/admin/customers',
+            'url' => '/admin/khach-hang',
             'icon' => 'ti ti-users',
         ],
 
