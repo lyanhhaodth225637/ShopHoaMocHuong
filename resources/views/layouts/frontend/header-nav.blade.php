@@ -58,6 +58,45 @@
         text-overflow: ellipsis;
         display: inline-block;
     }
+
+    .header-filter-btn {
+        border: none;
+        background: transparent;
+        padding: 0;
+    }
+
+    .filter-box .form-control,
+    .filter-box .form-select {
+        border-radius: 12px;
+    }
+
+    .filter-drawer {
+        z-index: 2050;
+    }
+
+    .filter-drawer .cart-panel {
+        width: min(92vw, 360px);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .filter-drawer .cart-header {
+        flex-shrink: 0;
+    }
+
+    .filter-drawer .cart-body {
+        flex: 1;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        padding: 20px 16px;
+    }
+
+    .filter-drawer .cart-actions {
+        padding: 14px 16px 24px;
+        border-top: 1px solid #f0f0f0;
+        flex-shrink: 0;
+    }
 </style>
 
 <header class="site-header">
@@ -81,12 +120,31 @@
 
             {{-- Icons --}}
             <div class="d-flex align-items-center gap-3 ms-auto">
-
+                <button type="button" class="header-icon-btn header-filter-btn d-none d-sm-flex"
+                    onclick="openFilterDrawer()">
+                    <i class="bi bi-sliders2"></i>
+                    <span>Bộ lọc</span>
+                </button>
                 <a href="#" class="header-icon-btn d-none d-sm-flex">
                     <i class="bi bi-geo-alt"></i>
                     <span>Cửa hàng</span>
                 </a>
 
+
+
+
+
+                <a href="#" class="header-icon-btn">
+                    <i class="bi bi-heart"></i>
+                    <span class="badge">3</span>
+                    <span class="d-none d-sm-inline">Yêu thích</span>
+                </a>
+
+                <button id="cartOpenBtn" class="header-icon-btn" style="background:none;border:none;padding:0;">
+                    <i class="bi bi-bag"></i>
+                    <span class="badge" id="cartBadge" data-cart-count>{{ $cartCount ?? 0 }}</span>
+                    <span class="d-none d-sm-inline">Giỏ hàng</span>
+                </button>
                 {{-- Tài khoản --}}
                 @auth
                     <div class="header-account-wrap d-none d-sm-flex" id="headerAccountWrap">
@@ -130,19 +188,6 @@
                         <span>Đăng nhập</span>
                     </a>
                 @endguest
-
-                <a href="#" class="header-icon-btn">
-                    <i class="bi bi-heart"></i>
-                    <span class="badge">3</span>
-                    <span class="d-none d-sm-inline">Yêu thích</span>
-                </a>
-
-                <button id="cartOpenBtn" class="header-icon-btn" style="background:none;border:none;padding:0;">
-                    <i class="bi bi-bag"></i>
-                    <span class="badge" id="cartBadge" data-cart-count>{{ $cartCount ?? 0 }}</span>
-                    <span class="d-none d-sm-inline">Giỏ hàng</span>
-                </button>
-
                 {{-- Hamburger - chỉ hiện mobile --}}
                 <button class="hamburger-btn d-flex d-lg-none" id="mobileMenuBtn" aria-label="Mở menu">
                     <span></span><span></span><span></span>
@@ -259,6 +304,122 @@
 
 </header>
 
+<div class="cart-drawer filter-drawer" id="filterDrawer">
+    <div class="cart-backdrop" onclick="closeFilterDrawer()"></div>
+
+    <div class="cart-panel">
+        <div class="cart-header">
+            <div class="cart-header-title">
+                <i class="bi bi-sliders2"></i>
+                Bộ lọc sản phẩm
+            </div>
+            <button class="cart-close" onclick="closeFilterDrawer()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <form action="{{ route('frontend.product.index') }}" method="GET" class="filter-box d-flex flex-column"
+            style="flex:1;min-height:0;">
+            <div class="cart-body">
+                <div class="mb-3">
+                    <label class="form-label">Tìm kiếm</label>
+                    <input type="text" name="keyword" value="{{ request('keyword') }}" class="form-control"
+                        placeholder="Tên sản phẩm, mã sản phẩm...">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Danh mục</label>
+                    <select name="category_id" class="form-select">
+                        <option value="">Tất cả danh mục</option>
+
+                        @foreach (($menuCategories ?? collect()) as $parent)
+                            <option value="{{ $parent->id }}" @selected(request('category_id') == $parent->id)>
+                                {{ $parent->name }}
+                            </option>
+
+                            @foreach ($parent->children as $child)
+                                <option value="{{ $child->id }}" @selected(request('category_id') == $child->id)>
+                                    — {{ $child->name }}
+                                </option>
+                            @endforeach
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Khoảng giá</label>
+
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <input type="number" name="min_price" value="{{ request('min_price') }}"
+                                class="form-control" min="0" placeholder="Từ">
+                        </div>
+
+                        <div class="col-6">
+                            <input type="number" name="max_price" value="{{ request('max_price') }}"
+                                class="form-control" min="0" placeholder="Đến">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Tình trạng kho</label>
+                    <select name="stock_status" class="form-select">
+                        <option value="">Tất cả</option>
+                        <option value="in_stock" @selected(request('stock_status') === 'in_stock')>
+                            Còn hàng
+                        </option>
+                        <option value="out_of_stock" @selected(request('stock_status') === 'out_of_stock')>
+                            Hết hàng
+                        </option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-check">
+                        <input type="checkbox" name="featured" value="1" class="form-check-input"
+                            @checked(request('featured') == 1)>
+                        <span class="form-check-label">
+                            Chỉ sản phẩm nổi bật
+                        </span>
+                    </label>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Sắp xếp</label>
+                    <select name="sort" class="form-select">
+                        <option value="random" @selected(request('sort') === 'random')>
+                            Ngẫu nhiên
+                        </option>
+                        <option value="newest" @selected(request('sort') === 'newest')>
+                            Mới nhất
+                        </option>
+                        <option value="price_asc" @selected(request('sort') === 'price_asc')>
+                            Giá tăng dần
+                        </option>
+                        <option value="price_desc" @selected(request('sort') === 'price_desc')>
+                            Giá giảm dần
+                        </option>
+                        <option value="name_asc" @selected(request('sort') === 'name_asc')>
+                            Tên A-Z
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="cart-actions d-grid gap-2">
+                <button type="submit" class="btn btn-green">
+                    Lọc sản phẩm
+                </button>
+
+                <a href="{{ route('frontend.product.index') }}" class="btn btn-outline-green">
+                    Xóa bộ lọc
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
     (function () {
         const wrap = document.getElementById('headerAccountWrap');
@@ -274,4 +435,26 @@
             wrap.classList.remove('is-open');
         });
     })();
+
+    function openFilterDrawer() {
+        const drawer = document.getElementById('filterDrawer');
+        if (!drawer) return;
+
+        drawer.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeFilterDrawer() {
+        const drawer = document.getElementById('filterDrawer');
+        if (!drawer) return;
+
+        drawer.classList.remove('is-open');
+        document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            closeFilterDrawer();
+        }
+    });
 </script>

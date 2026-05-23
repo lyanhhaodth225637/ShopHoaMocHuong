@@ -192,6 +192,12 @@
                 </a>
             @endguest
 
+            <button type="button" class="mobile-quick-link"
+                style="background:none;border:none;flex:1;cursor:pointer;" onclick="openFilterDrawer()">
+                <i class="bi bi-sliders2"></i>
+                <span>Bộ lọc</span>
+            </button>
+
             {{-- Thêm script này vào cuối file (trước @endsection hoặc cuối partial) --}}
             <script>
                 (function () {
