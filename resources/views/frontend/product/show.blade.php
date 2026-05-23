@@ -34,29 +34,65 @@
 
         /* ─── GALLERY ─── */
         .main-image-box {
+            position: relative;
+            width: 100%;
+            height: 420px;
             border-radius: 20px;
             overflow: hidden;
             border: 1.5px solid #e8f5f5;
             background: #fff;
-            aspect-ratio: 1 / 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin-bottom: 12px;
         }
 
         .main-image-box img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             transition: transform .4s;
+            display: block;
         }
 
         .main-image-box:hover img {
             transform: scale(1.04);
         }
 
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, .85);
+            color: var(--green-dark);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .12);
+            transition: background .2s, color .2s;
+        }
+
+        .gallery-nav:hover {
+            background: var(--green-main);
+            color: #fff;
+        }
+
+        .gallery-nav.prev {
+            left: 10px;
+        }
+
+        .gallery-nav.next {
+            right: 10px;
+        }
+
         .thumb-list {
-            gap: 10px !important;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .thumb-btn {
@@ -76,6 +112,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
         }
 
         .thumb-btn:hover {
@@ -118,7 +155,6 @@
             padding-left: 14px;
         }
 
-        /* Meta rows */
         .product-info .fw-semibold {
             color: var(--text-dark);
             font-size: 0.875rem;
@@ -181,7 +217,6 @@
             -webkit-appearance: none;
         }
 
-        /* ─── BTN ADD CART (override cho trang detail) ─── */
         .product-info .btn-add-cart {
             padding: 14px 36px;
             font-size: 0.95rem;
@@ -263,7 +298,6 @@
             font-weight: 700;
         }
 
-        /* product-card đã có trong CSS gốc, chỉ bổ sung phần img cho card liên quan */
         .product-card .product-card-img {
             display: block;
             height: 200px;
@@ -313,14 +347,12 @@
             margin-bottom: 12px;
         }
 
-        /* btn-sm override */
         .btn-add-cart.btn-sm {
             padding: 8px 0;
             font-size: 0.8rem;
             border-radius: 8px;
         }
 
-        /* Badge category */
         .badge.bg-success-subtle {
             background: var(--green-pale) !important;
             color: var(--green-dark) !important;
@@ -332,6 +364,10 @@
 
         /* ─── RESPONSIVE ─── */
         @media (max-width: 767px) {
+            .main-image-box {
+                height: 280px;
+            }
+
             .product-info {
                 padding: 20px 16px;
             }
@@ -350,6 +386,7 @@
             }
         }
     </style>
+
     <main class="product-detail-page py-4">
         <div class="container">
 
@@ -357,14 +394,12 @@
             <nav class="mb-4">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="{{ route('home') }}">Trang chủ</a>
+                        <a href="{{ route('frontend.home.index') }}">Trang chủ</a>
                     </li>
                     <li class="breadcrumb-item">
                         <a href="#">Sản phẩm</a>
                     </li>
-                    <li class="breadcrumb-item active">
-                        {{ $product->name }}
-                    </li>
+                    <li class="breadcrumb-item active">{{ $product->name }}</li>
                 </ol>
             </nav>
 
@@ -372,13 +407,21 @@
                 {{-- Ảnh sản phẩm --}}
                 <div class="col-lg-6">
                     <div class="product-gallery">
-                        <div class="main-image-box mb-3">
+                        <div class="main-image-box">
+                            <button type="button" class="gallery-nav prev">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+
                             <img id="mainProductImage"
                                 src="{{ $product->main_image ? asset('storage/' . $product->main_image) : asset('images/no-image.png') }}"
-                                alt="{{ $product->name }}" class="img-fluid rounded-4 w-100">
+                                alt="{{ $product->name }}">
+
+                            <button type="button" class="gallery-nav next">
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
                         </div>
 
-                        <div class="thumb-list d-flex gap-2 flex-wrap">
+                        <div class="thumb-list">
                             @if($product->main_image)
                                 <button type="button" class="thumb-btn active"
                                     data-image="{{ asset('storage/' . $product->main_image) }}">
@@ -387,9 +430,8 @@
                             @endif
 
                             @foreach($product->images as $image)
-                                <button type="button" class="thumb-btn"
-                                    data-image="{{ asset('storage/' . $image->image_path) }}">
-                                    <img src="{{ asset('storage/' . $image->image_path) }}" alt="{{ $product->name }}">
+                                <button type="button" class="thumb-btn" data-image="{{ asset('storage/' . $image->image) }}">
+                                    <img src="{{ asset('storage/' . $image->image) }}" alt="{{ $product->name }}">
                                 </button>
                             @endforeach
                         </div>
@@ -407,9 +449,7 @@
                             @endforeach
                         </div>
 
-                        <h1 class="product-title mb-3">
-                            {{ $product->name }}
-                        </h1>
+                        <h1 class="product-title mb-3">{{ $product->name }}</h1>
 
                         <div class="product-price mb-3">
                             {{ number_format($product->price, 0, ',', '.') }}đ
@@ -428,7 +468,6 @@
 
                         <div class="mb-4">
                             <span class="fw-semibold">Tình trạng:</span>
-
                             @if($product->stock_quantity > 0)
                                 <span class="text-success">Còn hàng</span>
                             @else
@@ -436,7 +475,6 @@
                             @endif
                         </div>
 
-                        {{-- Form thêm giỏ hàng không reload --}}
                         @if($product->stock_quantity > 0)
                             <form class="ajax-add-cart-form"
                                 action="{{ route('user.cart.add', ['id' => $product->id, 'slug' => $product->slug]) }}"
@@ -446,9 +484,7 @@
                                 <div class="d-flex align-items-center gap-3 mb-4">
                                     <div class="quantity-box d-flex align-items-center">
                                         <button type="button" class="qty-minus">-</button>
-
                                         <input type="number" name="quantity" value="1" min="1" max="10" class="qty-input">
-
                                         <button type="button" class="qty-plus">+</button>
                                     </div>
                                 </div>
@@ -470,7 +506,6 @@
             {{-- Mô tả chi tiết --}}
             <section class="product-description mt-5">
                 <h3 class="mb-3">Mô tả sản phẩm</h3>
-
                 <div class="description-content">
                     {!! $product->description ?? '<p>Thông tin sản phẩm đang được cập nhật.</p>' !!}
                 </div>
@@ -508,9 +543,7 @@
                                             action="{{ route('user.cart.add', ['id' => $item->id, 'slug' => $item->slug]) }}"
                                             method="POST">
                                             @csrf
-
                                             <input type="hidden" name="quantity" value="1">
-
                                             <button type="submit" class="btn-add-cart btn-sm w-100">
                                                 <i class="bi bi-bag-plus me-1"></i>
                                                 Thêm vào giỏ
@@ -526,4 +559,42 @@
 
         </div>
     </main>
+
+    <script>
+        (function () {
+            const thumbs = Array.from(document.querySelectorAll('.thumb-btn'));
+            const mainImg = document.getElementById('mainProductImage');
+            const btnPrev = document.querySelector('.gallery-nav.prev');
+            const btnNext = document.querySelector('.gallery-nav.next');
+
+            if (!thumbs.length || !mainImg) return;
+
+            let current = 0;
+
+            function goTo(index) {
+                thumbs[current].classList.remove('active');
+                current = (index + thumbs.length) % thumbs.length;
+                mainImg.src = thumbs[current].dataset.image;
+                thumbs[current].classList.add('active');
+            }
+
+            thumbs.forEach(function (btn, i) {
+                btn.addEventListener('click', function () { goTo(i); });
+            });
+
+            if (btnPrev) btnPrev.addEventListener('click', function () { goTo(current - 1); });
+            if (btnNext) btnNext.addEventListener('click', function () { goTo(current + 1); });
+
+            // Quantity box
+            const qtyInput = document.querySelector('.qty-input');
+            if (qtyInput) {
+                document.querySelector('.qty-minus').addEventListener('click', function () {
+                    if (qtyInput.value > 1) qtyInput.value--;
+                });
+                document.querySelector('.qty-plus').addEventListener('click', function () {
+                    if (qtyInput.value < 10) qtyInput.value++;
+                });
+            }
+        })();
+    </script>
 @endsection

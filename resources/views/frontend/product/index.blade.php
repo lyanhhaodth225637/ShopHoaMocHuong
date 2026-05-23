@@ -13,7 +13,7 @@
             border-radius: 12px;
         }
 
-       
+
 
         .product-badge {
             position: absolute;
@@ -54,7 +54,7 @@
             border: none;
             border-radius: 999px;
             padding: 9px 12px;
-            background: #198754;
+            /* background: #198754; */
             color: #fff;
         }
 
@@ -156,10 +156,18 @@
                                     </span>
                                 </div>
 
-                                <button class="btn-add-cart" @disabled($product->stock_quantity <= 0)>
-                                    <i class="bi bi-bag-plus me-1"></i>
-                                    {{ $product->stock_quantity > 0 ? 'Thêm vào giỏ' : 'Hết hàng' }}
-                                </button>
+                                <form class="ajax-add-cart-form"
+                                    action="{{ route('user.cart.add', ['id' => $product->id, 'slug' => $product->slug]) }}"
+                                    method="POST">
+                                    @csrf
+
+                                    <input type="hidden" name="quantity" value="1">
+
+                                    <button type="submit" class="btn-add-cart">
+                                        <i class="bi bi-bag-plus me-1"></i>
+                                        Thêm vào giỏ
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>

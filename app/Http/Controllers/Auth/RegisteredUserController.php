@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Spatie\Permission\Models\Role;
 
 class RegisteredUserController extends Controller
 {
@@ -40,6 +41,11 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        // Gan quyen mac dinh cho tai khoan moi dang ky.
+        if (Role::where('name', 'customer')->exists()) {
+            $user->assignRole('customer');
+        }
 
         event(new Registered($user));
 

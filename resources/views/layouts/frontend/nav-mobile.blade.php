@@ -31,6 +31,99 @@
         'khac' => 'Khác',
     ];
 @endphp
+<style>
+    /* Thay toàn bộ <style> trong mobile nav partial */
+
+    .mobile-account-dropdown {
+        position: relative;
+        flex: 1;
+        min-width: 0;
+        /* quan trọng: cho phép flex item thu nhỏ */
+    }
+
+    .mobile-account-btn {
+        width: 100%;
+        background: none;
+        border: none;
+        cursor: pointer;
+        /* đồng bộ với .mobile-quick-link */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        padding: 10px 6px;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        text-align: center;
+        border-right: 1px solid #eee;
+        transition: background .2s, color .2s;
+    }
+
+    .mobile-account-btn i.bi-person-check {
+        font-size: 1.2rem;
+        color: var(--green-main);
+    }
+
+    .mobile-account-btn .acc-name {
+        max-width: 60px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 0.7rem;
+        line-height: 1;
+    }
+
+    .mobile-account-btn .bi-chevron-down {
+        font-size: 0.6rem;
+        color: var(--text-muted);
+    }
+
+    .mobile-account-btn:hover {
+        background: var(--green-pale);
+        color: var(--green-dark);
+    }
+
+    .mobile-account-menu {
+        position: absolute;
+        left: 150%;
+        transform: translateX(-50%);
+        bottom: calc(100% + 6px);
+        width: 170px;
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        padding: 8px;
+        display: none;
+        z-index: 9999;
+    }
+
+    .mobile-account-dropdown.is-open .mobile-account-menu {
+        display: block;
+    }
+
+    .mobile-account-menu a,
+    .mobile-account-menu button {
+        width: 100%;
+        border: none;
+        background: transparent;
+        padding: 10px 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-dark);
+        font-size: 0.83rem;
+        text-decoration: none;
+        border-radius: 10px;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    .mobile-account-menu a:hover,
+    .mobile-account-menu button:hover {
+        background: var(--green-pale);
+        color: var(--green-dark);
+    }
+</style>
 
 <div id="mobileNavModal" class="mobile-nav-modal" role="dialog" aria-modal="true" aria-label="Menu điều hướng">
     <div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
@@ -38,7 +131,7 @@
     <div class="mobile-nav-drawer">
         <div class="mobile-nav-header">
             <div class="d-flex align-items-center gap-2">
-                <img src="assets/img/logo.png" alt="Mộc Hương"
+                <img src="{{ asset('assets/tablar-logo.png') }}" alt="Mộc Hương"
                     style="height:44px;width:44px;object-fit:cover;border-radius:50%;border:2px solid rgba(255,255,255,.3);">
                 <span style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;">
                     Mộc <em style="color:#b2e8ea;">Hương</em>
@@ -59,10 +152,63 @@
         </div>
 
         <div class="mobile-nav-quick">
-            <a href="#" class="mobile-quick-link">
-                <i class="bi bi-person-circle"></i>
-                <span>Tài khoản</span>
-            </a>
+            {{-- Thay thế đoạn @auth trong mobile-nav-quick --}}
+
+            @auth
+                <div class="mobile-account-dropdown" id="mobileAccountDropdown">
+                    <button type="button" class="mobile-account-btn" id="mobileAccountBtn">
+                        <i class="bi bi-person-check"></i>
+                        <span class="acc-name">{{ Auth::user()->name }}</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+
+                    <div class="mobile-account-menu">
+                        @role('super-admin')
+                        <a href="{{ route('admin.index') }}">
+                            <i class="bi bi-speedometer2"></i>
+                            <span>Trang quản trị</span>
+                        </a>
+                        @endrole
+                        <a href="">
+                            <i class="bi bi-person-lines-fill"></i>
+                            <span>Trang cá nhân</span>
+                        </a>
+
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Đăng xuất</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            @endauth
+
+            @guest
+                <a href="{{ route('login') }}" class="mobile-quick-link">
+                    <i class="bi bi-person-circle"></i>
+                    <span>Đăng nhập</span>
+                </a>
+            @endguest
+
+            {{-- Thêm script này vào cuối file (trước @endsection hoặc cuối partial) --}}
+            <script>
+                (function () {
+                    const btn = document.getElementById('mobileAccountBtn');
+                    const wrap = document.getElementById('mobileAccountDropdown');
+                    if (!btn || !wrap) return;
+
+                    btn.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        wrap.classList.toggle('is-open');
+                    });
+
+                    document.addEventListener('click', function () {
+                        wrap.classList.remove('is-open');
+                    });
+                })();
+            </script>
             <a href="#" class="mobile-quick-link">
                 <i class="bi bi-heart"></i>
                 <span>Yêu thích</span>
