@@ -84,4 +84,9 @@ class ProductController extends Controller
 
         return view('frontend.product.index', compact('products', 'categories'));
     }
+
+    public function show(string $id)
+    {
+        return view('frontend.product.show');
+    }
 }

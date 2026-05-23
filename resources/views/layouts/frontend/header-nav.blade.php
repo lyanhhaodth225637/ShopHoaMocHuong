@@ -1,3 +1,19 @@
+@php
+    use Binafy\LaravelCart\Models\Cart;
+
+    $cartCount = 0;
+
+    if (auth()->check()) {
+        $headerCart = Cart::query()
+            ->where('user_id', auth()->id())
+            ->with('items')
+            ->first();
+
+        if ($headerCart) {
+            $cartCount = $headerCart->items->sum('quantity');
+        }
+    }
+@endphp
 <header class="site-header">
     <div class="container py-3">
         <div class="d-flex align-items-center gap-3">
@@ -33,7 +49,7 @@
                 </a>
                 <button id="cartOpenBtn" class="header-icon-btn" style="background:none;border:none;padding:0;">
                     <i class="bi bi-bag"></i>
-                    <span class="badge" id="cartBadge">5</span>
+                    <span class="badge" id="cartBadge" data-cart-count>{{ $cartCount ?? 0 }}</span>
                     <span class="d-none d-sm-inline">Giỏ hàng</span>
                 </button>
                 <!-- Hamburger - chỉ hiện mobile -->

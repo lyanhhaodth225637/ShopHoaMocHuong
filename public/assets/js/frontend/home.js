@@ -1,38 +1,5 @@
 
-        // ── CART DATA ──
-        const cartData = {
-            1: { price: 380000, qty: 1 },
-            2: { price: 450000, qty: 2 },
-            3: { price: 750000, qty: 1 },
-            4: { price: 680000, qty: 1 },
-        };
-        let discount = 0;
-
-        function fmt(n) {
-            return n.toLocaleString('vi-VN') + 'đ';
-        }
-
-        function updateCartUI() {
-            let subtotal = 0;
-            let totalQty = 0;
-            Object.keys(cartData).forEach(id => {
-                const d = cartData[id];
-                subtotal += d.price * d.qty;
-                totalQty += d.qty;
-                const el = document.getElementById('qty-' + id);
-                if (el) el.textContent = d.qty;
-            });
-
-            document.getElementById('cartSubtotal').textContent = fmt(subtotal);
-            document.getElementById('cartTotal').textContent = fmt(subtotal - discount);
-            document.getElementById('cartCountPill').textContent = totalQty + ' sản phẩm';
-            document.getElementById('cartBadge').textContent = totalQty;
-
-            if (discount > 0) {
-                document.getElementById('discountRow').style.display = 'flex';
-                document.getElementById('cartDiscount').textContent = '−' + fmt(discount);
-            }
-        }
+        
 
         // ── OPEN / CLOSE ──
         const cartDrawer = document.getElementById('cartDrawer');

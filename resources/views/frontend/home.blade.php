@@ -1,5 +1,8 @@
 @extends('layouts.frontend.app')
 @section('content')
+    <div>
+        @include('admin.partials.alert')
+    </div>
     <section class="hero-section">
         <div class="container py-5">
             <div class="row align-items-center min-vh-auto g-4" style="min-height:400px">
@@ -12,7 +15,7 @@
                         Hoa tươi mỗi ngày – giao hàng nhanh trong 2 giờ – thiết kế theo yêu cầu.
                         Hơn 500 mẫu hoa cho mọi dịp đặc biệt.
                     </p>
-                    <div class="hero-cta d-flex gap-3 flex-wrap">
+                    <div class="hero-cta d-flex gap-3 flex-wrap" style="">
                         <a href="#" class="btn-primary-hero">Đặt hoa ngay <i class="bi bi-arrow-right ms-1"></i></a>
                         <a href="#" class="btn-outline-hero"><i class="bi bi-whatsapp me-1"></i> Tư vấn miễn phí</a>
                     </div>
@@ -178,8 +181,8 @@
         </div>
     </section>
     <!-- ═══════════════════════════════════════
-                                 FEATURED PRODUCTS
-                                ═══════════════════════════════════════ -->
+                                                                     FEATURED PRODUCTS
+                                                                    ═══════════════════════════════════════ -->
     <section class="section-py bg-pale">
         <div class="container">
             <div class="d-flex align-items-end justify-content-between mb-4">
@@ -216,7 +219,8 @@
                         <div class="row g-3">
                             @forelse ($productsByCategory[$parentCategory->id] ?? [] as $product)
                                 <div class="col-6 col-md-4 col-lg-3">
-                                    <div class="product-card h-100">
+                                    <a href="{{ route('frontend.product.show', ['id' => $product->id, 'slug' => $product->slug]) }}"
+                                        class="product-card h-100 text-decoration-none d-block">
                                         <div class="img-wrap">
                                             @if ($product->main_image)
                                                 <img src="{{ asset('storage/' . $product->main_image) }}" alt="{{ $product->name }}">
@@ -230,7 +234,7 @@
                                                 </span>
                                             @endif
 
-                                            <button class="product-wishlist">
+                                            <button class="product-wishlist" onclick="event.preventDefault()">
                                                 <i class="bi bi-heart"></i>
                                             </button>
                                         </div>
@@ -251,12 +255,21 @@
                                                 </span>
                                             </div>
 
-                                            <button class="btn-add-cart">
-                                                <i class="bi bi-bag-plus me-1"></i>
-                                                Thêm vào giỏ
-                                            </button>
+                                            <form class="ajax-add-cart-form"
+                                                action="{{ route('user.cart.add', ['id' => $product->id, 'slug' => $product->slug]) }}"
+                                                method="POST">
+                                                @csrf
+
+                                                <input type="hidden" name="quantity" value="1">
+
+                                                <button type="submit" class="btn-add-cart">
+                                                    <i class="bi bi-bag-plus me-1"></i>
+                                                    Thêm vào giỏ
+                                                </button>
+                                            </form>
+
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                             @empty
                                 <div class="col-12">
@@ -278,8 +291,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                                 PROMO BANNERS
-                ═══════════════════════════════════════ -->
+                                                                     PROMO BANNERS
+                                                    ═══════════════════════════════════════ -->
     <section class="section-py">
         <div class="container">
             <div class="row g-3">
@@ -344,8 +357,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                                 TESTIMONIALS
-                                ═══════════════════════════════════════ -->
+                                                                     TESTIMONIALS
+                                                                    ═══════════════════════════════════════ -->
     <section class="section-py bg-pale">
         <div class="container">
             <div class="text-center mb-5">
@@ -410,8 +423,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                                 BLOG / TIN TỨC
-                                ═══════════════════════════════════════ -->
+                                                                     BLOG / TIN TỨC
+                                                                    ═══════════════════════════════════════ -->
     <section class="section-py">
         <div class="container">
             <div class="d-flex align-items-end justify-content-between mb-4">
@@ -466,26 +479,31 @@
 
 
     <!-- ═══════════════════════════════════════
-                                 NEWSLETTER
-                                ═══════════════════════════════════════ -->
+                                                                     NEWSLETTER
+                                                                    ═══════════════════════════════════════ -->
     <section class="py-5">
         <div class="container">
-            <div class="newsletter-section p-5 text-center">
+            <div class="newsletter-section p-4 p-md-5 text-center">
                 <div class="row justify-content-center">
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-md-8 col-12">
                         <div style="font-size:2rem;margin-bottom:8px;">🌸</div>
-                        <h3 style="color:#fff;font-family:'Playfair Display',serif;margin-bottom:10px;">Đăng ký nhận ưu
-                            đãi</h3>
-                        <p style="color:#b2e8ea;font-size:.88rem;margin-bottom:24px;">Nhận thông báo khuyến mãi và mẹo
-                            cắm hoa mỗi
-                            tuần qua email</p>
-                        <div class="d-flex" style="max-width:420px;margin:0 auto;">
+                        <h3 style="color:#fff;font-family:'Playfair Display',serif;margin-bottom:10px;">
+                            Đăng ký nhận ưu đãi
+                        </h3>
+                        <p style="color:#b2e8ea;font-size:.88rem;margin-bottom:24px;">
+                            Nhận thông báo khuyến mãi và mẹo cắm hoa mỗi tuần qua email
+                        </p>
+
+                        <!-- Desktop: ngang | Mobile: dọc -->
+                        <div class="d-flex flex-column flex-sm-row gap-2 gap-sm-0">
                             <input type="email" class="newsletter-input flex-grow-1" placeholder="Email của bạn..." />
                             <button class="newsletter-btn">Đăng ký</button>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </section>
+   
 @endsection

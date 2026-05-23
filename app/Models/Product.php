@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Binafy\LaravelCart\Cartable;
 
-class Product extends Model
+class Product extends Model implements Cartable
 {
     protected $table = 'products';
 
@@ -34,6 +35,16 @@ class Product extends Model
         'is_active' => 'boolean',
         'is_featured' => 'boolean',
     ];
+
+    public function getPrice(): float
+    {
+        return (float) $this->price;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
 
     public function categories()
     {
