@@ -1,11 +1,220 @@
 @extends('layouts.frontend.app')
 @section('content')
+
+    <style>
+        /* ─── HERO ─── */
+        .hero-section {
+            position: relative;
+            min-height: 460px;
+            overflow: hidden;
+        }
+
+        /* Background slides */
+        .hero-bg-slides {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .hero-bg-slide {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+        }
+
+        .hero-bg-slide.active {
+            opacity: 1;
+        }
+
+        /* Overlay */
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg,
+                    rgba(15, 46, 47, 0.75) 0%,
+                    rgba(43, 170, 173, 0.4) 100%);
+            z-index: 1;
+        }
+
+        /* Nội dung */
+        .hero-section .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Dots */
+        .hero-bg-dots {
+            position: absolute;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 7px;
+            z-index: 3;
+        }
+
+        .hero-bg-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .4);
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: all .3s;
+        }
+
+        .hero-bg-dot.active {
+            background: #fff;
+            width: 22px;
+            border-radius: 4px;
+        }
+
+        /* Nút prev/next */
+        .hero-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 3;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255, 255, 255, .35);
+            background: rgba(255, 255, 255, .12);
+            color: #fff;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background .2s;
+            backdrop-filter: blur(4px);
+        }
+
+        .hero-nav-btn:hover {
+            background: rgba(255, 255, 255, .28);
+        }
+
+        .hero-nav-btn.prev {
+            left: 14px;
+        }
+
+        .hero-nav-btn.next {
+            right: 14px;
+        }
+
+        /* ─── ẢNH TRÒN (giữ nguyên) ─── */
+        .hero-img-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flower-circle {
+            width: 340px;
+            height: 340px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255, 255, 255, .2);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .flower-circle img {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, .3);
+        }
+
+        .hero-float-badge {
+            position: absolute;
+            background: #fff;
+            border-radius: 12px;
+            padding: 10px 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .15);
+            font-size: 0.8rem;
+            z-index: 2;
+        }
+
+        .hero-float-badge.top-right {
+            top: 30px;
+            right: -20px;
+        }
+
+        .hero-float-badge.bottom-left {
+            bottom: 40px;
+            left: -20px;
+        }
+
+        .hero-float-badge strong {
+            color: var(--green-main);
+            font-size: 1.1rem;
+            display: block;
+        }
+
+        @media (max-width: 767px) {
+            .hero-section {
+                min-height: 320px;
+            }
+
+            .hero-img-wrapper {
+                display: none;
+            }
+
+            .hero-nav-btn {
+                display: none;
+            }
+        }
+    </style>
+
     <div>
         @include('admin.partials.alert')
     </div>
+
+
+
     <section class="hero-section">
+
+        {{-- ── Background slider ── --}}
+        @php
+            $bgSlides = [
+                'storage/baner/baner1.jpg',
+                'storage/baner/baner2.jpg',
+                'storage/baner/baner4.jpg',
+            ];
+        @endphp
+
+        <div class="hero-bg-slides" id="heroBgSlides">
+            @foreach ($bgSlides as $i => $slide)
+                <div class="hero-bg-slide {{ $i === 0 ? 'active' : '' }}" style="background-image:url('{{ asset($slide) }}')">
+                </div>
+            @endforeach
+        </div>
+
+        <div class="hero-overlay"></div>
+
+        {{-- Prev / Next --}}
+        <button class="hero-nav-btn prev" id="heroPrev" aria-label="Ảnh trước">
+            <i class="bi bi-chevron-left"></i>
+        </button>
+        <button class="hero-nav-btn next" id="heroNext" aria-label="Ảnh tiếp">
+            <i class="bi bi-chevron-right"></i>
+        </button>
+
+        {{-- ── Nội dung ── --}}
         <div class="container py-5">
-            <div class="row align-items-center min-vh-auto g-4" style="min-height:400px">
+            <div class="row align-items-center g-4" style="min-height:400px">
+
+                {{-- Cột trái --}}
                 <div class="col-lg-6 py-4">
                     <div class="hero-badge">🌿 Shop hoa tươi uy tín</div>
                     <h1 class="hero-title mb-3">
@@ -15,7 +224,7 @@
                         Hoa tươi mỗi ngày – giao hàng nhanh trong 2 giờ – thiết kế theo yêu cầu.
                         Hơn 500 mẫu hoa cho mọi dịp đặc biệt.
                     </p>
-                    <div class="hero-cta d-flex gap-3 flex-wrap" style="">
+                    <div class="hero-cta d-flex gap-3 flex-wrap">
                         <a href="#" class="btn-primary-hero">Đặt hoa ngay <i class="bi bi-arrow-right ms-1"></i></a>
                         <a href="#" class="btn-outline-hero"><i class="bi bi-whatsapp me-1"></i> Tư vấn miễn phí</a>
                     </div>
@@ -37,24 +246,37 @@
                     </div>
                 </div>
 
+                {{-- Cột phải: ảnh tròn + badges (giữ nguyên) --}}
                 <div class="col-lg-6 d-none d-lg-flex justify-content-center">
                     <div class="hero-img-wrapper">
                         <div class="flower-circle">
-                            <img src="{{ asset('storage/baner/baner.jpg ') }}" alt="Hoa tươi" />
+                            <img src="{{ asset('storage/baner/baner.jpg') }}" alt="Hoa tươi Mộc Hương">
                         </div>
                         <div class="hero-float-badge top-right">
-                            <strong>⭐ 4.9/5</strong>
-                            <span style="font-size:.72rem;color:#666;">3,200 đánh giá</span>
+                            <strong>Hoa Cưới</strong>
+                            <span style="font-size:.72rem;color:#666;">Hạnh phúc trăm năm</span>
                         </div>
                         <div class="hero-float-badge bottom-left">
-                            <strong>🚚 2h</strong>
-                            <span style="font-size:.72rem;color:#666;">Giao hàng nội thành</span>
+                            <strong>Lễ Tốt Nghiệp</strong>
+                            <span style="font-size:.72rem;color:#666;">Lưu giữ khoảnh khắc</span>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
+
+        {{-- Dots --}}
+        <div class="hero-bg-dots" id="heroBgDots">
+            @foreach ($bgSlides as $i => $slide)
+                <button class="hero-bg-dot {{ $i === 0 ? 'active' : '' }}" data-index="{{ $i }}"></button>
+            @endforeach
+        </div>
+
     </section>
+
+
+
     <section style="background:#fff;padding:28px 0;border-bottom:1px solid #f0f0f0;">
         <div class="container">
             <div class="row g-4">
@@ -181,8 +403,8 @@
         </div>
     </section>
     <!-- ═══════════════════════════════════════
-                                                                     FEATURED PRODUCTS
-                                                                    ═══════════════════════════════════════ -->
+                                                                                     FEATURED PRODUCTS
+                                                                                    ═══════════════════════════════════════ -->
     <section class="section-py bg-pale">
         <div class="container">
             <div class="d-flex align-items-end justify-content-between mb-4">
@@ -291,8 +513,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                                                                     PROMO BANNERS
-                                                    ═══════════════════════════════════════ -->
+                                                                                     PROMO BANNERS
+                                                                    ═══════════════════════════════════════ -->
     <section class="section-py">
         <div class="container">
             <div class="row g-3">
@@ -357,8 +579,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                                                                     TESTIMONIALS
-                                                                    ═══════════════════════════════════════ -->
+                                                                                     TESTIMONIALS
+                                                                                    ═══════════════════════════════════════ -->
     <section class="section-py bg-pale">
         <div class="container">
             <div class="text-center mb-5">
@@ -423,8 +645,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                                                                     BLOG / TIN TỨC
-                                                                    ═══════════════════════════════════════ -->
+                                                                                     BLOG / TIN TỨC
+                                                                                    ═══════════════════════════════════════ -->
     <section class="section-py">
         <div class="container">
             <div class="d-flex align-items-end justify-content-between mb-4">
@@ -479,8 +701,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                                                                     NEWSLETTER
-                                                                    ═══════════════════════════════════════ -->
+                                                                                     NEWSLETTER
+                                                                                    ═══════════════════════════════════════ -->
     <section class="py-5">
         <div class="container">
             <div class="newsletter-section p-4 p-md-5 text-center">
@@ -505,5 +727,48 @@
             </div>
         </div>
     </section>
-   
+    <script>
+        (function () {
+            const slides = Array.from(document.querySelectorAll('.hero-bg-slide'));
+            const dots = Array.from(document.querySelectorAll('.hero-bg-dot'));
+            const btnPrev = document.getElementById('heroPrev');
+            const btnNext = document.getElementById('heroNext');
+            let current = 0;
+            let timer;
+
+            if (!slides.length) return;
+
+            function goTo(index) {
+                slides[current].classList.remove('active');
+                dots[current]?.classList.remove('active');
+                current = (index + slides.length) % slides.length;
+                slides[current].classList.add('active');
+                dots[current]?.classList.add('active');
+            }
+
+            function restart() {
+                clearInterval(timer);
+                timer = setInterval(function () { goTo(current + 1); }, 5000);
+            }
+
+            dots.forEach(function (dot, i) {
+                dot.addEventListener('click', function () { goTo(i); restart(); });
+            });
+
+            if (btnPrev) btnPrev.addEventListener('click', function () { goTo(current - 1); restart(); });
+            if (btnNext) btnNext.addEventListener('click', function () { goTo(current + 1); restart(); });
+
+            // Swipe mobile
+            let tx = 0;
+            const sec = document.querySelector('.hero-section');
+            sec.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; }, { passive: true });
+            sec.addEventListener('touchend', function (e) {
+                const diff = tx - e.changedTouches[0].clientX;
+                if (Math.abs(diff) > 40) { diff > 0 ? goTo(current + 1) : goTo(current - 1); restart(); }
+            });
+
+            restart();
+        })();
+    </script>
+
 @endsection
