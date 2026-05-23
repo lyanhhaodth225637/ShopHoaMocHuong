@@ -49,6 +49,7 @@ Route::prefix('admin')->middleware(['auth', 'role:super-admin'])->name('admin.')
 
 Route::prefix('/')->name('frontend.')->group(function () {
     Route::get('/', [FrontendHome::class, 'index'])->name('home.index');
+    //làm
     Route::get('danh-muc/{id}-{slug}', [FrontendHome::class, 'show'])->name('category.show');
 
     Route::get('san-pham/xem-tat-ca', [FrontendProduct::class, 'index'])->name('product.index');
@@ -58,7 +59,7 @@ Route::prefix('/')->name('frontend.')->group(function () {
 
 });
 
-Route::prefix('/user')->middleware(['auth'])->name('user.')->group(function () {
+Route::prefix('/user')->name('user.')->group(function () {
 
     //giỏ hàng
     Route::get('gio-hang/', [FrontendCart::class, 'index'])->name('cart.index');

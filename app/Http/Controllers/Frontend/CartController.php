@@ -12,11 +12,37 @@ class CartController extends Controller
 {
     private function getCart(): Cart
     {
+        $sessionKey = $this->getGuestCartKey();
 
-        return Cart::query()->firstOrCreate([
-            'user_id' => Auth::id(),
-        ]);
+        if (Auth::check()) {
+            $userCart = Cart::query()->where('user_id', Auth::id())->first();
+            $guestCart = Cart::query()->where('session_key', $sessionKey)->first();
+
+            if ($userCart && $guestCart && $userCart->id !== $guestCart->id) {
+                $this->mergeCartItems($guestCart, $userCart);
+                $guestCart->delete();
+            }
+
+            if (!$userCart && $guestCart) {
+                $guestCart->update([
+                    'user_id' => Auth::id(),
+                ]);
+
+                return $guestCart->fresh();
+            }
+
+            return $userCart ?? Cart::query()->create([
+                'user_id' => Auth::id(),
+                'session_key' => $sessionKey,
+            ]);
+        }
+
+        return Cart::query()->firstOrCreate(
+            ['session_key' => $sessionKey],
+            ['user_id' => null]
+        );
     }
+
     private function findProduct($id, $slug): Product
     {
         return Product::query()
@@ -40,9 +66,7 @@ class CartController extends Controller
         ]);
 
         $product = $this->findProduct($id, $slug);
-
         $cart = $this->getCart();
-
         $quantity = (int) ($request->quantity ?? 1);
 
         $cartItem = $cart->items()
@@ -61,7 +85,6 @@ class CartController extends Controller
         $cart = $this->getCart()->load('items.itemable');
 
         $cartCount = $cart->items->sum('quantity');
-
         $cartSubtotal = $cart->items->sum(function ($item) {
             $itemProduct = $item->itemable;
 
@@ -87,12 +110,11 @@ class CartController extends Controller
             'cart_product_name' => $product->name,
         ]);
     }
+
     public function increase(Request $request, $id, $slug)
     {
         $product = $this->findProduct($id, $slug);
-
         $cart = $this->getCart();
-
         $cartItem = $this->getCartItem($cart, $product);
 
         if (!$cartItem) {
@@ -126,12 +148,11 @@ class CartController extends Controller
 
         return back();
     }
+
     public function decrease(Request $request, $id, $slug)
     {
         $product = $this->findProduct($id, $slug);
-
         $cart = $this->getCart();
-
         $cartItem = $this->getCartItem($cart, $product);
 
         if (!$cartItem) {
@@ -169,7 +190,6 @@ class CartController extends Controller
         ]);
 
         $cartItem = $cartItem->fresh();
-
         $cartData = $this->getCartData();
 
         if ($request->ajax()) {
@@ -186,12 +206,11 @@ class CartController extends Controller
 
         return back();
     }
+
     public function remove(Request $request, $id, $slug)
     {
         $product = $this->findProduct($id, $slug);
-
         $cart = $this->getCart();
-
         $cartItem = $this->getCartItem($cart, $product);
 
         if (!$cartItem) {
@@ -206,7 +225,6 @@ class CartController extends Controller
         }
 
         $cartItem->delete();
-
         $cartData = $this->getCartData();
 
         if ($request->ajax()) {
@@ -223,10 +241,43 @@ class CartController extends Controller
         return back()->with('success', 'Đã xoá sản phẩm khỏi giỏ hàng.');
     }
 
-    private function getCartData(): array
+    public function summary()
     {
         $cart = $this->getCart()->load('items.itemable');
 
+        $items = $cart->items
+            ->filter(fn ($item) => $item->itemable !== null)
+            ->map(function ($item) {
+                $product = $item->itemable;
+                $price = $product->getPrice();
+
+                return [
+                    'id' => $item->id,
+                    'product_id' => $product->id,
+                    'name' => $product->name,
+                    'image' => $product->main_image
+                        ? asset('storage/' . $product->main_image)
+                        : asset('images/no-image.png'),
+                    'quantity' => $item->quantity,
+                    'price_format' => number_format($price, 0, ',', '.') . 'đ',
+                    'line_total_format' => number_format($price * $item->quantity, 0, ',', '.') . 'đ',
+                    'increase_url' => route('user.cart.increase', ['id' => $product->id, 'slug' => $product->slug]),
+                    'decrease_url' => route('user.cart.decrease', ['id' => $product->id, 'slug' => $product->slug]),
+                    'remove_url' => route('user.cart.remove', ['id' => $product->id, 'slug' => $product->slug]),
+                ];
+            })
+            ->values();
+
+        return response()->json([
+            'success' => true,
+            'items' => $items,
+            'cart' => $this->getCartData(),
+        ]);
+    }
+
+    private function getCartData(): array
+    {
+        $cart = $this->getCart()->load('items.itemable');
         $count = $cart->items->sum('quantity');
 
         $subtotal = $cart->items->sum(function ($item) {
@@ -256,39 +307,41 @@ class CartController extends Controller
             ->first();
     }
 
-    public function summary()
+    private function getGuestCartKey(): string
     {
-        $cart = $this->getCart()->load('items.itemable');
+        $session = request()->session();
+        $sessionKey = $session->get('guest_cart_key');
 
-        $items = $cart->items
-            ->filter(fn($item) => $item->itemable !== null)
-            ->map(function ($item) {
-                $product = $item->itemable;
-                $price = $product->getPrice();
+        if (!$sessionKey) {
+            $sessionKey = $session->getId();
+            $session->put('guest_cart_key', $sessionKey);
+        }
 
-                return [
-                    'id' => $item->id,
-                    'product_id' => $product->id,
-                    'name' => $product->name,
-                    'image' => $product->main_image
-                        ? asset('storage/' . $product->main_image)
-                        : asset('images/no-image.png'),
-                    'quantity' => $item->quantity,
-                    'price_format' => number_format($price, 0, ',', '.') . 'đ',
-                    'line_total_format' => number_format($price * $item->quantity, 0, ',', '.') . 'đ',
-                    'increase_url' => route('user.cart.increase', ['id' => $product->id, 'slug' => $product->slug]),
-                    'decrease_url' => route('user.cart.decrease', ['id' => $product->id, 'slug' => $product->slug]),
-                    'remove_url' => route('user.cart.remove', ['id' => $product->id, 'slug' => $product->slug]),
-                ];
-            })
-            ->values();
+        return $sessionKey;
+    }
 
-        $cartData = $this->getCartData();
+    private function mergeCartItems(Cart $sourceCart, Cart $targetCart): void
+    {
+        $sourceCart->loadMissing('items');
 
-        return response()->json([
-            'success' => true,
-            'items' => $items,
-            'cart' => $cartData,
-        ]);
+        foreach ($sourceCart->items as $sourceItem) {
+            $targetItem = $targetCart->items()
+                ->where('itemable_id', $sourceItem->itemable_id)
+                ->where('itemable_type', $sourceItem->itemable_type)
+                ->first();
+
+            if ($targetItem) {
+                $targetItem->update([
+                    'quantity' => min($targetItem->quantity + $sourceItem->quantity, 10),
+                ]);
+
+                $sourceItem->delete();
+                continue;
+            }
+
+            $sourceItem->update([
+                'cart_id' => $targetCart->id,
+            ]);
+        }
     }
 }

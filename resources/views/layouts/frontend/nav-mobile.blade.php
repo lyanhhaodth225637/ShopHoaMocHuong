@@ -30,22 +30,6 @@
 
         'khac' => 'Khác',
     ];
-
-    use Binafy\LaravelCart\Models\Cart;
-
-    $cartCount = 0;
-
-    if (auth()->check()) {
-        $headerCart = Cart::query()
-            ->where('user_id', auth()->id())
-            ->with('items')
-            ->first();
-
-        if ($headerCart) {
-            $cartCount = $headerCart->items->sum('quantity');
-        }
-    }
-
 @endphp
 
 <div id="mobileNavModal" class="mobile-nav-modal" role="dialog" aria-modal="true" aria-label="Menu điều hướng">

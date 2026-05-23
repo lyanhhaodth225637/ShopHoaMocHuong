@@ -1,19 +1,3 @@
-@php
-    use Binafy\LaravelCart\Models\Cart;
-
-    $cartCount = 0;
-
-    if (auth()->check()) {
-        $headerCart = Cart::query()
-            ->where('user_id', auth()->id())
-            ->with('items')
-            ->first();
-
-        if ($headerCart) {
-            $cartCount = $headerCart->items->sum('quantity');
-        }
-    }
-@endphp
 <header class="site-header">
     <div class="container py-3">
         <div class="d-flex align-items-center gap-3">
@@ -38,9 +22,9 @@
                     <i class="bi bi-geo-alt"></i>
                     <span>Cửa hàng</span>
                 </a>
-                <a href="#" class="header-icon-btn d-none d-sm-flex">
+                <a href="{{ route('login') }}" class="header-icon-btn d-none d-sm-flex">
                     <i class="bi bi-person"></i>
-                    <span>Tài khoản</span>
+                    <span>Đăng nhập</span>
                 </a>
                 <a href="#" class="header-icon-btn">
                     <i class="bi bi-heart"></i>

@@ -85,8 +85,26 @@ class ProductController extends Controller
         return view('frontend.product.index', compact('products', 'categories'));
     }
 
-    public function show(string $id)
+    public function show($id, $slug)
     {
-        return view('frontend.product.show');
+        $product = Product::query()
+            ->with(['categories', 'images'])
+            ->where('id', $id)
+            ->where('slug', $slug)
+            ->where('is_active', true)
+            ->firstOrFail();
+
+        $relatedProducts = Product::query()
+            ->with('categories')
+            ->where('id', '!=', $product->id)
+            ->where('is_active', true)
+            ->whereHas('categories', function ($query) use ($product) {
+                $query->whereIn('categories.id', $product->categories->pluck('id'));
+            })
+            ->latest()
+            ->take(8)
+            ->get();
+
+        return view('frontend.product.show', compact('product', 'relatedProducts'));
     }
 }

@@ -1,156 +1,152 @@
+const cartDrawer = document.getElementById('cartDrawer');
+const cartBackdrop = document.getElementById('cartBackdrop');
+const cartOpenBtn = document.getElementById('cartOpenBtn');
+const cartOpenBtnMobile = document.getElementById('cartOpenBtnMobile');
+const cartCloseBtn = document.getElementById('cartCloseBtn');
+const continueShoppingBtn = document.getElementById('continueShoppingBtn');
 
-        
+function openCart() {
+    if (!cartDrawer) {
+        return;
+    }
 
-        // ── OPEN / CLOSE ──
-        const cartDrawer = document.getElementById('cartDrawer');
-        const cartBackdrop = document.getElementById('cartBackdrop');
+    cartDrawer.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+}
 
-        function openCart() {
-            cartDrawer.classList.add('is-open');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeCart() {
-            cartDrawer.classList.remove('is-open');
-            document.body.style.overflow = '';
-        }
+function closeCart() {
+    if (!cartDrawer) {
+        return;
+    }
 
-        document.getElementById('cartOpenBtn').addEventListener('click', openCart);
-        document.getElementById('cartOpenBtnMobile').addEventListener('click', () => {
-            // close nav first, then open cart
-            document.getElementById('mobileNavModal').classList.remove('is-open');
-            document.getElementById('mobileMenuBtn').classList.remove('is-open');
-            openCart();
-        });
-        document.getElementById('cartCloseBtn').addEventListener('click', closeCart);
-        document.getElementById('cartBackdrop').addEventListener('click', closeCart);
-        document.getElementById('continueShoppingBtn').addEventListener('click', closeCart);
+    cartDrawer.classList.remove('is-open');
+    document.body.style.overflow = '';
+}
 
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape' && cartDrawer.classList.contains('is-open')) closeCart();
-        });
+if (cartOpenBtn) {
+    cartOpenBtn.addEventListener('click', openCart);
+}
 
-        // ── QTY BUTTONS ──
-        document.querySelectorAll('.qty-btn').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const id = this.dataset.id;
-                const action = this.dataset.action;
-                if (action === 'plus') {
-                    cartData[id].qty++;
-                } else {
-                    if (cartData[id].qty > 1) cartData[id].qty--;
-                }
-                updateCartUI();
-            });
-        });
+if (cartOpenBtnMobile) {
+    cartOpenBtnMobile.addEventListener('click', () => {
+        const mobileNavModal = document.getElementById('mobileNavModal');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 
-        // ── REMOVE ITEM ──
-        document.querySelectorAll('.cart-item-remove').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const id = this.dataset.id;
-                const item = document.querySelector(`.cart-item[data-id="${id}"]`);
-                item.style.transition = 'opacity .25s, transform .25s';
-                item.style.opacity = '0';
-                item.style.transform = 'translateX(30px)';
-                setTimeout(() => {
-                    item.remove();
-                    delete cartData[id];
-                    updateCartUI();
-                }, 250);
-            });
-        });
-
-        // ── PROMO CODE ──
-        document.getElementById('promoApplyBtn').addEventListener('click', () => {
-            const code = document.getElementById('promoInput').value.trim().toUpperCase();
-            const msg = document.getElementById('promoMsg');
-            if (code === 'HOCHUONG10') {
-                discount = 226000;
-                msg.style.color = 'var(--green-main)';
-                msg.textContent = '✓ Áp dụng thành công! Giảm 10%';
-            } else if (code === '') {
-                msg.style.color = '#e74c3c';
-                msg.textContent = 'Vui lòng nhập mã giảm giá';
-            } else {
-                discount = 0;
-                msg.style.color = '#e74c3c';
-                msg.textContent = '✗ Mã không hợp lệ hoặc đã hết hạn';
-            }
-            updateCartUI();
-        });
-
-        // Init
-        updateCartUI();
-
-        // ── Filter tabs ──
-        document.querySelectorAll('.filter-tabs .nav-link').forEach(tab => {
-            tab.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelectorAll('.filter-tabs .nav-link').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
-        // ── Wishlist toggle ──
-        document.querySelectorAll('.product-wishlist').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const icon = this.querySelector('i');
-                if (icon.classList.contains('bi-heart')) {
-                    icon.classList.replace('bi-heart', 'bi-heart-fill');
-                    this.style.color = '#e74c3c';
-                } else {
-                    icon.classList.replace('bi-heart-fill', 'bi-heart');
-                    this.style.color = '';
-                }
-            });
-        });
-
-        // ── Mobile Nav Modal ──
-        const modal = document.getElementById('mobileNavModal');
-        const backdrop = document.getElementById('mobileNavBackdrop');
-        const openBtn = document.getElementById('mobileMenuBtn');
-        const closeBtn = document.getElementById('mobileNavClose');
-        const body = document.body;
-
-        function openNav() {
-            modal.classList.add('is-open');
-            openBtn.classList.add('is-open');
-            body.style.overflow = 'hidden';
+        if (mobileNavModal) {
+            mobileNavModal.classList.remove('is-open');
         }
 
-        function closeNav() {
-            modal.classList.remove('is-open');
-            openBtn.classList.remove('is-open');
-            body.style.overflow = '';
+        if (mobileMenuBtn) {
+            mobileMenuBtn.classList.remove('is-open');
         }
 
-        openBtn.addEventListener('click', openNav);
-        closeBtn.addEventListener('click', closeNav);
-        backdrop.addEventListener('click', closeNav);
+        openCart();
+    });
+}
 
-        // Close on Escape
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape' && modal.classList.contains('is-open')) closeNav();
-        });
+if (cartCloseBtn) {
+    cartCloseBtn.addEventListener('click', closeCart);
+}
 
-        // ── Accordion ──
-        document.querySelectorAll('.mac-toggle').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const targetId = this.dataset.target;
-                const accBody = document.getElementById(targetId);
-                const isOpen = this.classList.contains('is-open');
+if (cartBackdrop) {
+    cartBackdrop.addEventListener('click', closeCart);
+}
 
-                // Close all
-                document.querySelectorAll('.mac-toggle').forEach(b => b.classList.remove('is-open'));
-                document.querySelectorAll('.mac-body').forEach(b => b.classList.remove('is-open'));
+if (continueShoppingBtn) {
+    continueShoppingBtn.addEventListener('click', closeCart);
+}
 
-                // Toggle clicked
-                if (!isOpen) {
-                    this.classList.add('is-open');
-                    accBody.classList.add('is-open');
-                    setTimeout(() => accBody.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
-                }
-            });
-        });
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && cartDrawer?.classList.contains('is-open')) {
+        closeCart();
+    }
+});
 
-    // <!-- Bootstrap 5 JS Bundle (bắt buộc cho dropdown) -->
-    
+document.querySelectorAll('.filter-tabs .nav-link').forEach(tab => {
+    tab.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelectorAll('.filter-tabs .nav-link').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+    });
+});
+
+document.querySelectorAll('.product-wishlist').forEach(btn => {
+    btn.addEventListener('click', function () {
+        const icon = this.querySelector('i');
+
+        if (!icon) {
+            return;
+        }
+
+        if (icon.classList.contains('bi-heart')) {
+            icon.classList.replace('bi-heart', 'bi-heart-fill');
+            this.style.color = '#e74c3c';
+        } else {
+            icon.classList.replace('bi-heart-fill', 'bi-heart');
+            this.style.color = '';
+        }
+    });
+});
+
+const mobileNavModal = document.getElementById('mobileNavModal');
+const mobileNavBackdrop = document.getElementById('mobileNavBackdrop');
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const mobileNavClose = document.getElementById('mobileNavClose');
+
+function openNav() {
+    if (!mobileNavModal || !mobileMenuBtn) {
+        return;
+    }
+
+    mobileNavModal.classList.add('is-open');
+    mobileMenuBtn.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeNav() {
+    if (!mobileNavModal || !mobileMenuBtn) {
+        return;
+    }
+
+    mobileNavModal.classList.remove('is-open');
+    mobileMenuBtn.classList.remove('is-open');
+
+    if (!cartDrawer?.classList.contains('is-open')) {
+        document.body.style.overflow = '';
+    }
+}
+
+if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', openNav);
+}
+
+if (mobileNavClose) {
+    mobileNavClose.addEventListener('click', closeNav);
+}
+
+if (mobileNavBackdrop) {
+    mobileNavBackdrop.addEventListener('click', closeNav);
+}
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && mobileNavModal?.classList.contains('is-open')) {
+        closeNav();
+    }
+});
+
+document.querySelectorAll('.mac-toggle').forEach(btn => {
+    btn.addEventListener('click', function () {
+        const targetId = this.dataset.target;
+        const accBody = document.getElementById(targetId);
+        const isOpen = this.classList.contains('is-open');
+
+        document.querySelectorAll('.mac-toggle').forEach(toggle => toggle.classList.remove('is-open'));
+        document.querySelectorAll('.mac-body').forEach(body => body.classList.remove('is-open'));
+
+        if (!isOpen && accBody) {
+            this.classList.add('is-open');
+            accBody.classList.add('is-open');
+            setTimeout(() => accBody.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+        }
+    });
+});
