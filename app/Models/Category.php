@@ -3,26 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Category extends Model
 {
     protected $table = 'categories';
+
     protected $fillable = [
         'name',
         'slug',
         'parent_id',
-        'mega_section',
+        'mega_section_key',
+        'mega_section_label',
         'image',
         'icon',
         'description',
         'meta_title',
         'meta_description',
         'sort_order',
-        'is_active'
+        'is_active',
     ];
 
     protected $casts = [
@@ -70,5 +69,30 @@ class Category extends Model
             'id',
             'id'
         );
+    }
+
+    public function getMegaSectionAttribute(): ?string
+    {
+        return $this->getMegaSectionResolvedLabelAttribute();
+    }
+
+    public function getMegaSectionResolvedKeyAttribute(): string
+    {
+        return $this->mega_section_key ?: 'khac';
+    }
+
+    public function getMegaSectionResolvedLabelAttribute(): string
+    {
+        if (!empty($this->mega_section_label)) {
+            return $this->mega_section_label;
+        }
+
+        if (!empty($this->mega_section_key)) {
+            return (string) Str::of($this->mega_section_key)
+                ->replace('_', ' ')
+                ->title();
+        }
+
+        return 'Khác';
     }
 }

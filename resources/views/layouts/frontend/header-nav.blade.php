@@ -608,7 +608,7 @@
                 @foreach ($menuCategories ?? [] as $parent)
                     @php
                         $children = $parent->children ?? collect();
-                        $megaGroups = $parent->mega_groups ?? $children->groupBy(fn($child) => $child->mega_section ?: 'khac');
+                        $megaGroups = $parent->mega_groups ?? $children->groupBy(fn($child) => $child->mega_section_key ?: 'khac');
                     @endphp
 
                     @if ($children->count())
@@ -626,7 +626,7 @@
                                     @foreach ($megaGroups as $sectionKey => $items)
                                         <div class="mega-col">
                                             <div class="mega-col-title">
-                                                {{ $sectionLabels[$sectionKey] ?? $sectionKey }}
+                                                {{ $items->first()?->mega_section_resolved_label ?? ($sectionLabels[$sectionKey] ?? $sectionKey) }}
                                             </div>
                                             @foreach ($items as $child)
                                                 <a class="mega-link"

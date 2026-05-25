@@ -52,58 +52,46 @@
                     {{-- Mega section --}}
                     <div class="col-lg-6">
                         <div class="mb-3">
-                            <label class="form-label">Mega section</label>
+                            <label class="form-label">Tên mega section</label>
 
-                            <select id="edit_mega_section" name="mega_section" class="form-select @error('mega_section') is-invalid @enderror">
-                                <option value="">Không thuộc mega section</option>
+                            <input
+                                type="text"
+                                id="edit_mega_section_label"
+                                name="mega_section_label"
+                                list="mega-section-label-suggestions"
+                                class="form-control @error('mega_section_label') is-invalid @enderror"
+                                value="{{ old('mega_section_label') }}"
+                                placeholder="Ví dụ: Kiểu dáng">
 
-                                <option value="kieu_dang" @selected(old('mega_section') == 'kieu_dang')>
-                                    Kiểu dáng
-                                </option>
-
-                                <option value="loai_hoa" @selected(old('mega_section') == 'loai_hoa')>
-                                    Loại hoa
-                                </option>
-
-                                <option value="theo_dip" @selected(old('mega_section') == 'theo_dip')>
-                                    Theo dịp
-                                </option>
-
-                                <option value="theo_mau" @selected(old('mega_section') == 'theo_mau')>
-                                    Theo màu
-                                </option>
-
-                                <option value="dac_biet" @selected(old('mega_section') == 'dac_biet')>
-                                    Đặc biệt
-                                </option>
-
-                                <option value="hoa_co_dau" @selected(old('mega_section') == 'hoa_co_dau')>
-                                    Hoa cô dâu
-                                </option>
-
-                                <option value="trang_tri_cuoi" @selected(old('mega_section') == 'trang_tri_cuoi')>
-                                    Trang trí cưới
-                                </option>
-
-                                <option value="lan" @selected(old('mega_section') == 'lan')>
-                                    Lan
-                                </option>
-
-                                <option value="cay_xanh" @selected(old('mega_section') == 'cay_xanh')>
-                                    Cây xanh
-                                </option>
-
-                                <option value="combo_hoa" @selected(old('mega_section') == 'combo_hoa')>
-                                    Combo hoa
-                                </option>
-                            </select>
-
-                            @error('mega_section')
+                            @error('mega_section_label')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
 
                             <small class="form-hint">
-                                Chỉ chọn khi danh mục này là danh mục con trong mega menu.
+                                Đây là tên hiển thị ra giao diện, nên nhập tiếng Việt nếu muốn hiện tiếng Việt.
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="mb-3">
+                            <label class="form-label">Mã mega section</label>
+
+                            <input
+                                type="text"
+                                id="edit_mega_section_key"
+                                name="mega_section_key"
+                                list="mega-section-key-suggestions"
+                                class="form-control @error('mega_section_key') is-invalid @enderror"
+                                value="{{ old('mega_section_key') }}"
+                                placeholder="Ví dụ: kieu_dang">
+
+                            @error('mega_section_key')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+
+                            <small class="form-hint">
+                                Có thể để trống, hệ thống sẽ tự tạo từ tên mega section.
                             </small>
                         </div>
                     </div>

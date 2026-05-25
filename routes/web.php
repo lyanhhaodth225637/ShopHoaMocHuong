@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\CategoryController as AdminCategory;
 use App\Http\Controllers\Admin\ProductController as AdminProduct;
 use App\Http\Controllers\Admin\IconController as AdminIcon;
+use App\Http\Controllers\Admin\SettingController as AdminSetting;
+use App\Http\Controllers\Admin\HomeHeroController;
 
 use App\Http\Controllers\Frontend\HomeController as FrontendHome;
 use App\Http\Controllers\Frontend\ProductController as FrontendProduct;
@@ -47,6 +49,22 @@ Route::prefix('admin')->middleware(['auth', 'role:super-admin'])->name('admin.')
 
     //icon
     Route::get('/icons', [AdminIcon::class, 'index'])->name('icon.index');
+
+    //setting
+    Route::get('/settings', [AdminSetting::class, 'index'])->name('setting.index');
+    
+    Route::get('home-hero', [HomeHeroController::class, 'index'])->name('home-hero.index');
+    Route::post('home-hero/update', [HomeHeroController::class, 'updateHero'])->name('home-hero.update');
+    Route::post('home-hero/slides', [HomeHeroController::class, 'storeSlide'])->name('home-hero.slides.store');
+    Route::put('home-hero/slides/{slide}', [HomeHeroController::class, 'updateSlide']) ->name('home-hero.slides.update');
+    Route::delete('home-hero/slides/{slide}', [HomeHeroController::class, 'destroySlide']) ->name('home-hero.slides.destroy');
+    Route::post('home-hero/stats', [HomeHeroController::class, 'storeStat'])->name('home-hero.stats.store');
+    Route::put('home-hero/stats/{stat}', [HomeHeroController::class, 'updateStat'])
+        ->name('home-hero.stats.update');
+
+    Route::delete('home-hero/stats/{stat}', [HomeHeroController::class, 'destroyStat'])
+        ->name('home-hero.stats.destroy');
+
 
 
 

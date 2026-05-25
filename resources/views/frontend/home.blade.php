@@ -1,30 +1,21 @@
 @extends('layouts.frontend.app')
 @section('content')
 
-  
-
     <div>
         @include('admin.partials.alert')
     </div>
 
-
-
     <section class="hero-section">
-
         {{-- ── Background slider ── --}}
-        @php
-            $bgSlides = [
-                'storage/baner/baner1.jpg',
-                'storage/baner/baner2.jpg',
-                'storage/baner/baner4.jpg',
-            ];
-        @endphp
-
         <div class="hero-bg-slides" id="heroBgSlides">
-            @foreach ($bgSlides as $i => $slide)
-                <div class="hero-bg-slide {{ $i === 0 ? 'active' : '' }}" style="background-image:url('{{ asset($slide) }}')">
+            @forelse ($heroSlides as $i => $slide)
+                <div class="hero-bg-slide {{ $i === 0 ? 'active' : '' }}"
+                    style="background-image:url('{{ asset('storage/' . $slide->image) }}')">
                 </div>
-            @endforeach
+            @empty
+                <div class="hero-bg-slide active" style="background-image:url('{{ asset('storage/baner/baner1.jpg') }}')">
+                </div>
+            @endforelse
         </div>
 
         <div class="hero-overlay"></div>
@@ -33,6 +24,7 @@
         <button class="hero-nav-btn prev" id="heroPrev" aria-label="Ảnh trước">
             <i class="bi bi-chevron-left"></i>
         </button>
+
         <button class="hero-nav-btn next" id="heroNext" aria-label="Ảnh tiếp">
             <i class="bi bi-chevron-right"></i>
         </button>
@@ -43,49 +35,89 @@
 
                 {{-- Cột trái --}}
                 <div class="col-lg-6 py-4">
-                    <div class="hero-badge">🌿 Shop hoa tươi uy tín</div>
-                    <h1 class="hero-title mb-3">
-                        Gửi trọn <em>yêu thương</em><br>qua từng đóa hoa
-                    </h1>
-                    <p class="hero-subtitle mb-4">
-                        Hoa tươi mỗi ngày – giao hàng nhanh trong 2 giờ – thiết kế theo yêu cầu.
-                        Hơn 500 mẫu hoa cho mọi dịp đặc biệt.
-                    </p>
-                    <div class="hero-cta d-flex gap-3 flex-wrap">
-                        <a href="#" class="btn-primary-hero">Đặt hoa ngay <i class="bi bi-arrow-right ms-1"></i></a>
-                        <a href="#" class="btn-outline-hero"><i class="bi bi-whatsapp me-1"></i> Tư vấn miễn phí</a>
+                    <div class="hero-badge">
+                        🌿 {{ $hero->badge_text ?? 'Shop hoa tươi uy tín' }}
                     </div>
+
+                    <h1 class="hero-title mb-3">
+                        {{ $hero->title_line_1 ?? 'Gửi trọn' }}
+                        <em>{{ $hero->title_highlight ?? 'yêu thương' }}</em><br>
+                        {{ $hero->title_line_2 ?? 'qua từng đóa hoa' }}
+                    </h1>
+
+                    <p class="hero-subtitle mb-4">
+                        {{ $hero->subtitle ?? 'Hoa tươi mỗi ngày – giao hàng nhanh trong 2 giờ – thiết kế theo yêu cầu. Hơn 500 mẫu hoa cho mọi dịp đặc biệt.' }}
+                    </p>
+
+                    <div class="hero-cta d-flex gap-3 flex-wrap">
+                        <a href="{{ $hero->primary_button_link ?? '#' }}" class="btn-primary-hero">
+                            {{ $hero->primary_button_text ?? 'Đặt hoa ngay' }}
+                            <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+
+                        <a href="{{ $hero->secondary_button_link ?? '#' }}" class="btn-outline-hero">
+                            <i class="bi bi-whatsapp me-1"></i>
+                            {{ $hero->secondary_button_text ?? 'Tư vấn miễn phí' }}
+                        </a>
+                    </div>
+
                     <div class="d-flex gap-4 mt-4">
-                        <div>
-                            <div style="font-size:1.4rem;font-weight:700;color:#fff;">500+</div>
-                            <div style="font-size:0.78rem;color:#7ec8ca;">Mẫu hoa</div>
-                        </div>
-                        <div style="width:1px;background:rgba(255,255,255,.2)"></div>
-                        <div>
-                            <div style="font-size:1.4rem;font-weight:700;color:#fff;">10K+</div>
-                            <div style="font-size:0.78rem;color:#7ec8ca;">Khách hàng</div>
-                        </div>
-                        <div style="width:1px;background:rgba(255,255,255,.2)"></div>
-                        <div>
-                            <div style="font-size:1.4rem;font-weight:700;color:#fff;">8 năm</div>
-                            <div style="font-size:0.78rem;color:#7ec8ca;">Kinh nghiệm</div>
-                        </div>
+                        @forelse ($heroStats as $stat)
+                            <div>
+                                <div style="font-size:1.4rem;font-weight:700;color:#fff;">
+                                    {{ $stat->value }}
+                                </div>
+                                <div style="font-size:0.78rem;color:#7ec8ca;">
+                                    {{ $stat->label }}
+                                </div>
+                            </div>
+
+                            @if (!$loop->last)
+                                <div style="width:1px;background:rgba(255,255,255,.2)"></div>
+                            @endif
+                        @empty
+                            <div>
+                                <div style="font-size:1.4rem;font-weight:700;color:#fff;">500+</div>
+                                <div style="font-size:0.78rem;color:#7ec8ca;">Mẫu hoa</div>
+                            </div>
+
+                            <div style="width:1px;background:rgba(255,255,255,.2)"></div>
+
+                            <div>
+                                <div style="font-size:1.4rem;font-weight:700;color:#fff;">10K+</div>
+                                <div style="font-size:0.78rem;color:#7ec8ca;">Khách hàng</div>
+                            </div>
+
+                            <div style="width:1px;background:rgba(255,255,255,.2)"></div>
+
+                            <div>
+                                <div style="font-size:1.4rem;font-weight:700;color:#fff;">8 năm</div>
+                                <div style="font-size:0.78rem;color:#7ec8ca;">Kinh nghiệm</div>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
 
-                {{-- Cột phải: ảnh tròn + badges (giữ nguyên) --}}
+                {{-- Cột phải --}}
                 <div class="col-lg-6 d-none d-lg-flex justify-content-center">
                     <div class="hero-img-wrapper">
                         <div class="flower-circle">
-                            <img src="{{ asset('storage/baner/baner.jpg') }}" alt="Hoa tươi Mộc Hương">
+                            <img src="{{ !empty($hero?->circle_image) ? asset('storage/' . $hero->circle_image) : asset('storage/baner/baner.jpg') }}"
+                                alt="Hoa tươi Mộc Hương">
                         </div>
+
                         <div class="hero-float-badge top-right">
-                            <strong>Hoa Cưới</strong>
-                            <span style="font-size:.72rem;color:#666;">Hạnh phúc trăm năm</span>
+                            <strong>{{ $hero->float_badge_1_title ?? 'Hoa Cưới' }}</strong>
+                            <span style="font-size:.72rem;color:#666;">
+                                {{ $hero->float_badge_1_subtitle ?? 'Hạnh phúc trăm năm' }}
+                            </span>
                         </div>
+
                         <div class="hero-float-badge bottom-left">
-                            <strong>Lễ Tốt Nghiệp</strong>
-                            <span style="font-size:.72rem;color:#666;">Lưu giữ khoảnh khắc</span>
+                            <strong>{{ $hero->float_badge_2_title ?? 'Lễ Tốt Nghiệp' }}</strong>
+                            <span style="font-size:.72rem;color:#666;">
+                                {{ $hero->float_badge_2_subtitle ?? 'Lưu giữ khoảnh khắc' }}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -95,14 +127,14 @@
 
         {{-- Dots --}}
         <div class="hero-bg-dots" id="heroBgDots">
-            @foreach ($bgSlides as $i => $slide)
+            @forelse ($heroSlides as $i => $slide)
                 <button class="hero-bg-dot {{ $i === 0 ? 'active' : '' }}" data-index="{{ $i }}"></button>
-            @endforeach
+            @empty
+                <button class="hero-bg-dot active" data-index="0"></button>
+            @endforelse
         </div>
 
     </section>
-
-
 
     <section style="background:#fff;padding:28px 0;border-bottom:1px solid #f0f0f0;">
         <div class="container">
@@ -146,6 +178,7 @@
             </div>
         </div>
     </section>
+
     <section class="section-py">
         <div class="container">
             <div class="text-center mb-5">
@@ -230,8 +263,8 @@
         </div>
     </section>
     <!-- ═══════════════════════════════════════
-                                                                                     FEATURED PRODUCTS
-                                                                                    ═══════════════════════════════════════ -->
+                                                                                         FEATURED PRODUCTS
+                                                                                        ═══════════════════════════════════════ -->
     <section class="section-py bg-pale">
         <div class="container">
             <div class="d-flex align-items-end justify-content-between mb-4">
@@ -340,8 +373,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                                                                                     PROMO BANNERS
-                                                                    ═══════════════════════════════════════ -->
+                                                                                         PROMO BANNERS
+                                                                        ═══════════════════════════════════════ -->
     <section class="section-py">
         <div class="container">
             <div class="row g-3">
@@ -406,8 +439,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                                                                                     TESTIMONIALS
-                                                                                    ═══════════════════════════════════════ -->
+                                                                                         TESTIMONIALS
+                                                                                        ═══════════════════════════════════════ -->
     <section class="section-py bg-pale">
         <div class="container">
             <div class="text-center mb-5">
@@ -472,8 +505,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                                                                                     BLOG / TIN TỨC
-                                                                                    ═══════════════════════════════════════ -->
+                                                                                         BLOG / TIN TỨC
+                                                                                        ═══════════════════════════════════════ -->
     <section class="section-py">
         <div class="container">
             <div class="d-flex align-items-end justify-content-between mb-4">
@@ -528,8 +561,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                                                                                     NEWSLETTER
-                                                                                    ═══════════════════════════════════════ -->
+                                                                                         NEWSLETTER
+                                                                                        ═══════════════════════════════════════ -->
     <section class="py-5">
         <div class="container">
             <div class="newsletter-section p-4 p-md-5 text-center">

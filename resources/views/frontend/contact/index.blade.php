@@ -1,475 +1,633 @@
 @extends('layouts.frontend.app')
 
-@section('title', 'Liên hệ')
+@section('title', 'Liên hệ - Mộc Hương Flower')
 
 @section('content')
-<style>
-    /* ─── CONTACT PAGE ─── */
-    .contact-page { background: var(--cream); }
+    <style>
+        .contact-page { background: var(--cream); }
 
-    /* ─── HERO ─── */
-    .contact-hero {
-        background: linear-gradient(135deg, #1a6b6e 0%, #2BAAAD 50%, #3dc4c8 100%);
-        padding: 56px 0 80px;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-    }
-    .contact-hero::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/svg%3E") repeat;
-    }
-    .contact-hero-logo {
-        width: 300px;
-        height: 300px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 3px solid rgba(255,255,255,.4);
-        box-shadow: 0 8px 28px rgba(0,0,0,.18);
-        margin-bottom: 16px;
-        position: relative;
-        z-index: 1;
-    }
-    .contact-hero h1 {
-        font-family: 'Playfair Display', serif;
-        color: #fff;
-        font-size: clamp(1.6rem, 4vw, 2.4rem);
-        font-weight: 700;
-        position: relative;
-        z-index: 1;
-        margin-bottom: 8px;
-    }
-    .contact-hero h1 em { color: #8dd5d7; font-style: italic; }
-    .contact-hero p {
-        color: #b2e8ea;
-        font-size: 0.92rem;
-        position: relative;
-        z-index: 1;
-        margin: 0;
-    }
+        /* ─── HERO ─── */
+        .contact-hero {
+            background: linear-gradient(135deg, #1a6b6e 0%, #2BAAAD 60%, #3dc4c8 100%);
+            padding: 64px 0 48px;
+            position: relative;
+            overflow: hidden;
+        }
+        .contact-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/svg%3E") repeat;
+        }
+        .contact-hero-inner {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        .contact-hero-logo {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255,255,255,.35);
+            box-shadow: 0 8px 32px rgba(0,0,0,.2);
+            flex-shrink: 0;
+        }
+        .contact-hero-text h1 {
+            font-family: 'Playfair Display', serif;
+            color: #fff;
+            font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .contact-hero-text h1 em { color: #8dd5d7; font-style: italic; }
+        .contact-hero-text p { color: #b2e8ea; font-size: 0.9rem; margin: 0; }
+        .contact-hero-divider {
+            width: 1px;
+            height: 60px;
+            background: rgba(255,255,255,.25);
+            flex-shrink: 0;
+        }
+        .contact-hero-stats {
+            display: flex;
+            gap: 32px;
+        }
+        .contact-hero-stat strong {
+            display: block;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1;
+        }
+        .contact-hero-stat span {
+            font-size: 0.75rem;
+            color: #7ec8ca;
+            margin-top: 4px;
+            display: block;
+        }
+        @media(max-width:767px){
+            .contact-hero-stats,
+            .contact-hero-divider { display: none; }
+            .contact-hero-inner { gap: 16px; }
+            .contact-hero-logo { width: 72px; height: 72px; }
+        }
 
-    /* ─── WAVE ─── */
-    .contact-wave {
-        margin-top: -2px;
-        line-height: 0;
-        background: var(--green-dark);
-    }
-    .contact-wave svg { display: block; }
+        /* ─── ABOUT SECTION ─── */
+        .about-section {
+            background: #fff;
+            padding: 56px 0;
+            border-bottom: 1.5px solid #e8f5f5;
+        }
+        .about-section .section-label { color: var(--green-main); font-size:.72rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; }
+        .about-section .section-title { font-family:'Playfair Display',serif; font-size:clamp(1.4rem,3vw,2rem); color:var(--text-dark); font-weight:700; margin:8px 0 0; }
+        .about-desc { font-size:.9rem; color:var(--text-muted); line-height:1.85; margin-top:16px; }
 
-    /* ─── LAYOUT ─── */
-    .contact-body { padding: 48px 0 64px; }
+        .about-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px;
+            border-radius: 14px;
+            border: 1.5px solid #e8f5f5;
+            background: #fff;
+            transition: all .25s;
+            height: 100%;
+        }
+        .about-feature:hover {
+            border-color: var(--green-main);
+            box-shadow: 0 6px 20px rgba(43,170,173,.1);
+            transform: translateY(-3px);
+        }
+        .about-feature-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: var(--green-pale);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            color: var(--green-main);
+            flex-shrink: 0;
+        }
+        .about-feature-title { font-weight: 700; font-size: .88rem; color: var(--text-dark); margin-bottom: 3px; }
+        .about-feature-desc { font-size: .78rem; color: var(--text-muted); line-height: 1.5; }
 
-    /* ─── INFO CARDS ─── */
-    .contact-info-card {
-        background: #fff;
-        border-radius: 20px;
-        border: 1.5px solid #e8f5f5;
-        padding: 28px 24px;
-        height: 100%;
-    }
-    .contact-info-card h5 {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.05rem;
-        color: var(--text-dark);
-        font-weight: 700;
-        margin-bottom: 20px;
-        padding-bottom: 12px;
-        border-bottom: 2px solid var(--green-pale);
-    }
+        /* ─── CONTACT SECTION ─── */
+        .contact-section { padding: 56px 0; }
 
-    .contact-row {
-        display: flex;
-        align-items: flex-start;
-        gap: 14px;
-        margin-bottom: 16px;
-    }
-    .contact-row:last-child { margin-bottom: 0; }
-    .contact-row-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        background: var(--green-pale);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1rem;
-        color: var(--green-main);
-        flex-shrink: 0;
-    }
-    .contact-row-text strong {
-        display: block;
-        font-size: 0.78rem;
-        font-weight: 700;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        margin-bottom: 2px;
-    }
-    .contact-row-text span,
-    .contact-row-text a {
-        font-size: 0.88rem;
-        color: var(--text-dark);
-        text-decoration: none;
-        line-height: 1.5;
-    }
-    .contact-row-text a:hover { color: var(--green-main); }
+        /* ─── INFO CARD ─── */
+        .cinfo-card {
+            background: #fff;
+            border-radius: 20px;
+            border: 1.5px solid #e8f5f5;
+            overflow: hidden;
+            height: 100%;
+        }
+        .cinfo-card-header {
+            background: var(--green-dark);
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .cinfo-card-header i { color: #b2e8ea; font-size: 1rem; }
+        .cinfo-card-header span {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .cinfo-card-body { padding: 20px 24px; }
 
-    /* ─── SOCIAL BUTTONS ─── */
-    .contact-socials {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 4px;
-    }
-    .contact-social-btn {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 11px 16px;
-        border-radius: 12px;
-        text-decoration: none;
-        font-size: 0.85rem;
-        font-weight: 600;
-        transition: all .2s;
-        border: 1.5px solid transparent;
-    }
-    .contact-social-btn i { font-size: 1.2rem; }
-    .contact-social-btn .csb-meta { font-size: 0.72rem; font-weight: 400; opacity: .8; display: block; }
+        .cinfo-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f9f9;
+        }
+        .cinfo-row:last-child { border-bottom: none; padding-bottom: 0; }
+        .cinfo-row:first-child { padding-top: 0; }
+        .cinfo-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            background: var(--green-pale);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .85rem;
+            color: var(--green-main);
+            flex-shrink: 0;
+        }
+        .cinfo-label {
+            font-size: .7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+        .cinfo-value {
+            font-size: .85rem;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+        .cinfo-value a { color: var(--text-dark); text-decoration: none; }
+        .cinfo-value a:hover { color: var(--green-main); }
 
-    .csb-phone {
-        background: #e8f5e9;
-        color: #1b5e20;
-        border-color: #c8e6c9;
-    }
-    .csb-phone:hover { background: #1b5e20; color: #fff; }
+        /* Social buttons */
+        .social-list { display: flex; flex-direction: column; gap: 8px; }
+        .social-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1.5px solid #e8f5f5;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: .84rem;
+            font-weight: 500;
+            transition: all .2s;
+        }
+        .social-item:hover { transform: translateX(4px); }
+        .social-item-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .social-item small { font-size: .72rem; color: var(--text-muted); display: block; font-weight:400; }
+        .si-phone .social-item-icon { background:#e8f5e9; color:#2e7d32; }
+        .si-phone:hover { border-color:#a5d6a7; background:#f1f8f1; }
+        .si-zalo  .social-item-icon { background:#e3f2fd; color:#1565c0; }
+        .si-zalo:hover  { border-color:#90caf9; background:#f0f7ff; }
+        .si-fb    .social-item-icon { background:#e8eaf6; color:#1565c0; }
+        .si-fb:hover    { border-color:#9fa8da; background:#f3f4fb; }
+        .si-ig    .social-item-icon { background:#fce4ec; color:#ad1457; }
+        .si-ig:hover    { border-color:#f48fb1; background:#fdf3f6; }
+        .si-tt    .social-item-icon { background:#f3e5f5; color:#4a148c; }
+        .si-tt:hover    { border-color:#ce93d8; background:#faf3fc; }
 
-    .csb-zalo {
-        background: #e3f2fd;
-        color: #0d47a1;
-        border-color: #bbdefb;
-    }
-    .csb-zalo:hover { background: #0d47a1; color: #fff; }
+        /* Hours */
+        .hours-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: .82rem;
+            padding: 7px 0;
+            border-bottom: 1px solid #f0f9f9;
+            color: var(--text-muted);
+        }
+        .hours-row:last-child { border-bottom: none; }
+        .hours-row strong { color: var(--text-dark); font-size: .82rem; }
+        .hours-open { color: var(--green-main); font-weight: 600; }
 
-    .csb-facebook {
-        background: #e8eaf6;
-        color: #1565c0;
-        border-color: #c5cae9;
-    }
-    .csb-facebook:hover { background: #1565c0; color: #fff; }
+        /* Map */
+        .contact-map {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1.5px solid #e8f5f5;
+            height: 240px;
+            margin-top: 20px;
+        }
+        .contact-map iframe { width:100%; height:100%; border:none; display:block; }
 
-    .csb-instagram {
-        background: #fce4ec;
-        color: #880e4f;
-        border-color: #f8bbd0;
-    }
-    .csb-instagram:hover { background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); color: #fff; }
+        /* ─── FEEDBACK SECTION ─── */
+        .feedback-section {
+            background: #fff;
+            padding: 56px 0;
+            border-top: 1.5px solid #e8f5f5;
+        }
+        .feedback-track-wrap {
+            position: relative;
+            overflow: hidden;
+            margin: 0 -8px;
+        }
+        .feedback-track {
+            display: flex;
+            gap: 20px;
+            padding: 8px 8px 20px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            cursor: grab;
+        }
+        .feedback-track:active { cursor: grabbing; }
+        .feedback-track::-webkit-scrollbar { display: none; }
 
-    .csb-tiktok {
-        background: #f3e5f5;
-        color: #4a148c;
-        border-color: #e1bee7;
-    }
-    .csb-tiktok:hover { background: #111; color: #fff; }
+        .feedback-card {
+            background: #fff;
+            border-radius: 18px;
+            border: 1.5px solid #e8f5f5;
+            padding: 22px 20px;
+            min-width: 300px;
+            max-width: 300px;
+            scroll-snap-align: start;
+            flex-shrink: 0;
+            transition: box-shadow .25s, transform .25s;
+            position: relative;
+        }
+        .feedback-card:hover {
+            box-shadow: 0 10px 32px rgba(43,170,173,.12);
+            transform: translateY(-3px);
+        }
+        .feedback-card::before {
+            content: '\201C';
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            color: var(--green-pale);
+            position: absolute;
+            top: -8px;
+            left: 16px;
+            line-height: 1;
+            pointer-events: none;
+        }
 
-    /* ─── MAP ─── */
-    .contact-map {
-        border-radius: 20px;
-        overflow: hidden;
-        border: 1.5px solid #e8f5f5;
-        height: 280px;
-    }
-    .contact-map iframe {
-        width: 100%;
-        height: 100%;
-        border: none;
-        display: block;
-    }
+        /* feedback ảnh */
+        .feedback-card.is-image { padding: 0; overflow: hidden; }
+        .feedback-card.is-image img { width:100%; height:220px; object-fit:cover; display:block; }
+        .feedback-card.is-image .fb-img-caption {
+            padding: 12px 16px;
+            font-size: .78rem;
+            color: var(--text-muted);
+        }
+        .feedback-card.is-image::before { display: none; }
 
-    /* ─── FORM ─── */
-    .contact-form-card {
-        background: #fff;
-        border-radius: 20px;
-        border: 1.5px solid #e8f5f5;
-        padding: 32px 28px;
-    }
-    .contact-form-card h5 {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.2rem;
-        color: var(--text-dark);
-        font-weight: 700;
-        margin-bottom: 6px;
-    }
-    .contact-form-card .subtitle {
-        font-size: 0.84rem;
-        color: var(--text-muted);
-        margin-bottom: 24px;
-    }
+        .fb-stars { color: var(--gold); font-size: .85rem; margin-bottom: 10px; }
+        .fb-text { font-size: .85rem; color: var(--text-muted); line-height: 1.7; font-style: italic; margin-bottom: 14px; position: relative; z-index: 1; }
+        .fb-author { display: flex; align-items: center; gap: 10px; }
+        .fb-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--green-pale);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .95rem;
+            color: var(--green-main);
+            font-weight: 700;
+            flex-shrink: 0;
+            font-family: 'Playfair Display', serif;
+        }
+        .fb-name { font-weight: 700; font-size: .84rem; color: var(--text-dark); }
+        .fb-date { font-size: .72rem; color: var(--text-muted); }
 
-    .contact-form-card .form-label {
-        font-size: 0.78rem;
-        font-weight: 700;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        margin-bottom: 6px;
-    }
-    .contact-form-card .form-control,
-    .contact-form-card .form-select {
-        border: 1.5px solid #b2e8ea;
-        border-radius: 10px;
-        font-size: 0.875rem;
-        color: var(--text-dark);
-        transition: border-color .2s, box-shadow .2s;
-    }
-    .contact-form-card .form-control:focus,
-    .contact-form-card .form-select:focus {
-        border-color: var(--green-main);
-        box-shadow: 0 0 0 3px rgba(43,170,173,.12);
-    }
-    .contact-form-card textarea { resize: none; }
+        /* Nav arrows */
+        .feedback-nav { display: flex; gap: 8px; }
+        .feedback-nav-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1.5px solid #b2e8ea;
+            background: #fff;
+            color: var(--green-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: .9rem;
+            transition: all .2s;
+        }
+        .feedback-nav-btn:hover {
+            background: var(--green-main);
+            border-color: var(--green-main);
+            color: #fff;
+        }
 
-    /* Star rating */
-    .star-rating { display: flex; gap: 6px; flex-direction: row-reverse; justify-content: flex-end; }
-    .star-rating input { display: none; }
-    .star-rating label {
-        font-size: 1.6rem;
-        color: #d0ecee;
-        cursor: pointer;
-        transition: color .15s;
-        line-height: 1;
-    }
-    .star-rating input:checked ~ label,
-    .star-rating label:hover,
-    .star-rating label:hover ~ label {
-        color: var(--gold);
-    }
+        /* fade edges */
+        .feedback-track-wrap::before,
+        .feedback-track-wrap::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 20px;
+            width: 40px;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .feedback-track-wrap::before { left: 0; background: linear-gradient(to right, #fff, transparent); }
+        .feedback-track-wrap::after  { right: 0; background: linear-gradient(to left, #fff, transparent); }
+    </style>
 
-    /* Submit btn */
-    .contact-form-card .btn-submit {
-        background: var(--green-main);
-        color: #fff;
-        border: none;
-        border-radius: 50px;
-        padding: 13px 36px;
-        font-weight: 700;
-        font-size: 0.9rem;
-        transition: all .25s;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
-    .contact-form-card .btn-submit:hover {
-        background: var(--green-dark);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(43,170,173,.3);
-    }
+    <div class="contact-page">
 
-    /* ─── HOURS ─── */
-    .hours-row {
-        display: flex;
-        justify-content: space-between;
-        font-size: 0.83rem;
-        padding: 6px 0;
-        border-bottom: 1px solid #f0f9f9;
-        color: var(--text-muted);
-    }
-    .hours-row:last-child { border-bottom: none; }
-    .hours-row strong { color: var(--text-dark); }
-    .hours-row .open { color: var(--green-main); font-weight: 600; }
+        {{-- ── HERO ── --}}
+        <div class="contact-hero">
+            <div class="container">
+                <div class="contact-hero-inner">
+                    <img src="{{ asset('assets/img/logo/logo.jpeg') }}" alt="Mộc Hương" class="contact-hero-logo">
+                    <div class="contact-hero-text">
+                        <h1>Mộc <em>Hương</em> Flower</h1>
+                        <p>Shop hoa tươi uy tín — Long Xuyên, An Giang</p>
+                    </div>
+                    <div class="contact-hero-divider"></div>
+                    <div class="contact-hero-stats">
+                        <div class="contact-hero-stat"><strong>500+</strong><span>Mẫu hoa</span></div>
+                        <div class="contact-hero-stat"><strong>10K+</strong><span>Khách hàng</span></div>
+                        <div class="contact-hero-stat"><strong>8 năm</strong><span>Kinh nghiệm</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    @media (max-width: 767px) {
-        .contact-hero { padding: 40px 0 60px; }
-        .contact-form-card { padding: 20px 16px; }
-        .contact-info-card { padding: 20px 16px; }
-    }
-</style>
-
-<div class="contact-page">
-
-    {{-- ── Hero ── --}}
-    <div class="contact-hero">
-        <img src="{{ asset('assets/img/logo/logo.jpeg') }}" alt="Mộc Hương" class="contact-hero-logo">
-        <h1>Mộc <em>Hương</em> Flower</h1>
-        <p>Chúng tôi luôn sẵn sàng lắng nghe & hỗ trợ bạn</p>
-    </div>
-
-  
-
-    {{-- ── Body ── --}}
-    <div class="contact-body">
-        <div class="container">
-            <div class="row g-4">
-
-                {{-- ── Cột trái: thông tin ── --}}
-                <div class="col-lg-5 d-flex flex-column gap-4">
-
-                    {{-- Thông tin liên hệ --}}
-                    <div class="contact-info-card">
-                        <h5><i class="bi bi-info-circle me-2" style="color:var(--green-main)"></i>Thông tin liên hệ</h5>
-
-                        <div class="contact-row">
-                            <div class="contact-row-icon"><i class="bi bi-geo-alt-fill"></i></div>
-                            <div class="contact-row-text">
-                                <strong>Địa chỉ</strong>
-                                <span>Số 223, đường cặp rạch Gòi Lớn, khóm Mỹ Phú,<br>phường Long Xuyên, tỉnh An Giang</span>
-                            </div>
+        {{-- ── GIỚI THIỆU ── --}}
+        <section class="about-section">
+            <div class="container">
+                <div class="row g-5 align-items-center">
+                    <div class="col-lg-5">
+                        <div class="section-label">Câu chuyện của chúng tôi</div>
+                        <h2 class="section-title">Hơn 8 năm <br>ươm trồng yêu thương</h2>
+                        <div class="divider-leaf"></div>
+                        <p class="about-desc">
+                            Mộc Hương Flower ra đời từ tình yêu thuần túy với hoa tươi. Từ một tiệm hoa nhỏ tại Long Xuyên, chúng tôi đã phục vụ hàng chục nghìn khách hàng với phương châm <strong>hoa đẹp – giao nhanh – giá hợp lý</strong>.
+                        </p>
+                        <p class="about-desc" style="margin-top:0;">
+                            Mỗi bó hoa là một thông điệp yêu thương được chúng tôi gửi gắm tỉ mỉ từ khâu chọn hoa, thiết kế đến tận tay người nhận trong vòng 2 giờ.
+                        </p>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="row g-3">
+                            @php
+                                $features = [
+                                    ['fas fa-leaf', 'Hoa tươi mỗi ngày', 'Nhập hoa trực tiếp từ Đà Lạt và các vựa hoa uy tín, đảm bảo tươi 100%.'],
+                                    ['fas fa-truck', 'Giao hàng trong 2 giờ', 'Giao hàng nhanh nội thành Long Xuyên, đúng giờ đúng hẹn.'],
+                                    ['fas fa-palette', 'Thiết kế theo yêu cầu', 'Tùy chỉnh màu sắc, kiểu dáng, lời nhắn theo ý muốn của bạn.'],
+                                    ['fas fa-shield-alt', 'Cam kết chất lượng', 'Hoàn tiền hoặc đổi hoa nếu sản phẩm không đúng như mô tả.'],
+                                    ['fas fa-clock', 'Phục vụ 7 ngày/tuần', 'Mở cửa từ 7:00 đến 21:00 tất cả các ngày trong tuần.'],
+                                    ['fas fa-star', 'Hơn 3.200 đánh giá 5★', 'Khách hàng hài lòng là động lực lớn nhất của chúng tôi.'],
+                                ];
+                            @endphp
+                            @foreach($features as $f)
+                                <div class="col-sm-6">
+                                    <div class="about-feature">
+                                        <div class="about-feature-icon"><i class="{{ $f[0] }}"></i></div>
+                                        <div>
+                                            <div class="about-feature-title">{{ $f[1] }}</div>
+                                            <div class="about-feature-desc">{{ $f[2] }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-                        <div class="contact-row">
-                            <div class="contact-row-icon"><i class="bi bi-telephone-fill"></i></div>
-                            <div class="contact-row-text">
-                                <strong>Điện thoại</strong>
-                                <a href="tel:0888796364">0888 796 364</a>
+        {{-- ── LIÊN HỆ ── --}}
+        <section class="contact-section">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <div class="section-label">Kết nối với chúng tôi</div>
+                    <h2 class="section-title">Thông tin liên hệ</h2>
+                    <div class="divider-leaf mx-auto" style="margin-top:10px;"></div>
+                </div>
+
+                <div class="row g-4">
+
+                    {{-- Thông tin --}}
+                    <div class="col-lg-4">
+                        <div class="cinfo-card">
+                            <div class="cinfo-card-header">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Địa chỉ & Giờ mở cửa</span>
                             </div>
-                        </div>
-
-                        <div class="contact-row">
-                            <div class="contact-row-icon"><i class="bi bi-envelope-fill"></i></div>
-                            <div class="contact-row-text">
-                                <strong>Email</strong>
-                                <a href="mailto:mochuongflower@gmail.com">mochuongflower@gmail.com</a>
-                            </div>
-                        </div>
-
-                        <div class="contact-row">
-                            <div class="contact-row-icon"><i class="bi bi-clock-fill"></i></div>
-                            <div class="contact-row-text">
-                                <strong>Giờ mở cửa</strong>
-                                <span>Thứ 2 – Chủ nhật: 7:00 – 21:00</span>
+                            <div class="cinfo-card-body">
+                                <div class="cinfo-row">
+                                    <div class="cinfo-icon"><i class="fas fa-map-marker-alt"></i></div>
+                                    <div>
+                                        <div class="cinfo-label">Địa chỉ</div>
+                                        <div class="cinfo-value">Số 223, đường cặp rạch Gòi Lớn, khóm Mỹ Phú, phường Long Xuyên, tỉnh An Giang</div>
+                                    </div>
+                                </div>
+                                <div class="cinfo-row">
+                                    <div class="cinfo-icon"><i class="fas fa-phone-alt"></i></div>
+                                    <div>
+                                        <div class="cinfo-label">Điện thoại</div>
+                                        <div class="cinfo-value"><a href="tel:0888796364">0888 796 364</a></div>
+                                    </div>
+                                </div>
+                                <div class="cinfo-row">
+                                    <div class="cinfo-icon"><i class="fas fa-envelope"></i></div>
+                                    <div>
+                                        <div class="cinfo-label">Email</div>
+                                        <div class="cinfo-value"><a href="mailto:mochuong@gmail.com">mochuong@gmail.com</a></div>
+                                    </div>
+                                </div>
+                                <div style="margin-top:16px;padding-top:16px;border-top:1px solid #f0f9f9;">
+                                    <div class="cinfo-label" style="margin-bottom:10px;">Giờ mở cửa</div>
+                                    <div class="hours-row"><strong>Thứ 2 – Thứ 7</strong><span class="hours-open">7:00 – 21:00</span></div>
+                                    <div class="hours-row"><strong>Chủ nhật</strong><span class="hours-open">8:00 – 20:00</span></div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Kênh liên hệ --}}
-                    <div class="contact-info-card">
-                        <h5><i class="bi bi-share me-2" style="color:var(--green-main)"></i>Kênh liên hệ</h5>
-                        <div class="contact-socials">
-                            <a href="tel:0888796364" class="contact-social-btn csb-phone">
-                                <i class="bi bi-telephone-fill"></i>
-                                <div>Gọi điện trực tiếp<span class="csb-meta">0888 796 364 — hỗ trợ 7:00–21:00</span></div>
-                            </a>
-                            <a href="https://zalo.me/0888796364" target="_blank" class="contact-social-btn csb-zalo">
-                                <i class="bi bi-chat-dots-fill"></i>
-                                <div>Chat Zalo<span class="csb-meta">Phản hồi nhanh trong vài phút</span></div>
-                            </a>
-                            <a href="https://facebook.com/mochuongflower" target="_blank" class="contact-social-btn csb-facebook">
-                                <i class="bi bi-facebook"></i>
-                                <div>Facebook<span class="csb-meta">facebook.com/mochuongflower</span></div>
-                            </a>
-                            <a href="https://instagram.com/mochuongflower" target="_blank" class="contact-social-btn csb-instagram">
-                                <i class="bi bi-instagram"></i>
-                                <div>Instagram<span class="csb-meta">@mochuongflower</span></div>
-                            </a>
-                            <a href="https://tiktok.com/@mochuongflower" target="_blank" class="contact-social-btn csb-tiktok">
-                                <i class="bi bi-tiktok"></i>
-                                <div>TikTok<span class="csb-meta">@mochuongflower</span></div>
-                            </a>
+                    {{-- Mạng xã hội --}}
+                    <div class="col-lg-4">
+                        <div class="cinfo-card">
+                            <div class="cinfo-card-header">
+                                <i class="fas fa-share-alt"></i>
+                                <span>Kênh liên hệ</span>
+                            </div>
+                            <div class="cinfo-card-body">
+                                <div class="social-list">
+                                    <a href="tel:0888796364" class="social-item si-phone">
+                                        <div class="social-item-icon"><i class="fas fa-phone-alt"></i></div>
+                                        <div>Gọi điện trực tiếp<small>0888 796 364 — 7:00 đến 21:00</small></div>
+                                    </a>
+                                    <a href="https://zalo.me/0888796364" target="_blank" class="social-item si-zalo">
+                                        <div class="social-item-icon"><i class="fas fa-comment-dots"></i></div>
+                                        <div>Chat Zalo<small>Phản hồi trong vài phút</small></div>
+                                    </a>
+                                    <a href="https://facebook.com/mochuongflower" target="_blank" class="social-item si-fb">
+                                        <div class="social-item-icon"><i class="fab fa-facebook-f"></i></div>
+                                        <div>Facebook<small>facebook.com/mochuongflower</small></div>
+                                    </a>
+                                    <a href="https://instagram.com/mochuongflower" target="_blank" class="social-item si-ig">
+                                        <div class="social-item-icon"><i class="fab fa-instagram"></i></div>
+                                        <div>Instagram<small>@mochuongflower</small></div>
+                                    </a>
+                                    <a href="https://tiktok.com/@mochuongflower" target="_blank" class="social-item si-tt">
+                                        <div class="social-item-icon"><i class="fab fa-tiktok"></i></div>
+                                        <div>TikTok<small>@mochuongflower</small></div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     {{-- Bản đồ --}}
-                    <div class="contact-map">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3928.4!2d105.435!3d10.387!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTDCsDIzJzEzLjIiTiAxMDXCsDI2JzA2LjAiRQ!5e0!3m2!1svi!2svn!4v1"
-                            allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
-                    </div>
-
-                </div>
-
-                {{-- ── Cột phải: form feedback ── --}}
-                <div class="col-lg-7">
-                    <div class="contact-form-card">
-                        <h5>📝 Gửi phản hồi cho chúng tôi</h5>
-                        <p class="subtitle">Ý kiến của bạn giúp Mộc Hương ngày càng hoàn thiện hơn.</p>
-
-                        @if(session('success'))
-                            <div class="alert alert-success rounded-3 mb-4" style="font-size:.875rem;">
-                                <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
+                    <div class="col-lg-4">
+                        <div class="cinfo-card" style="overflow:hidden;">
+                            <div class="cinfo-card-header">
+                                <i class="fas fa-map"></i>
+                                <span>Bản đồ</span>
                             </div>
-                        @endif
-
-                        <form action="" method="POST">
-                            @csrf
-
-                            <div class="row g-3">
-                                <div class="col-sm-6">
-                                    <label class="form-label">Họ và tên <span class="text-danger">*</span></label>
-                                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
-                                        value="{{ old('name') }}" placeholder="Nguyễn Văn A">
-                                    @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <label class="form-label">Số điện thoại</label>
-                                    <input type="tel" name="phone" class="form-control @error('phone') is-invalid @enderror"
-                                        value="{{ old('phone') }}" placeholder="0888 xxx xxx">
-                                    @error('phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                                </div>
-
-                                <div class="col-12">
-                                    <label class="form-label">Email</label>
-                                    <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                                        value="{{ old('email') }}" placeholder="email@example.com">
-                                    @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                                </div>
-
-                                <div class="col-12">
-                                    <label class="form-label">Chủ đề</label>
-                                    <select name="subject" class="form-select">
-                                        <option value="">-- Chọn chủ đề --</option>
-                                        <option value="order" {{ old('subject') === 'order' ? 'selected' : '' }}>Đặt hàng & giao hàng</option>
-                                        <option value="product" {{ old('subject') === 'product' ? 'selected' : '' }}>Tư vấn sản phẩm</option>
-                                        <option value="feedback" {{ old('subject') === 'feedback' ? 'selected' : '' }}>Phản hồi dịch vụ</option>
-                                        <option value="partner" {{ old('subject') === 'partner' ? 'selected' : '' }}>Hợp tác kinh doanh</option>
-                                        <option value="other" {{ old('subject') === 'other' ? 'selected' : '' }}>Khác</option>
-                                    </select>
-                                </div>
-
-                                {{-- Đánh giá sao --}}
-                                <div class="col-12">
-                                    <label class="form-label">Đánh giá trải nghiệm</label>
-                                    <div class="star-rating">
-                                        @for($i = 5; $i >= 1; $i--)
-                                            <input type="radio" name="rating" id="star{{ $i }}" value="{{ $i }}"
-                                                {{ old('rating') == $i ? 'checked' : '' }}>
-                                            <label for="star{{ $i }}">★</label>
-                                        @endfor
-                                    </div>
-                                </div>
-
-                                <div class="col-12">
-                                    <label class="form-label">Nội dung <span class="text-danger">*</span></label>
-                                    <textarea name="message" rows="5"
-                                        class="form-control @error('message') is-invalid @enderror"
-                                        placeholder="Chia sẻ cảm nhận, góp ý hoặc câu hỏi của bạn...">{{ old('message') }}</textarea>
-                                    @error('message')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                                </div>
-
-                                <div class="col-12 mt-2">
-                                    <button type="submit" class="btn-submit">
-                                        <i class="bi bi-send"></i> Gửi phản hồi
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-
-                        {{-- Giờ làm việc --}}
-                        <div class="mt-4 pt-4" style="border-top:1.5px solid #e8f5f5;">
-                            <p style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);margin-bottom:12px;">
-                                <i class="bi bi-clock me-1" style="color:var(--green-main)"></i>Giờ làm việc
-                            </p>
-                            <div class="hours-row"><strong>Thứ 2 – Thứ 6</strong><span class="open">7:00 – 21:00</span></div>
-                            <div class="hours-row"><strong>Thứ 7</strong><span class="open">7:00 – 21:00</span></div>
-                            <div class="hours-row"><strong>Chủ nhật</strong><span class="open">8:00 – 20:00</span></div>
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d980.9!2d105.4386824!3d10.3592447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x310a73000eb67ca7%3A0x27b8740b9e456e9b!2sShop%20Hoa%20M%E1%BB%99c%20H%C6%B0%C6%A1ng!5e0!3m2!1svi!2svn!4v1"
+                                style="width:100%;height:340px;border:none;display:block;"
+                                allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
                         </div>
                     </div>
+
+                </div>
+            </div>
+        </section>
+
+        {{-- ── FEEDBACK ── --}}
+        <section class="feedback-section">
+            <div class="container">
+                <div class="d-flex align-items-end justify-content-between mb-4 flex-wrap gap-3">
+                    <div>
+                        <div class="section-label">Khách hàng nói gì</div>
+                        <h2 class="section-title mb-0">Phản hồi của khách hàng</h2>
+                        <div class="divider-leaf"></div>
+                    </div>
+                    <div class="feedback-nav">
+                        <button class="feedback-nav-btn" id="fbPrev" aria-label="Trước">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="feedback-nav-btn" id="fbNext" aria-label="Tiếp">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
                 </div>
 
+                <div class="feedback-track-wrap">
+                    <div class="feedback-track" id="feedbackTrack">
+
+                        {{-- Text feedbacks --}}
+                        @php
+                            $feedbacks = [
+                                ['name' => 'Nguyễn Thị Lan', 'stars' => 5, 'text' => 'Hoa đẹp lắm, tươi và thơm. Giao hàng nhanh, đúng giờ. Lần sau sinh nhật mình sẽ tiếp tục ủng hộ shop!', 'date' => '12/05/2025'],
+                                ['name' => 'Trần Minh Tuấn', 'stars' => 5, 'text' => 'Shop tư vấn nhiệt tình, hoa y hình, đóng gói cẩn thận. Bạn gái mình rất thích bó hoa hồng đỏ.', 'date' => '28/04/2025'],
+                                ['name' => 'Lê Thị Hoa', 'stars' => 5, 'text' => 'Đặt hoa cưới ở đây, rất hài lòng với dịch vụ và chất lượng. Hoa tươi suốt cả buổi lễ!', 'date' => '15/04/2025'],
+                                ['name' => 'Phạm Văn Đức', 'stars' => 4, 'text' => 'Giá cả hợp lý, chất lượng tốt. Nhân viên thân thiện. Sẽ giới thiệu cho bạn bè.', 'date' => '02/04/2025'],
+                                ['name' => 'Võ Thị Mai', 'stars' => 5, 'text' => 'Mình order giỏ hoa quà tặng sinh nhật mẹ, shop làm đẹp hơn cả ảnh mẫu! Cảm ơn shop nhiều.', 'date' => '20/03/2025'],
+                                ['name' => 'Huỳnh Thanh Tú', 'stars' => 5, 'text' => 'Hoa tươi, bền, thơm. Giao đúng hẹn dù trời mưa. Rất chuyên nghiệp!', 'date' => '08/03/2025'],
+                            ];
+                        @endphp
+
+                        @foreach($feedbacks as $fb)
+                            <div class="feedback-card">
+                                <div class="fb-stars">
+                                    @for($i = 0; $i < $fb['stars']; $i++)<i class="fas fa-star"></i>@endfor
+                                    @for($i = $fb['stars']; $i < 5; $i++)<i class="far fa-star"></i>@endfor
+                                </div>
+                                <p class="fb-text">"{{ $fb['text'] }}"</p>
+                                <div class="fb-author">
+                                    <div class="fb-avatar">{{ mb_substr($fb['name'], 0, 1) }}</div>
+                                    <div>
+                                        <div class="fb-name">{{ $fb['name'] }}</div>
+                                        <div class="fb-date">{{ $fb['date'] }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+
+                        {{-- Ảnh feedback --}}
+                        @php
+                            $fbImages = [
+                                'storage/feedback/fb1.jpg',
+                                'storage/feedback/fb2.jpg',
+                                'storage/feedback/fb3.jpg',
+                            ];
+                        @endphp
+                        @foreach($fbImages as $img)
+                            <div class="feedback-card is-image">
+                                <img src="{{ asset($img) }}" alt="Feedback khách hàng"
+                                    onerror="this.closest('.feedback-card').style.display='none'">
+                                <div class="fb-img-caption">
+                                    <i class="fas fa-camera me-1"></i> Ảnh từ khách hàng
+                                </div>
+                            </div>
+                        @endforeach
+
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
+
     </div>
-</div>
+
+    <script>
+    (function () {
+        const track   = document.getElementById('feedbackTrack');
+        const btnPrev = document.getElementById('fbPrev');
+        const btnNext = document.getElementById('fbNext');
+        if (!track) return;
+
+        const step = 320; // px mỗi lần bấm
+
+        if (btnNext) btnNext.addEventListener('click', function () {
+            track.scrollBy({ left: step, behavior: 'smooth' });
+        });
+        if (btnPrev) btnPrev.addEventListener('click', function () {
+            track.scrollBy({ left: -step, behavior: 'smooth' });
+        });
+
+        // Drag to scroll
+        let isDown = false, startX, scrollLeft;
+        track.addEventListener('mousedown',  function(e){ isDown=true; startX=e.pageX-track.offsetLeft; scrollLeft=track.scrollLeft; });
+        track.addEventListener('mouseleave', function(){ isDown=false; });
+        track.addEventListener('mouseup',    function(){ isDown=false; });
+        track.addEventListener('mousemove',  function(e){
+            if (!isDown) return;
+            e.preventDefault();
+            track.scrollLeft = scrollLeft - (e.pageX - track.offsetLeft - startX);
+        });
+    })();
+    </script>
 @endsection

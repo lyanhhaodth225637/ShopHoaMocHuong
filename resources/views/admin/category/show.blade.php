@@ -140,9 +140,9 @@
                                                     </td>
 
                                                     <td>
-                                                        @if ($item->mega_section)
+                                                        @if ($item->mega_section_key || $item->mega_section_label)
                                                             <span class="badge bg-purple-lt">
-                                                                {{ $item->mega_section }}
+                                                                {{ $item->mega_section_resolved_label }}
                                                             </span>
                                                         @else
                                                             <span class="text-muted">—</span>
@@ -194,7 +194,8 @@
                                                                     data-update-url="{{ route('admin.category.update', ['id' => $item->id, 'slug' => $item->slug]) }}"
                                                                     data-parent-id="{{ $item->parent_id }}"
                                                                     data-name="{{ e($item->name) }}"
-                                                                    data-mega-section="{{ e($item->mega_section) }}"
+                                                                    data-mega-section-key="{{ e($item->mega_section_key) }}"
+                                                                    data-mega-section-label="{{ e($item->mega_section_resolved_label) }}"
                                                                     data-icon="{{ e($item->icon) }}"
                                                                     data-description="{{ e($item->description) }}"
                                                                     data-meta-title="{{ e($item->meta_title) }}"
@@ -239,6 +240,16 @@
         </div>
 
     </div>
+    <datalist id="mega-section-label-suggestions">
+        @foreach ($megaSectionSuggestions as $megaSectionSuggestion)
+            <option value="{{ $megaSectionSuggestion->mega_section_label ?: $megaSectionSuggestion->mega_section_key }}"></option>
+        @endforeach
+    </datalist>
+    <datalist id="mega-section-key-suggestions">
+        @foreach ($megaSectionSuggestions as $megaSectionSuggestion)
+            <option value="{{ $megaSectionSuggestion->mega_section_key }}"></option>
+        @endforeach
+    </datalist>
     @include('admin.category.create')
 
     @include('admin.category.edit', [
@@ -287,7 +298,8 @@
 
                     setValue('edit_parent_id', this.dataset.parentId);
                     setValue('edit_name', this.dataset.name);
-                    setValue('edit_mega_section', this.dataset.megaSection);
+                    setValue('edit_mega_section_label', this.dataset.megaSectionLabel);
+                    setValue('edit_mega_section_key', this.dataset.megaSectionKey);
                     setValue('edit_icon', this.dataset.icon);
                     setValue('edit_description', this.dataset.description);
                     setValue('edit_meta_title', this.dataset.metaTitle);

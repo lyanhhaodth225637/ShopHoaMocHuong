@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin\Category;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class UpdateCategoryRequest extends FormRequest
@@ -14,8 +15,15 @@ class UpdateCategoryRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
+        $megaSectionLabel = $this->normalizeMegaSectionLabel($this->input('mega_section_label'));
+        $megaSectionKey = $this->normalizeMegaSectionKey(
+            $this->input('mega_section_key') ?: $megaSectionLabel
+        );
+
         $this->merge([
             'is_active' => $this->boolean('is_active'),
+            'mega_section_key' => $megaSectionKey,
+            'mega_section_label' => $megaSectionLabel ?: $this->humanizeMegaSectionKey($megaSectionKey),
         ]);
     }
 
@@ -29,7 +37,8 @@ class UpdateCategoryRequest extends FormRequest
                 'exists:categories,id',
                 Rule::notIn([$categoryId]),
             ],
-            'mega_section' => ['nullable', 'string', 'max:255'],
+            'mega_section_key' => ['nullable', 'string', 'max:255'],
+            'mega_section_label' => ['nullable', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
             'icon' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
@@ -49,5 +58,34 @@ class UpdateCategoryRequest extends FormRequest
             'sort_order.integer' => 'Thứ tự phải là số.',
             'sort_order.min' => 'Thứ tự không được nhỏ hơn 0.',
         ];
+    }
+
+    private function normalizeMegaSectionKey(?string $megaSectionKey): ?string
+    {
+        $megaSectionKey = trim((string) $megaSectionKey);
+
+        if ($megaSectionKey === '') {
+            return null;
+        }
+
+        return Str::slug($megaSectionKey, '_');
+    }
+
+    private function normalizeMegaSectionLabel(?string $megaSectionLabel): ?string
+    {
+        $megaSectionLabel = trim((string) $megaSectionLabel);
+
+        return $megaSectionLabel === '' ? null : $megaSectionLabel;
+    }
+
+    private function humanizeMegaSectionKey(?string $megaSectionKey): ?string
+    {
+        if (!$megaSectionKey) {
+            return null;
+        }
+
+        return (string) Str::of($megaSectionKey)
+            ->replace('_', ' ')
+            ->title();
     }
 }

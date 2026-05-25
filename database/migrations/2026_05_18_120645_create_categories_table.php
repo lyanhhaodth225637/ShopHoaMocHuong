@@ -14,7 +14,8 @@ return new class extends Migration {
             $table->string('name');
             $table->string('slug')->unique();
             $table->foreignId('parent_id')->nullable()->constrained('categories')->onDelete('cascade');
-            $table->string('mega_section')->nullable();
+            $table->string('mega_section_key')->nullable();
+            $table->string('mega_section_label')->nullable();
             $table->string('icon')->nullable();
             $table->text('description')->nullable();
             $table->text('meta_title')->nullable();

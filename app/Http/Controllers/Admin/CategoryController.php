@@ -19,7 +19,9 @@ class CategoryController extends Controller
     {
         $categories = $this->categoryService->getList();
         $parentCategories = $this->categoryService->getParentCategories();
-        return view('admin.category.index', compact('categories', 'parentCategories'));
+        $megaSectionSuggestions = $this->categoryService->getMegaSectionSuggestions();
+
+        return view('admin.category.index', compact('categories', 'parentCategories', 'megaSectionSuggestions'));
     }
 
     public function create()
@@ -69,10 +71,10 @@ class CategoryController extends Controller
 
     public function show(int $id, string $slug)
     {
-        // dd('vào đây');
         $category = $this->categoryService->getCategoryChildrenGroupedByIdAndSlug($id, $slug);
         $parentCategories = $this->categoryService->getParentCategories();
+        $megaSectionSuggestions = $this->categoryService->getMegaSectionSuggestions();
 
-        return view('admin.category.show', compact('category', 'parentCategories'));
+        return view('admin.category.show', compact('category', 'parentCategories', 'megaSectionSuggestions'));
     }
 }

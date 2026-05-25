@@ -140,9 +140,9 @@
                                                     </td>
 
                                                     <td>
-                                                        @if ($item->mega_section)
+                                                        @if ($item->mega_section_key || $item->mega_section_label)
                                                             <span class="badge bg-purple-lt">
-                                                                {{ $item->mega_section }}
+                                                                {{ $item->mega_section_resolved_label }}
                                                             </span>
                                                         @else
                                                             <span class="text-muted">—</span>
@@ -195,7 +195,8 @@
                                                                     data-id="{{ $item->id }}"
                                                                     data-name="{{ $item->name }}"
                                                                     data-parent-id="{{ $item->parent_id }}"
-                                                                    data-mega-section="{{ $item->mega_section }}"
+                                                                    data-mega-section-key="{{ $item->mega_section_key }}"
+                                                                    data-mega-section-label="{{ $item->mega_section_resolved_label }}"
                                                                     data-icon="{{ $item->icon }}"
                                                                     data-sort-order="{{ $item->sort_order }}"
                                                                     data-is-active="{{ $item->is_active ? 1 : 0 }}"
@@ -242,6 +243,16 @@
         </div>
 
     </div>
+    <datalist id="mega-section-label-suggestions">
+        @foreach ($megaSectionSuggestions as $megaSectionSuggestion)
+            <option value="{{ $megaSectionSuggestion->mega_section_label ?: $megaSectionSuggestion->mega_section_key }}"></option>
+        @endforeach
+    </datalist>
+    <datalist id="mega-section-key-suggestions">
+        @foreach ($megaSectionSuggestions as $megaSectionSuggestion)
+            <option value="{{ $megaSectionSuggestion->mega_section_key }}"></option>
+        @endforeach
+    </datalist>
     @include('admin.category.create')
     @include('admin.category.edit', [
         'parentCategories' => $parentCategories,
@@ -283,7 +294,8 @@
 
                     document.getElementById('edit_name').value = this.dataset.name || '';
                     document.getElementById('edit_parent_id').value = this.dataset.parentId || '';
-                    document.getElementById('edit_mega_section').value = this.dataset.megaSection || '';
+                    document.getElementById('edit_mega_section_label').value = this.dataset.megaSectionLabel || '';
+                    document.getElementById('edit_mega_section_key').value = this.dataset.megaSectionKey || '';
                     document.getElementById('edit_icon').value = this.dataset.icon || '';
                     document.getElementById('edit_sort_order').value = this.dataset.sortOrder || 0;
                     document.getElementById('edit_description').value = this.dataset.description || '';

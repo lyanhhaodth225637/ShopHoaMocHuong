@@ -7,6 +7,19 @@ use Illuminate\Support\Str;
 
 class CategoryService
 {
+    public function getMegaSectionSuggestions()
+    {
+        return Category::query()
+            ->whereNotNull('mega_section_key')
+            ->where('mega_section_key', '!=', '')
+            ->select('mega_section_key', 'mega_section_label')
+            ->orderBy('mega_section_label')
+            ->orderBy('mega_section_key')
+            ->get()
+            ->unique('mega_section_key')
+            ->values();
+    }
+
     public function getList()
     {
         return Category::with('parent')
@@ -52,13 +65,13 @@ class CategoryService
         $category = $this->getCategoryWithChildren($slug);
 
         $category->children_grouped = $category->children->groupBy(function ($child) {
-            return $child->mega_section ?: 'khac';
+            return $child->mega_section_key ?: 'khac';
         });
 
         return $category;
     }
 
-    public function getCategoryChildrenGroupedByIdAndSlug(int $id): Category
+    public function getCategoryChildrenGroupedByIdAndSlug(int $id, ?string $slug = null): Category
     {
         $category = Category::with([
             'children' => function ($query) {
@@ -68,11 +81,14 @@ class CategoryService
             }
         ])
             ->where('id', $id)
+            ->when($slug, function ($query) use ($slug) {
+                $query->where('slug', $slug);
+            })
 
             ->firstOrFail();
 
         $category->children_grouped = $category->children->groupBy(function ($child) {
-            return $child->mega_section ?: 'khac';
+            return $child->mega_section_key ?: 'khac';
         });
 
         return $category;
@@ -168,7 +184,7 @@ class CategoryService
             ->get()
             ->map(function ($category) {
                 $category->mega_groups = $category->children->groupBy(function ($child) {
-                    return $child->mega_section ?: 'khac';
+                    return $child->mega_section_key ?: 'khac';
                 });
 
                 return $category;

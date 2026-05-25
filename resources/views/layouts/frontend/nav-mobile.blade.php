@@ -242,7 +242,7 @@
                 @foreach ($menuCategories ?? [] as $parent)
                     @php
                         $children = $parent->children ?? collect();
-                        $megaGroups = $parent->mega_groups ?? $children->groupBy(fn($child) => $child->mega_section ?: 'khac');
+                        $megaGroups = $parent->mega_groups ?? $children->groupBy(fn($child) => $child->mega_section_key ?: 'khac');
                         $accordionId = 'acc-' . $parent->id;
                     @endphp
 
@@ -259,7 +259,7 @@
                             </button>
                             <div class="mac-body" id="{{ $accordionId }}">
                                 @foreach ($megaGroups as $sectionKey => $items)
-                                    <div class="mac-sub-label">{{ $sectionLabels[$sectionKey] ?? $sectionKey }}</div>
+                                    <div class="mac-sub-label">{{ $items->first()?->mega_section_resolved_label ?? ($sectionLabels[$sectionKey] ?? $sectionKey) }}</div>
                                     @foreach ($items as $child)
                                         <a href="">
                                             @if ($child->icon)
