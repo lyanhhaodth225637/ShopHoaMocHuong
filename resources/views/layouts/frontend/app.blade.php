@@ -21,6 +21,8 @@
         rel="stylesheet" />
 
     <link rel="stylesheet" href="{{ asset('assets/css/frontend/home.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('font-awesome/css/all.min.css') }}">
 </head>
 
 <body>

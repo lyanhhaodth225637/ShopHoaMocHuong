@@ -214,7 +214,7 @@ h5 {
 }
 
 .hero-title {
-    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-size: clamp(4rem, 4vw, 3.2rem);
     color: #fff;
     line-height: 1.2;
     font-weight: 700;
@@ -273,8 +273,8 @@ h5 {
 }
 
 .hero-img-wrapper .flower-circle {
-    width: 340px;
-    height: 340px;
+    width: 500px;
+    height: 500px;
     border-radius: 50%;
     background: rgba(255, 255, 255, .1);
     display: flex;
@@ -283,6 +283,179 @@ h5 {
     border: 2px solid rgba(255, 255, 255, .2);
 }
 
+/* ─── HERO ─── */
+.hero-section {
+    position: relative;
+    min-height: 460px;
+    overflow: hidden;
+}
+
+/* Background slides */
+.hero-bg-slides {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.hero-bg-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+}
+
+.hero-bg-slide.active {
+    opacity: 1;
+}
+
+/* Overlay */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,
+            rgba(15, 46, 47, 0.75) 0%,
+            rgba(43, 170, 173, 0.4) 100%);
+    z-index: 1;
+}
+
+/* Nội dung */
+.hero-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+/* Dots */
+.hero-bg-dots {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 7px;
+    z-index: 3;
+}
+
+.hero-bg-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .4);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all .3s;
+}
+
+.hero-bg-dot.active {
+    background: #fff;
+    width: 22px;
+    border-radius: 4px;
+}
+
+/* Nút prev/next */
+.hero-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, .35);
+    background: rgba(255, 255, 255, .12);
+    color: #fff;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background .2s;
+    backdrop-filter: blur(4px);
+}
+
+.hero-nav-btn:hover {
+    background: rgba(255, 255, 255, .28);
+}
+
+.hero-nav-btn.prev {
+    left: 14px;
+}
+
+.hero-nav-btn.next {
+    right: 14px;
+}
+
+/* ─── ẢNH TRÒN (giữ nguyên) ─── */
+.hero-img-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flower-circle {
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(255, 255, 255, .2);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.flower-circle img {
+    width: 450px;
+    height: 450px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, .3);
+}
+
+.hero-float-badge {
+    position: absolute;
+    background: #fff;
+    border-radius: 12px;
+    padding: 10px 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .15);
+    font-size: 0.8rem;
+    z-index: 2;
+}
+
+.hero-float-badge.top-right {
+    top: 30px;
+    right: -20px;
+}
+
+.hero-float-badge.bottom-left {
+    bottom: 40px;
+    left: -20px;
+}
+
+.hero-float-badge strong {
+    color: var(--green-main);
+    font-size: 1.1rem;
+    display: block;
+}
+
+@media (max-width: 767px) {
+    .hero-section {
+        min-height: 320px;
+    }
+
+    .hero-img-wrapper {
+        display: none;
+    }
+
+    .hero-nav-btn {
+        display: none;
+    }
+}
+    
 .hero-img-wrapper img {
     width: 300px;
     height: 300px;

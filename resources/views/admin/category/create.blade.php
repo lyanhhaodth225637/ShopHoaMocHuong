@@ -114,6 +114,12 @@
 
                             <input type="text" class="form-control @error('icon') is-invalid @enderror" name="icon"
                                 value="{{ old('icon') }}" placeholder="Ví dụ: ti ti-flower hoặc fa-solid fa-gift">
+                            <div class="col-auto ms-auto mt-1">
+                                <a href="https://fontawesome.com/search?ic=pro-plus-collection" target="_blank"
+                                    class="btn btn-primary">
+                                    Xem Icon
+                                </a>
+                            </div>
 
                             @error('icon')
                                 <div class="invalid-feedback">{{ $message }}</div>

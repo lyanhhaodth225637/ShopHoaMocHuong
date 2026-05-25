@@ -143,12 +143,16 @@
         </div>
 
         <div class="mobile-nav-search">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Tìm hoa, giỏ quà..." />
-                <button class="btn" style="background:var(--green-main);color:#fff;border:none;">
-                    <i class="bi bi-search"></i>
-                </button>
-            </div>
+            <form action="{{ route('frontend.product.index') }}" method="GET">
+                <div class="input-group">
+                    <input type="text" name="keyword" value="{{ request('keyword') }}" class="form-control"
+                        placeholder="Tìm hoa, giỏ quà..." />
+
+                    <button type="submit" class="btn" style="background:var(--green-main);color:#fff;border:none;">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
         </div>
 
         <div class="mobile-nav-quick">
@@ -192,8 +196,8 @@
                 </a>
             @endguest
 
-            <button type="button" class="mobile-quick-link"
-                style="background:none;border:none;flex:1;cursor:pointer;" onclick="openFilterDrawer()">
+            <button type="button" class="mobile-quick-link" style="background:none;border:none;flex:1;cursor:pointer;"
+                onclick="openFilterDrawer()">
                 <i class="bi bi-sliders2"></i>
                 <span>Bộ lọc</span>
             </button>

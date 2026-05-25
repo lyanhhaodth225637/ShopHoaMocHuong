@@ -93,8 +93,8 @@ return [
         ],
 
         [
-            'text' => 'Đăng xuất',
-            'url' => '/admin/logout',
+            'text' => 'Icons',
+            'url' => '/admin/icons',
             'icon' => 'ti ti-logout',
         ],
     ],

@@ -85,7 +85,7 @@
     </div>
     <div class="footer-bottom mt-4 py-3">
         <div class="container text-center">
-            © 2025 Mộc Hương Flower Shop. Mọi quyền được bảo lưu. | Được thiết kế với 💚 tại TP.HCM
+            © 2026 Shop Hoa Mộc Hương. Mọi quyền được bảo lưu. | Long Xuyên - An Giang
         </div>
     </div>
 </footer>

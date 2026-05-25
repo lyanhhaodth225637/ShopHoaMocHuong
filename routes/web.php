@@ -4,10 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\CategoryController as AdminCategory;
 use App\Http\Controllers\Admin\ProductController as AdminProduct;
+use App\Http\Controllers\Admin\IconController as AdminIcon;
 
 use App\Http\Controllers\Frontend\HomeController as FrontendHome;
 use App\Http\Controllers\Frontend\ProductController as FrontendProduct;
 use App\Http\Controllers\Frontend\CartController as FrontendCart;
+use App\Http\Controllers\Frontend\ContactController as FrontendContact;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -43,6 +45,10 @@ Route::prefix('admin')->middleware(['auth', 'role:super-admin'])->name('admin.')
 
     Route::get('/khach-hang', [AdminProduct::class, 'khachHang'])->name('product.khachhang');
 
+    //icon
+    Route::get('/icons', [AdminIcon::class, 'index'])->name('icon.index');
+
+
 
 
 });
@@ -53,11 +59,14 @@ Route::prefix('/')->name('frontend.')->group(function () {
     Route::get('danh-muc/{id}-{slug}', [FrontendHome::class, 'show'])->name('category.show');
 
     Route::get('san-pham/xem-tat-ca', [FrontendProduct::class, 'index'])->name('product.index');
-
     Route::get('san-pham/xem-chi-tiet/{id}-{slug}', [FrontendProduct::class, 'show'])->name('product.show');
+
+    Route::get('/lien-he', [FrontendContact::class, 'index'])->name('contact.index');
+
 
 
 });
+
 
 Route::prefix('/user')->name('user.')->group(function () {
 
