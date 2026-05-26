@@ -35,7 +35,7 @@ class UpdateHomeHeroRequest extends FormRequest
             'secondary_button_text' => ['nullable', 'string', 'max:255'],
             'secondary_button_link' => ['nullable', 'string', 'max:255'],
 
-            'circle_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'circle_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
 
             'float_badge_1_title' => ['nullable', 'string', 'max:255'],
             'float_badge_1_subtitle' => ['nullable', 'string', 'max:255'],
