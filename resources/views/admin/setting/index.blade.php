@@ -236,17 +236,22 @@
                                     enctype="multipart/form-data" class="row g-3 mb-4">
                                     @csrf
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <label class="form-label">Ảnh nền</label>
                                         <input type="file" name="image" class="form-control" required>
                                     </div>
 
                                     <div class="col-md-3">
+                                        <label class="form-label">Ảnh mobile</label>
+                                        <input type="file" name="mobile_image" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-2">
                                         <label class="form-label">Tiêu đề</label>
                                         <input type="text" name="title" class="form-control">
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <label class="form-label">Alt ảnh</label>
                                         <input type="text" name="alt" class="form-control">
                                     </div>
@@ -277,6 +282,7 @@
                                             <tr>
                                                 <th>Ảnh</th>
                                                 <th>Tiêu đề</th>
+                                                <th>Mobile</th>
                                                 <th>Alt</th>
                                                 <th>Thứ tự</th>
                                                 <th>Trạng thái</th>
@@ -292,6 +298,15 @@
                                                             style="width: 120px; height: 60px; object-fit: cover;">
                                                     </td>
                                                     <td>{{ $slide->title }}</td>
+                                                    <td>
+                                                        @if ($slide->mobile_image)
+                                                            <img src="{{ asset('storage/' . $slide->mobile_image) }}"
+                                                                class="rounded border"
+                                                                style="width: 60px; height: 90px; object-fit: cover;">
+                                                        @else
+                                                            <span class="text-secondary small">Dùng ảnh desktop</span>
+                                                        @endif
+                                                    </td>
                                                     <td>{{ $slide->alt }}</td>
                                                     <td>{{ $slide->sort_order }}</td>
                                                     <td>
@@ -324,7 +339,7 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="6" class="text-center text-secondary">
+                                                    <td colspan="7" class="text-center text-secondary">
                                                         Chưa có ảnh nền.
                                                     </td>
                                                 </tr>
@@ -529,6 +544,24 @@
                             <div class="col-md-6">
                                 <label class="form-label">Ảnh mới</label>
                                 <input type="file" name="image" class="form-control">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Ảnh mobile hiện tại</label>
+                                <div>
+                                    @if ($slide->mobile_image)
+                                        <img src="{{ asset('storage/' . $slide->mobile_image) }}"
+                                            class="rounded border"
+                                            style="width: 120px; height: 180px; object-fit: cover;">
+                                    @else
+                                        <div class="text-secondary small mt-2">Chưa có, đang dùng ảnh desktop.</div>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Ảnh mobile mới</label>
+                                <input type="file" name="mobile_image" class="form-control">
                             </div>
 
                             <div class="col-md-6">

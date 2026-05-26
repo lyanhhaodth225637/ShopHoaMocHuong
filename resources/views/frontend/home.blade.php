@@ -10,10 +10,13 @@
         <div class="hero-bg-slides" id="heroBgSlides">
             @forelse ($heroSlides as $i => $slide)
                 <div class="hero-bg-slide {{ $i === 0 ? 'active' : '' }}"
-                    style="background-image:url('{{ asset('storage/' . $slide->image) }}')">
+                    data-desktop="{{ asset('storage/' . $slide->image) }}"
+                    data-mobile="{{ $slide->mobile_image ? asset('storage/' . $slide->mobile_image) : asset('storage/' . $slide->image) }}">
                 </div>
             @empty
-                <div class="hero-bg-slide active" style="background-image:url('{{ asset('storage/baner/baner1.jpg') }}')">
+                <div class="hero-bg-slide active"
+                    data-desktop="{{ asset('storage/baner/baner1.jpg') }}"
+                    data-mobile="{{ asset('storage/baner/baner1.jpg') }}">
                 </div>
             @endforelse
         </div>
@@ -593,10 +596,20 @@
             const dots = Array.from(document.querySelectorAll('.hero-bg-dot'));
             const btnPrev = document.getElementById('heroPrev');
             const btnNext = document.getElementById('heroNext');
+            const mobileQuery = window.matchMedia('(max-width: 991.98px)');
             let current = 0;
             let timer;
 
             if (!slides.length) return;
+
+            function applySlideImages() {
+                slides.forEach(function (slide) {
+                    const desktop = slide.dataset.desktop || '';
+                    const mobile = slide.dataset.mobile || desktop;
+                    const image = mobileQuery.matches ? mobile : desktop;
+                    slide.style.backgroundImage = image ? `url('${image}')` : '';
+                });
+            }
 
             function goTo(index) {
                 slides[current].classList.remove('active');
@@ -608,6 +621,7 @@
 
             function restart() {
                 clearInterval(timer);
+                if (slides.length <= 1) return;
                 timer = setInterval(function () { goTo(current + 1); }, 5000);
             }
 
@@ -627,6 +641,13 @@
                 if (Math.abs(diff) > 40) { diff > 0 ? goTo(current + 1) : goTo(current - 1); restart(); }
             });
 
+            applySlideImages();
+            if (typeof mobileQuery.addEventListener === 'function') {
+                mobileQuery.addEventListener('change', applySlideImages);
+            } else if (typeof mobileQuery.addListener === 'function') {
+                mobileQuery.addListener(applySlideImages);
+            }
+            window.addEventListener('resize', applySlideImages);
             restart();
         })();
     </script>

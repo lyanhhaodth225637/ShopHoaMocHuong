@@ -68,6 +68,15 @@ class HomeHeroService
             );
         }
 
+        if (isset($data['mobile_image']) && $data['mobile_image'] instanceof UploadedFile) {
+            $data['mobile_image'] = $this->uploadFile(
+                file: $data['mobile_image'],
+                path: 'home/hero/slides/mobile'
+            );
+        } else {
+            unset($data['mobile_image']);
+        }
+
         return HomeHeroSlide::create($data);
     }
 
@@ -84,12 +93,24 @@ class HomeHeroService
             unset($data['image']);
         }
 
+        if (isset($data['mobile_image']) && $data['mobile_image'] instanceof UploadedFile) {
+            $this->deleteFile($slide->mobile_image);
+
+            $data['mobile_image'] = $this->uploadFile(
+                file: $data['mobile_image'],
+                path: 'home/hero/slides/mobile'
+            );
+        } else {
+            unset($data['mobile_image']);
+        }
+
         return $slide->update($data);
     }
 
     public function deleteSlide(HomeHeroSlide $slide): bool
     {
         $this->deleteFile($slide->image);
+        $this->deleteFile($slide->mobile_image);
 
         return $slide->delete();
     }

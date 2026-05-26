@@ -23,6 +23,7 @@ class UpdateHomeHeroSlideRequest extends FormRequest
     {
         return [
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'mobile_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
             'title' => ['nullable', 'string', 'max:255'],
             'alt' => ['nullable', 'string', 'max:255'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
@@ -36,6 +37,9 @@ class UpdateHomeHeroSlideRequest extends FormRequest
             'image.image' => 'File tải lên phải là hình ảnh.',
             'image.mimes' => 'Ảnh phải có định dạng jpg, jpeg, png hoặc webp.',
             'image.max' => 'Ảnh không được vượt quá 4MB.',
+            'mobile_image.image' => 'Ảnh mobile tải lên phải là hình ảnh.',
+            'mobile_image.mimes' => 'Ảnh mobile phải có định dạng jpg, jpeg, png hoặc webp.',
+            'mobile_image.max' => 'Ảnh mobile không được vượt quá 4MB.',
         ];
     }
 }

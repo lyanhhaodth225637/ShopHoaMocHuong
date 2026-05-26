@@ -8,6 +8,7 @@ class HomeHeroSlide extends Model
 {
     protected $fillable = [
         'image',
+        'mobile_image',
         'title',
         'alt',
         'sort_order',

@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
 
             $table->string('image');
+            $table->string('mobile_image')->nullable();
             $table->string('title')->nullable();
             $table->string('alt')->nullable();
 
