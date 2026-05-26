@@ -1,32 +1,36 @@
-name: Deploy Website via FTP
+name: deploy
 
 on:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Lấy code mới nhất từ GitHub
+        uses: actions/checkout@v4
 
       - name: Cài đặt Node.js & Build Vite
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: |
+
+      - name: Build giao diện Vite
+        run: |
           npm install
           npm run build
 
       - name: Nén code thành file zip
-        run: zip -r deploy.zip . -x "*.git*" "node_modules/*" ".github/*"
+        run: zip -r deploy.zip . -x ".git/*" "node_modules/*" ".github/*"
 
       - name: Đẩy file zip lên hosting
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: ./
           local-dir: ./
