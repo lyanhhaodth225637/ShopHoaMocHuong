@@ -8,17 +8,27 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Cài đặt Node.js & Build Vite
+      - name: Cài đặt Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: |
-          npm install
-          npm run build
+
+      - name: Cài dependencies
+        run: npm install
+
+      - name: Build Vite
+        run: npm run build
+
+      - name: Kiểm tra thư mục build
+        run: |
+          pwd
+          ls -la
+          ls -la dist
 
       - name: Đẩy file lên hosting
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
