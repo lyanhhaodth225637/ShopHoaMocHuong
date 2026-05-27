@@ -27,6 +27,23 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+        $request->session()->forget('2fa_passed');
+
+        $user = $request->user();
+
+        if ($user) {
+            $user->forceFill([
+                'current_session_id' => $request->session()->getId(),
+            ])->save();
+        }
+
+        if ($user && $user->hasRole('super-admin')) {
+            if (!$user->hasTwoFactorEnabled()) {
+                return redirect()->route('admin.2fa.setup');
+            }
+
+            return redirect()->route('admin.2fa.challenge');
+        }
 
         return redirect()->intended(route('home', absolute: false));
     }
@@ -36,6 +53,15 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $user = $request->user();
+        $currentSessionId = $request->session()->getId();
+
+        if ($user && $user->current_session_id === $currentSessionId) {
+            $user->forceFill([
+                'current_session_id' => null,
+            ])->save();
+        }
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

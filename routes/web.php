@@ -13,13 +13,15 @@ use App\Http\Controllers\Frontend\ProductController as FrontendProduct;
 use App\Http\Controllers\Frontend\CartController as FrontendCart;
 use App\Http\Controllers\Frontend\ContactController as FrontendContact;
 
+use App\Http\Controllers\Auth\TwoFactorController;
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 
 require __DIR__ . '/auth.php';
 
-Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
+Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware(['auth', 'single_session']);
 
 // Route::prefix('admin')->name('admin.')->group(function () {
 //     Route::get('/', function () {
@@ -28,45 +30,52 @@ Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->nam
 // });
 
 
-Route::prefix('admin')->middleware(['auth', 'role:super-admin'])->name('admin.')->group(function () {
-    Route::get('/', [AdminDashboard::class, 'index'])->name('index');
+Route::prefix('admin')->middleware(['auth', 'single_session', 'role:super-admin'])->name('admin.')->group(function () {
+    //2FA
+    Route::get('/2fa/setup', [TwoFactorController::class, 'setup'])->name('2fa.setup');
+    Route::post('/2fa/enable', [TwoFactorController::class, 'enable'])->name('2fa.enable');
+    Route::post('/2fa/disable', [TwoFactorController::class, 'disable'])->name('2fa.disable');
+    Route::get('/2fa/challenge', [TwoFactorController::class, 'challenge'])->name('2fa.challenge');
+    Route::post('/2fa/verify', [TwoFactorController::class, 'verify'])->name('2fa.verify');
 
-    //category
-    Route::get('/danh-muc', [AdminCategory::class, 'index'])->name('category.index');
-    Route::get('/danh-muc/xem/{id}-{slug}', [AdminCategory::class, 'show'])->name('category.show');
-    Route::post('/danh-muc/them-moi', [AdminCategory::class, 'store'])->name('category.store');
-    Route::put('/danh-muc/cap-nhat/{id}-{slug}', [AdminCategory::class, 'update'])->name('category.update');
-    Route::delete('/danh-muc/xoa/{id}', [AdminCategory::class, 'destroy'])->name('category.destroy');
+    Route::middleware('2fa')->group(function () {
+        Route::get('/', [AdminDashboard::class, 'index'])->name('index');
 
-    //product
-    Route::get('/san-pham', [AdminProduct::class, 'index'])->name('product.index');
-    Route::get('/san-pham/xem/{id}-{slug}', [AdminProduct::class, 'show'])->name('product.show');
-    Route::post('/san-pham/them-moi', [AdminProduct::class, 'store'])->name('product.store');
-    Route::put('/san-pham/cap-nhat/{id}-{slug}', [AdminProduct::class, 'update'])->name('product.update');
-    Route::delete('/san-pham/xoa/{id}', [AdminProduct::class, 'destroy'])->name('product.destroy');
+        //category
+        Route::get('/danh-muc', [AdminCategory::class, 'index'])->name('category.index');
+        Route::get('/danh-muc/xem/{id}-{slug}', [AdminCategory::class, 'show'])->name('category.show');
+        Route::post('/danh-muc/them-moi', [AdminCategory::class, 'store'])->name('category.store');
+        Route::put('/danh-muc/cap-nhat/{id}-{slug}', [AdminCategory::class, 'update'])->name('category.update');
+        Route::delete('/danh-muc/xoa/{id}', [AdminCategory::class, 'destroy'])->name('category.destroy');
 
-    Route::get('/khach-hang', [AdminProduct::class, 'khachHang'])->name('product.khachhang');
+        //product
+        Route::get('/san-pham', [AdminProduct::class, 'index'])->name('product.index');
+        Route::get('/san-pham/xem/{id}-{slug}', [AdminProduct::class, 'show'])->name('product.show');
+        Route::post('/san-pham/them-moi', [AdminProduct::class, 'store'])->name('product.store');
+        Route::put('/san-pham/cap-nhat/{id}-{slug}', [AdminProduct::class, 'update'])->name('product.update');
+        Route::delete('/san-pham/xoa/{id}', [AdminProduct::class, 'destroy'])->name('product.destroy');
 
-    //icon
-    Route::get('/icons', [AdminIcon::class, 'index'])->name('icon.index');
+        Route::get('/khach-hang', [AdminProduct::class, 'khachHang'])->name('product.khachhang');
 
-
-    //setting
-    Route::get('/settings', [AdminSetting::class, 'index'])->name('setting.index');
-
-    Route::get('home-hero', [HomeHeroController::class, 'index'])->name('home-hero.index');
-    Route::post('home-hero/update', [HomeHeroController::class, 'updateHero'])->name('home-hero.update');
-    Route::post('home-hero/slides', [HomeHeroController::class, 'storeSlide'])->name('home-hero.slides.store');
-    Route::put('home-hero/slides/{slide}', [HomeHeroController::class, 'updateSlide'])->name('home-hero.slides.update');
-    Route::delete('home-hero/slides/{slide}', [HomeHeroController::class, 'destroySlide'])->name('home-hero.slides.destroy');
-    Route::post('home-hero/stats', [HomeHeroController::class, 'storeStat'])->name('home-hero.stats.store');
-    Route::put('home-hero/stats/{stat}', [HomeHeroController::class, 'updateStat'])
-        ->name('home-hero.stats.update');
-
-    Route::delete('home-hero/stats/{stat}', [HomeHeroController::class, 'destroyStat'])
-        ->name('home-hero.stats.destroy');
+        //icon
+        Route::get('/icons', [AdminIcon::class, 'index'])->name('icon.index');
 
 
+        //setting
+        Route::get('/settings', [AdminSetting::class, 'index'])->name('setting.index');
+
+        Route::get('home-hero', [HomeHeroController::class, 'index'])->name('home-hero.index');
+        Route::post('home-hero/update', [HomeHeroController::class, 'updateHero'])->name('home-hero.update');
+        Route::post('home-hero/slides', [HomeHeroController::class, 'storeSlide'])->name('home-hero.slides.store');
+        Route::put('home-hero/slides/{slide}', [HomeHeroController::class, 'updateSlide'])->name('home-hero.slides.update');
+        Route::delete('home-hero/slides/{slide}', [HomeHeroController::class, 'destroySlide'])->name('home-hero.slides.destroy');
+        Route::post('home-hero/stats', [HomeHeroController::class, 'storeStat'])->name('home-hero.stats.store');
+        Route::put('home-hero/stats/{stat}', [HomeHeroController::class, 'updateStat'])
+            ->name('home-hero.stats.update');
+
+        Route::delete('home-hero/stats/{stat}', [HomeHeroController::class, 'destroyStat'])
+            ->name('home-hero.stats.destroy');
+    });
 
 });
 

@@ -11,6 +11,8 @@
         "intervention/image-laravel": "^4.0",
         "laravel/framework": "^13.8",
         "laravel/tinker": "^3.0",
+        "pragmarx/google2fa-laravel": "^3.0",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/laravel-permission": "^7.4",
         "takielias/tablar": "^13.02"
     },

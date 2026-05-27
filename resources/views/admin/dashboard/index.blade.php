@@ -32,8 +32,9 @@
                     <div class="col-12 col-md-auto ms-auto d-print-none">
                         <div class="btn-list">
                             <span class="d-none d-sm-inline">
-                                <a href="#" class="btn btn-white">
-                                    New view
+                                <a href="{{ route('admin.2fa.setup') }}" class="nav-link">
+                                    <i class="bi bi-shield-lock"></i>
+                                    <span>Bảo mật 2FA</span>
                                 </a>
                             </span>
                             <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"

@@ -18,17 +18,38 @@ class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, HasRoles;
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'google2fa_secret',
+        'google2fa_enabled_at',
+        'current_session_id',
+    ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    // protected function casts(): array
+    // {
+    //     return [
+    //         'email_verified_at' => 'datetime',
+    //         'password' => 'hashed',
+    //     ];
+    // }
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'google2fa_secret',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'google2fa_enabled_at' => 'datetime',
+        'google2fa_secret' => 'encrypted',
+    ];
+
+    public function hasTwoFactorEnabled(): bool
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return !empty($this->google2fa_secret) && !is_null($this->google2fa_enabled_at);
     }
 }
