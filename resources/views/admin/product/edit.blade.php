@@ -60,6 +60,19 @@
                     {{-- Giá --}}
                     <div class="col-lg-4">
                         <div class="mb-3">
+                            <label class="form-label">Mã SKU</label>
+                            <input type="text" id="edit_sku"
+                                class="form-control @error('sku') is-invalid @enderror" name="sku"
+                                placeholder="Để trống sẽ giữ hoặc tự tạo lại nếu cần">
+                            @error('sku')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <small class="form-hint">Cho phép sửa mã SKU. Nếu bị trùng, hệ thống sẽ tự thêm ID sản phẩm.</small>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="mb-3">
                             <label class="form-label">
                                 Giá sản phẩm <span class="text-danger">*</span>
                             </label>
@@ -787,6 +800,7 @@
                 editForm.action = this.dataset.updateUrl;
 
                 document.getElementById('edit_name').value = this.dataset.name || '';
+                document.getElementById('edit_sku').value = this.dataset.sku || '';
                 document.getElementById('edit_price').value = this.dataset.price || 0;
                 document.getElementById('edit_stock_quantity').value = this.dataset.stockQuantity || 0;
                 document.getElementById('edit_sort_order').value = this.dataset.sortOrder || 0;

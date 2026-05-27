@@ -16,6 +16,7 @@ class UpdateProductRequest extends FormRequest
         $this->merge([
             'is_active' => $this->boolean('is_active'),
             'is_featured' => $this->boolean('is_featured'),
+            'track_inventory' => $this->boolean('track_inventory', true),
         ]);
     }
 
@@ -30,8 +31,12 @@ class UpdateProductRequest extends FormRequest
             'short_description' => ['nullable', 'string'],
             'description' => ['nullable', 'string'],
 
+            'sku' => ['nullable', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'min:0'],
+            'cost_price' => ['nullable', 'numeric', 'min:0'],
             'stock_quantity' => ['nullable', 'integer', 'min:0'],
+            'min_quantity' => ['nullable', 'integer', 'min:0'],
+            'track_inventory' => ['boolean'],
 
             'main_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
             'video_url' => ['nullable', 'url', 'max:255'],
@@ -59,44 +64,51 @@ class UpdateProductRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'category_ids.array' => 'Danh mục sản phẩm không hợp lệ.',
-            'category_ids.*.exists' => 'Danh mục được chọn không tồn tại.',
+            'category_ids.array' => 'Danh muc san pham khong hop le.',
+            'category_ids.*.exists' => 'Danh muc duoc chon khong ton tai.',
 
-            'name.required' => 'Vui lòng nhập tên sản phẩm.',
-            'name.string' => 'Tên sản phẩm không hợp lệ.',
-            'name.max' => 'Tên sản phẩm không được vượt quá 255 ký tự.',
+            'name.required' => 'Vui long nhap ten san pham.',
+            'name.string' => 'Ten san pham khong hop le.',
+            'name.max' => 'Ten san pham khong duoc vuot qua 255 ky tu.',
 
-            'price.required' => 'Vui lòng nhập giá sản phẩm.',
-            'price.numeric' => 'Giá sản phẩm không hợp lệ.',
-            'price.min' => 'Giá sản phẩm không được nhỏ hơn 0.',
+            'sku.max' => 'Ma SKU khong duoc vuot qua 255 ky tu.',
+            'price.required' => 'Vui long nhap gia san pham.',
+            'price.numeric' => 'Gia san pham khong hop le.',
+            'price.min' => 'Gia san pham khong duoc nho hon 0.',
 
-            'stock_quantity.integer' => 'Số lượng tồn kho phải là số nguyên.',
-            'stock_quantity.min' => 'Số lượng tồn kho không được nhỏ hơn 0.',
+            'cost_price.numeric' => 'Gia von khong hop le.',
+            'cost_price.min' => 'Gia von khong duoc nho hon 0.',
 
-            'main_image.image' => 'Ảnh chính phải là file hình ảnh.',
-            'main_image.mimes' => 'Ảnh chính chỉ chấp nhận jpg, jpeg, png, webp.',
-            'main_image.max' => 'Ảnh chính không được vượt quá 5MB.',
+            'stock_quantity.integer' => 'So luong ton kho phai la so nguyen.',
+            'stock_quantity.min' => 'So luong ton kho khong duoc nho hon 0.',
 
-            'video_url.url' => 'Link video không đúng định dạng URL.',
-            'video_url.max' => 'Link video không được vượt quá 255 ký tự.',
+            'min_quantity.integer' => 'Ton toi thieu phai la so nguyen.',
+            'min_quantity.min' => 'Ton toi thieu khong duoc nho hon 0.',
 
-            'images.array' => 'Danh sách ảnh phụ không hợp lệ.',
-            'images.*.image' => 'Ảnh phụ phải là file hình ảnh.',
-            'images.*.mimes' => 'Ảnh phụ chỉ chấp nhận jpg, jpeg, png, webp.',
-            'images.*.max' => 'Mỗi ảnh phụ không được vượt quá 5MB.',
+            'main_image.image' => 'Anh chinh phai la file hinh anh.',
+            'main_image.mimes' => 'Anh chinh chi chap nhan jpg, jpeg, png, webp.',
+            'main_image.max' => 'Anh chinh khong duoc vuot qua 5MB.',
 
-            'og_image.image' => 'Ảnh SEO phải là file hình ảnh.',
-            'og_image.mimes' => 'Ảnh SEO chỉ chấp nhận jpg, jpeg, png, webp.',
-            'og_image.max' => 'Ảnh SEO không được vượt quá 5MB.',
+            'video_url.url' => 'Link video khong dung dinh dang URL.',
+            'video_url.max' => 'Link video khong duoc vuot qua 255 ky tu.',
 
-            'meta_title.max' => 'Meta title không được vượt quá 255 ký tự.',
-            'meta_keywords.max' => 'Meta keywords không được vượt quá 255 ký tự.',
-            'canonical_url.max' => 'Canonical URL không được vượt quá 255 ký tự.',
+            'images.array' => 'Danh sach anh phu khong hop le.',
+            'images.*.image' => 'Anh phu phai la file hinh anh.',
+            'images.*.mimes' => 'Anh phu chi chap nhan jpg, jpeg, png, webp.',
+            'images.*.max' => 'Moi anh phu khong duoc vuot qua 5MB.',
 
-            'og_title.max' => 'OG title không được vượt quá 255 ký tự.',
+            'og_image.image' => 'Anh SEO phai la file hinh anh.',
+            'og_image.mimes' => 'Anh SEO chi chap nhan jpg, jpeg, png, webp.',
+            'og_image.max' => 'Anh SEO khong duoc vuot qua 5MB.',
 
-            'sort_order.integer' => 'Thứ tự hiển thị phải là số nguyên.',
-            'sort_order.min' => 'Thứ tự hiển thị không được nhỏ hơn 0.',
+            'meta_title.max' => 'Meta title khong duoc vuot qua 255 ky tu.',
+            'meta_keywords.max' => 'Meta keywords khong duoc vuot qua 255 ky tu.',
+            'canonical_url.max' => 'Canonical URL khong duoc vuot qua 255 ky tu.',
+            'og_title.max' => 'OG title khong duoc vuot qua 255 ky tu.',
+
+            'sort_order.integer' => 'Thu tu hien thi phai la so nguyen.',
+            'sort_order.min' => 'Thu tu hien thi khong duoc nho hon 0.',
         ];
     }
+
 }

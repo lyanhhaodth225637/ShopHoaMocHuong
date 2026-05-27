@@ -24,21 +24,19 @@
         'combo' => 'Combo đặc biệt',
         'do_uong' => 'Đồ uống',
         'do_go' => 'Đồ gỗ',
-        'vat_tu_hoa' => 'Vật từ hoa',
+        'vat_tu_hoa' => 'Vật tư hoa',
         'goi_hoa' => 'Gói hoa',
         'trang_tri' => 'Trang trí',
 
         'khac' => 'Khác',
     ];
 @endphp
-<style>
-    /* Thay toàn bộ <style> trong mobile nav partial */
 
+<style>
     .mobile-account-dropdown {
         position: relative;
         flex: 1;
         min-width: 0;
-        /* quan trọng: cho phép flex item thu nhỏ */
     }
 
     .mobile-account-btn {
@@ -46,7 +44,6 @@
         background: none;
         border: none;
         cursor: pointer;
-        /* đồng bộ với .mobile-quick-link */
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -156,8 +153,6 @@
         </div>
 
         <div class="mobile-nav-quick">
-            {{-- Thay thế đoạn @auth trong mobile-nav-quick --}}
-
             @auth
                 <div class="mobile-account-dropdown" id="mobileAccountDropdown">
                     <button type="button" class="mobile-account-btn" id="mobileAccountBtn">
@@ -173,7 +168,7 @@
                             <span>Trang quản trị</span>
                         </a>
                         @endrole
-                        <a href="">
+                        <a href="{{ route('frontend.home.index') }}">
                             <i class="bi bi-person-lines-fill"></i>
                             <span>Trang cá nhân</span>
                         </a>
@@ -202,35 +197,20 @@
                 <span>Bộ lọc</span>
             </button>
 
-            {{-- Thêm script này vào cuối file (trước @endsection hoặc cuối partial) --}}
-            <script>
-                (function () {
-                    const btn = document.getElementById('mobileAccountBtn');
-                    const wrap = document.getElementById('mobileAccountDropdown');
-                    if (!btn || !wrap) return;
-
-                    btn.addEventListener('click', function (e) {
-                        e.stopPropagation();
-                        wrap.classList.toggle('is-open');
-                    });
-
-                    document.addEventListener('click', function () {
-                        wrap.classList.remove('is-open');
-                    });
-                })();
-            </script>
             <a href="#" class="mobile-quick-link">
                 <i class="bi bi-heart"></i>
                 <span>Yêu thích</span>
                 <span class="mnq-badge">3</span>
             </a>
+
             <button id="cartOpenBtnMobile" class="mobile-quick-link"
                 style="background:none;border:none;flex:1;cursor:pointer;">
                 <i class="bi bi-bag"></i>
                 <span>Giỏ hàng</span>
                 <span class="mnq-badge" data-cart-count>{{ $cartCount ?? 0 }}</span>
             </button>
-            <a href="#" class="mobile-quick-link">
+
+            <a href="{{ route('frontend.contact.index') }}" class="mobile-quick-link">
                 <i class="bi bi-geo-alt"></i>
                 <span>Cửa hàng</span>
             </a>
@@ -239,10 +219,14 @@
         <div class="mobile-nav-body">
             <div class="mobile-nav-section-label">Danh mục sản phẩm</div>
             <div class="mobile-accordion" id="mobileAccordion">
+                <a href="{{ route('frontend.home.index') }}" class="mac-plain">
+                    <i class="fa-solid fa-house me-1"></i> Trang chủ
+                </a>
+
                 @foreach ($menuCategories ?? [] as $parent)
                     @php
                         $children = $parent->children ?? collect();
-                        $megaGroups = $parent->mega_groups ?? $children->groupBy(fn($child) => $child->mega_section_key ?: 'khac');
+                        $megaGroups = $parent->mega_groups ?? $children->groupBy(fn($child) => $child->mega_section_resolved_key);
                         $accordionId = 'acc-' . $parent->id;
                     @endphp
 
@@ -257,11 +241,15 @@
                                 </span>
                                 <i class="bi bi-chevron-down"></i>
                             </button>
+
                             <div class="mac-body" id="{{ $accordionId }}">
                                 @foreach ($megaGroups as $sectionKey => $items)
-                                    <div class="mac-sub-label">{{ $items->first()?->mega_section_resolved_label ?? ($sectionLabels[$sectionKey] ?? $sectionKey) }}</div>
+                                    <div class="mac-sub-label">
+                                        {{ $items->first()?->mega_section_resolved_label ?? 'Khác' }}
+                                    </div>
+
                                     @foreach ($items as $child)
-                                        <a href="">
+                                        <a href="{{ route('frontend.category.show', ['id' => $child->id, 'slug' => $child->slug]) }}">
                                             @if ($child->icon)
                                                 <i class="{{ $child->icon }} me-1"></i>
                                             @endif
@@ -272,7 +260,8 @@
                             </div>
                         </div>
                     @else
-                        <a href="" class="mac-plain">
+                        <a href="{{ route('frontend.category.show', ['id' => $parent->id, 'slug' => $parent->slug]) }}"
+                            class="mac-plain">
                             @if ($parent->icon)
                                 <i class="{{ $parent->icon }} me-1"></i>
                             @endif
@@ -282,19 +271,39 @@
                 @endforeach
 
                 <div class="mobile-nav-section-label" style="margin-top:4px;">Thông tin</div>
-                <a href="#" class="mac-plain">📰 Tin tức & Cẩm nang</a>
-                <a href="#" class="mac-plain">📞 Liên hệ</a>
-                <a href="#" class="mac-plain">❓ Câu hỏi thường gặp</a>
+                <a href="{{ route('frontend.product.index') }}" class="mac-plain">Tin tức & Cẩm nang</a>
+                <a href="{{ route('frontend.contact.index') }}" class="mac-plain">Liên hệ</a>
+                <a href="{{ route('frontend.contact.index') }}" class="mac-plain">Câu hỏi thường gặp</a>
             </div>
         </div>
 
         <div class="mobile-nav-footer">
-            <a href="#" class="btn-green w-100 text-center d-block mb-2">
+            <a href="{{ route('frontend.product.index') }}" class="btn-green w-100 text-center d-block mb-2">
                 <i class="bi bi-bag-heart me-1"></i> Đặt hoa ngay
             </a>
             <a href="https://zalo.me/0888796364" class="btn-outline-green w-100 text-center d-block">
-                💬 Chat Zalo tư vấn
+                Chat Zalo tư vấn
             </a>
         </div>
     </div>
 </div>
+
+<script>
+    (function () {
+        const btn = document.getElementById('mobileAccountBtn');
+        const wrap = document.getElementById('mobileAccountDropdown');
+
+        if (!btn || !wrap) {
+            return;
+        }
+
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            wrap.classList.toggle('is-open');
+        });
+
+        document.addEventListener('click', function () {
+            wrap.classList.remove('is-open');
+        });
+    })();
+</script>

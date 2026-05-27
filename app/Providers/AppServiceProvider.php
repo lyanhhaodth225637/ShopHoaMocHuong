@@ -49,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         $cart = Cart::query()
-            ->with('items.itemable')
+            ->with('items.itemable.defaultSku.inventory')
             ->when(Auth::check(), function ($query) {
                 $query->where('user_id', Auth::id());
             }, function ($query) use ($sessionKey) {

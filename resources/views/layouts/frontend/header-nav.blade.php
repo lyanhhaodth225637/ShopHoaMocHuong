@@ -1,3 +1,4 @@
+
 <style>
     /* ─── HEADER ACCOUNT DROPDOWN ─── */
     .header-account-wrap {
@@ -568,112 +569,118 @@
         </div>
     </div>
 
-    {{-- MEGA MENU NAV --}}
-    @php
-        $sectionLabels = [
-            'kieu_dang' => 'Kiểu dáng',
-            'loai_hoa' => 'Loại hoa',
-            'theo_dip' => 'Theo dịp',
-            'theo_mau' => 'Theo màu sắc',
-            'dac_biet' => 'Đặc biệt',
-            'hoa_co_dau' => 'Cô dâu & chú rể',
-            'phu_kien_cuoi' => 'Phụ kiện cưới',
-            'trang_tri_cuoi' => 'Trang trí',
-            'dich_vu_cuoi' => 'Dịch vụ trọn gói',
-            'lan' => 'Lan hồ điệp',
-            'cay_xanh' => 'Cây xanh',
-            'qua_tang_cay' => 'Quà tặng cây',
-            'combo_hoa' => 'Combo hoa + quà',
-            'gio_qua' => 'Giỏ & hộp quà',
-            'hop_qua' => 'Hộp quà',
-            'phu_kien' => 'Phụ kiện & khác',
-            'banh' => 'Bánh kem',
-            'combo' => 'Combo đặc biệt',
-            'do_uong' => 'Đồ uống',
-            'do_go' => 'Đồ gỗ',
-            'vat_tu_hoa' => 'Vật từ hoa',
-            'goi_hoa' => 'Gói hoa',
-            'trang_tri' => 'Trang trí',
-            'khac' => 'Khác',
-        ];
-    @endphp
+ 
 
-    <nav class="mega-nav d-none d-lg-block">
-        <div class="container">
-            <ul class="nav align-items-center" id="mainNav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('frontend.home.index') }}"><i class="fa-solid fa-house me-1"></i>
-                        Trang chủ</a>
-                </li>
-                @foreach ($menuCategories ?? [] as $parent)
-                    @php
-                        $children = $parent->children ?? collect();
-                        $megaGroups = $parent->mega_groups ?? $children->groupBy(fn($child) => $child->mega_section_key ?: 'khac');
-                    @endphp
+   <nav class="mega-nav d-none d-lg-block">
+    <div class="container">
+        <ul class="nav align-items-center" id="mainNav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('frontend.home.index') }}">
+                    <i class="fa-solid fa-house me-1"></i>
+                    Trang chủ
+                </a>
+            </li>
 
-                    @if ($children->count())
-                        <li class="nav-item dropdown mega-item">
-                            <a class="nav-link dropdown-toggle fw-600" href="#" data-bs-toggle="dropdown"
-                                data-bs-auto-close="outside">
-                                @if ($parent->icon)
-                                    <i class="{{ $parent->icon }} me-1"></i>
+            @foreach ($menuCategories ?? collect() as $parent)
+                @php
+                    $children = $parent->children ?? collect();
+
+                    $megaGroups = $parent->mega_groups
+                        ?? $children->groupBy(fn ($child) => $child->mega_section_resolved_key);
+                @endphp
+
+                @if ($children->isNotEmpty())
+                    <li class="nav-item dropdown mega-item">
+                        <a class="nav-link dropdown-toggle fw-600"
+                           href="#"
+                           data-bs-toggle="dropdown"
+                           data-bs-auto-close="outside">
+                            @if ($parent->icon)
+                                <i class="{{ $parent->icon }} me-1"></i>
+                            @endif
+
+                            {{ $parent->name }}
+                        </a>
+
+                        <div class="dropdown-menu mega-panel">
+                            <div class="mega-panel-inner">
+
+                                @foreach ($megaGroups as $items)
+                                    @continue($items->isEmpty())
+
+                                    @php
+                                        $firstItem = $items->first();
+                                        $sectionLabel = $firstItem?->mega_section_resolved_label ?? 'Khác';
+                                    @endphp
+
+                                    <div class="mega-col">
+                                        <div class="mega-col-title">
+                                            {{ $sectionLabel }}
+                                        </div>
+
+                                        @foreach ($items as $child)
+                                            <a class="mega-link"
+                                               href="{{ route('frontend.category.show', ['id' => $child->id, 'slug' => $child->slug]) }}">
+                                                @if ($child->icon)
+                                                    <i class="{{ $child->icon }} me-1"></i>
+                                                @endif
+
+                                                {{ $child->name }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                @endforeach
+
+                                @if ($parent->slug === 'hoa-tuoi')
+                                    <div class="mega-feature">
+                                        <div class="mega-feature-img">🌹</div>
+
+                                        <div class="mega-feature-title">
+                                            Thiết kế theo yêu cầu
+                                        </div>
+
+                                        <div class="mega-feature-desc">
+                                            Tùy chỉnh màu, kiểu, lời nhắn theo ý muốn
+                                        </div>
+
+                                        <a href="#" class="mega-feature-btn">
+                                            Đặt ngay →
+                                        </a>
+                                    </div>
                                 @endif
-                                {{ $parent->name }}
-                            </a>
 
-                            <div class="dropdown-menu mega-panel">
-                                <div class="mega-panel-inner">
-                                    @foreach ($megaGroups as $sectionKey => $items)
-                                        <div class="mega-col">
-                                            <div class="mega-col-title">
-                                                {{ $items->first()?->mega_section_resolved_label ?? ($sectionLabels[$sectionKey] ?? $sectionKey) }}
-                                            </div>
-                                            @foreach ($items as $child)
-                                                <a class="mega-link"
-                                                    href="{{ route('frontend.category.show', ['id' => $child->id, 'slug' => $child->slug]) }}">
-                                                    @if ($child->icon)
-                                                        <i class="{{ $child->icon }} me-1"></i>
-                                                    @endif
-                                                    {{ $child->name }}
-                                                </a>
-                                            @endforeach
-                                        </div>
-                                    @endforeach
-
-                                    @if ($parent->slug === 'hoa-tuoi')
-                                        <div class="mega-feature">
-                                            <div class="mega-feature-img">🌹</div>
-                                            <div class="mega-feature-title">Thiết kế theo yêu cầu</div>
-                                            <div class="mega-feature-desc">
-                                                Tùy chỉnh màu, kiểu, lời nhắn theo ý muốn
-                                            </div>
-                                            <a href="#" class="mega-feature-btn">Đặt ngay →</a>
-                                        </div>
-                                    @endif
-                                </div>
                             </div>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                            <a class="nav-link fw-600" href="#">
-                                @if ($parent->icon)
-                                    <i class="{{ $parent->icon }} me-1"></i>
-                                @endif
-                                {{ $parent->name }}
-                            </a>
-                        </li>
-                    @endif
-                @endforeach
+                        </div>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link fw-600"
+                           href="{{ route('frontend.category.show', ['id' => $parent->id, 'slug' => $parent->slug]) }}">
+                            @if ($parent->icon)
+                                <i class="{{ $parent->icon }} me-1"></i>
+                            @endif
 
+                            {{ $parent->name }}
+                        </a>
+                    </li>
+                @endif
+            @endforeach
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('frontend.blog.index') }}">
+                    <i class="fa-solid fa-newspaper"></i>
+                    Cẩm nang
+                </a>
+            </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('frontend.contact.index') }}"><i class="fa-utility fa-semibold fa-phone-arrow-down-left"></i> Liên
-                        hệ</a>
-                </li>
-
-            </ul>
-        </div>
-    </nav>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('frontend.contact.index') }}">
+                    <i class="fa-utility fa-semibold fa-phone-arrow-down-left"></i>
+                    Liên hệ
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
 
 </header>
 

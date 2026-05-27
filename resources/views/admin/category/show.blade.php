@@ -195,7 +195,7 @@
                                                                     data-parent-id="{{ $item->parent_id }}"
                                                                     data-name="{{ e($item->name) }}"
                                                                     data-mega-section-key="{{ e($item->mega_section_key) }}"
-                                                                    data-mega-section-label="{{ e($item->mega_section_resolved_label) }}"
+                                                                    data-mega-section-label="{{ e($item->mega_section_label) }}"
                                                                     data-icon="{{ e($item->icon) }}"
                                                                     data-description="{{ e($item->description) }}"
                                                                     data-meta-title="{{ e($item->meta_title) }}"
@@ -258,12 +258,13 @@
 @endsection
 
 {{-- ==================== JAVASCRIPT ==================== --}}
+{{-- ==================== JAVASCRIPT ==================== --}}
 @section('js')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const tables = document.querySelectorAll('.datatable');
 
-            tables.forEach(table => {
+            tables.forEach(function (table) {
                 if (typeof Tabler !== 'undefined' && typeof Tabler.Table !== 'undefined') {
                     new Tabler.Table(table);
                 }
@@ -275,7 +276,7 @@
                 searchInput.addEventListener('input', function () {
                     const keyword = this.value.toLowerCase();
 
-                    document.querySelectorAll('.datatable tbody tr').forEach(row => {
+                    document.querySelectorAll('.datatable tbody tr').forEach(function (row) {
                         row.style.display = row.textContent.toLowerCase().includes(keyword) ? '' : 'none';
                     });
                 });
@@ -283,36 +284,63 @@
 
             const editForm = document.getElementById('editCategoryForm');
 
-            document.querySelectorAll('.btn-edit-category').forEach(button => {
+            document.querySelectorAll('.btn-edit-category').forEach(function (button) {
                 button.addEventListener('click', function () {
-                    if (!editForm) return;
+                    if (!editForm) {
+                        return;
+                    }
 
-                    editForm.action = this.dataset.updateUrl;
+                    editForm.action = this.dataset.updateUrl || this.dataset.action || '';
 
-                    const setValue = (id, value) => {
-                        const element = document.getElementById(id);
-                        if (element) {
-                            element.value = value || '';
-                        }
-                    };
-
-                    setValue('edit_parent_id', this.dataset.parentId);
-                    setValue('edit_name', this.dataset.name);
-                    setValue('edit_mega_section_label', this.dataset.megaSectionLabel);
-                    setValue('edit_mega_section_key', this.dataset.megaSectionKey);
-                    setValue('edit_icon', this.dataset.icon);
-                    setValue('edit_description', this.dataset.description);
-                    setValue('edit_meta_title', this.dataset.metaTitle);
-                    setValue('edit_meta_description', this.dataset.metaDescription);
+                    setValue('edit_parent_id', this.dataset.parentId || '');
+                    setValue('edit_name', this.dataset.name || '');
+                    setValue('edit_mega_section_label', this.dataset.megaSectionLabel || '');
+                    setValue('edit_mega_section_key', this.dataset.megaSectionKey || '');
+                    setValue('edit_icon', this.dataset.icon || '');
+                    setValue('edit_description', this.dataset.description || '');
+                    setValue('edit_meta_title', this.dataset.metaTitle || '');
+                    setValue('edit_meta_description', this.dataset.metaDescription || '');
                     setValue('edit_sort_order', this.dataset.sortOrder || 0);
 
                     const activeInput = document.getElementById('edit_is_active');
 
                     if (activeInput) {
-                        activeInput.checked = this.dataset.isActive == 1;
+                        activeInput.checked = String(this.dataset.isActive) === '1';
                     }
                 });
             });
+
+            const editMegaSectionLabel = document.getElementById('edit_mega_section_label');
+            const editMegaSectionKey = document.getElementById('edit_mega_section_key');
+
+            if (editMegaSectionLabel && editMegaSectionKey) {
+                editMegaSectionLabel.addEventListener('input', function () {
+                    if (editMegaSectionKey.value.trim() !== '') {
+                        return;
+                    }
+
+                    editMegaSectionKey.value = makeSectionKey(this.value);
+                });
+            }
+
+            function setValue(id, value) {
+                const element = document.getElementById(id);
+
+                if (element) {
+                    element.value = value ?? '';
+                }
+            }
+
+            function makeSectionKey(value) {
+                return String(value || '')
+                    .toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .replace(/đ/g, 'd')
+                    .replace(/Đ/g, 'd')
+                    .replace(/[^a-z0-9]+/g, '_')
+                    .replace(/^_+|_+$/g, '');
+            }
         });
     </script>
 @endsection

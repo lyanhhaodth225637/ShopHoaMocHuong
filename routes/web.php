@@ -12,6 +12,7 @@ use App\Http\Controllers\Frontend\HomeController as FrontendHome;
 use App\Http\Controllers\Frontend\ProductController as FrontendProduct;
 use App\Http\Controllers\Frontend\CartController as FrontendCart;
 use App\Http\Controllers\Frontend\ContactController as FrontendContact;
+use App\Http\Controllers\Frontend\BlogController as FrontendBlog;
 
 use App\Http\Controllers\Auth\TwoFactorController;
 
@@ -88,6 +89,8 @@ Route::prefix('/')->name('frontend.')->group(function () {
     Route::get('san-pham/{id}-{slug}', [FrontendProduct::class, 'show'])->name('product.show');
 
     Route::get('/lien-he', [FrontendContact::class, 'index'])->name('contact.index');
+
+    Route::get('/tin-tuc&cam-nang', [FrontendBlog::class, 'index'])->name('blog.index');
 
 
 

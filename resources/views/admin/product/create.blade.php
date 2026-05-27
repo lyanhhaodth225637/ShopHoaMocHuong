@@ -66,6 +66,21 @@
                     {{-- Giá --}}
                     <div class="col-lg-4">
                         <div class="mb-3">
+                            <label class="form-label">Mã SKU</label>
+                            <input type="text"
+                                class="form-control @error('sku') is-invalid @enderror"
+                                name="sku"
+                                value="{{ old('sku') }}"
+                                placeholder="Để trống sẽ tự tạo">
+                            @error('sku')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <small class="form-hint">Có thể nhập tay. Nếu để trống, hệ thống sẽ tự động tạo mã.</small>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="mb-3">
                             <label class="form-label">
                                 Giá sản phẩm <span class="text-danger">*</span>
                             </label>
@@ -99,7 +114,7 @@
                     {{-- Sort order --}}
                     <div class="col-lg-4">
                         <div class="mb-3">
-                            <label class="form-label">Thá»© tá»± sáº¯p xáº¿p</label>
+                            <label class="form-label">Thứ tự sắp xếp</label>
                             <input type="number"
                                 class="form-control @error('sort_order') is-invalid @enderror"
                                 name="sort_order"

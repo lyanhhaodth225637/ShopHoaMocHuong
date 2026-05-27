@@ -46,6 +46,7 @@ class CartController extends Controller
     private function findProduct($id, $slug): Product
     {
         return Product::query()
+            ->with('defaultSku.inventory')
             ->where('id', $id)
             ->where('slug', $slug)
             ->where('is_active', true)
@@ -68,6 +69,20 @@ class CartController extends Controller
         $product = $this->findProduct($id, $slug);
         $cart = $this->getCart();
         $quantity = (int) ($request->quantity ?? 1);
+        $maxAllowed = $this->resolveMaxCartQuantity($product);
+
+        if ($maxAllowed < 1) {
+            $message = 'San pham hien dang het hang.';
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $message,
+                ], 422);
+            }
+
+            return back()->with('error', $message);
+        }
 
         $cartItem = $cart->items()
             ->where('itemable_id', $product->id)
@@ -76,10 +91,10 @@ class CartController extends Controller
 
         if ($cartItem) {
             $cartItem->update([
-                'quantity' => min($cartItem->quantity + $quantity, 10),
+                'quantity' => min($cartItem->quantity + $quantity, $maxAllowed),
             ]);
         } else {
-            $cart->storeItem($product, $quantity);
+            $cart->storeItem($product, min($quantity, $maxAllowed));
         }
 
         $cart = $this->getCart()->load('items.itemable');
@@ -129,7 +144,7 @@ class CartController extends Controller
         }
 
         $cartItem->update([
-            'quantity' => min($cartItem->quantity + 1, 10),
+            'quantity' => min($cartItem->quantity + 1, $this->resolveMaxCartQuantity($product)),
         ]);
 
         $cartData = $this->getCartData();
@@ -277,7 +292,7 @@ class CartController extends Controller
 
     private function getCartData(): array
     {
-        $cart = $this->getCart()->load('items.itemable');
+        $cart = $this->getCart()->load('items.itemable.defaultSku.inventory');
         $count = $cart->items->sum('quantity');
 
         $subtotal = $cart->items->sum(function ($item) {
@@ -305,6 +320,17 @@ class CartController extends Controller
             ->where('itemable_id', $product->id)
             ->where('itemable_type', get_class($product))
             ->first();
+    }
+
+    private function resolveMaxCartQuantity(Product $product): int
+    {
+        $fallbackMax = 10;
+
+        if (!$product->track_inventory) {
+            return $fallbackMax;
+        }
+
+        return max(0, min($product->stock_quantity, $fallbackMax));
     }
 
     private function getGuestCartKey(): string

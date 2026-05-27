@@ -15,7 +15,6 @@ class Category extends Model
         'parent_id',
         'mega_section_key',
         'mega_section_label',
-        'image',
         'icon',
         'description',
         'meta_title',

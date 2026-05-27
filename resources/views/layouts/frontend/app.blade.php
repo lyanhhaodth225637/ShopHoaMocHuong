@@ -181,7 +181,13 @@
                 form.addEventListener('submit', async function (event) {
                     event.preventDefault();
 
-                    const button = form.querySelector('.btn-add-cart');
+                    const button = form.querySelector('.btn-add-cart, .btn-cart-main, button[type="submit"]');
+
+                    if (!button) {
+                        form.submit();
+                        return;
+                    }
+
                     const oldButtonHtml = button.innerHTML;
 
                     button.disabled = true;

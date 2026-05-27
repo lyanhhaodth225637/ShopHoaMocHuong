@@ -9,13 +9,11 @@
         {{-- ── Background slider ── --}}
         <div class="hero-bg-slides" id="heroBgSlides">
             @forelse ($heroSlides as $i => $slide)
-                <div class="hero-bg-slide {{ $i === 0 ? 'active' : '' }}"
-                    data-desktop="{{ asset('storage/' . $slide->image) }}"
+                <div class="hero-bg-slide {{ $i === 0 ? 'active' : '' }}" data-desktop="{{ asset('storage/' . $slide->image) }}"
                     data-mobile="{{ $slide->mobile_image ? asset('storage/' . $slide->mobile_image) : asset('storage/' . $slide->image) }}">
                 </div>
             @empty
-                <div class="hero-bg-slide active"
-                    data-desktop="{{ asset('storage/baner/baner1.jpg') }}"
+                <div class="hero-bg-slide active" data-desktop="{{ asset('storage/baner/baner1.jpg') }}"
                     data-mobile="{{ asset('storage/baner/baner1.jpg') }}">
                 </div>
             @endforelse
@@ -142,46 +140,60 @@
     <section style="background:#fff;padding:28px 0;border-bottom:1px solid #f0f0f0;">
         <div class="container">
             <div class="row g-4">
+
                 <div class="col-6 col-md-3">
-                    <div class="feature-box">
-                        <div class="feature-icon">🌿</div>
-                        <div>
-                            <div class="feature-title">Hoa tươi mỗi ngày</div>
-                            <div class="feature-desc">Nhập hoa trực tiếp từ vườn Đà Lạt</div>
+                    <a href="{{ route('frontend.product.index') }}" class="feature-box text-decoration-none">
+                        <div class="feature-icon">
+                            <i class="fas fa-seedling"></i>
                         </div>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="feature-box">
-                        <div class="feature-icon">🚚</div>
                         <div>
-                            <div class="feature-title">Giao hàng nhanh</div>
-                            <div class="feature-desc">Trong vòng 2 giờ nội thành</div>
+                            <div class="feature-title">Sản phẩm đa dạng</div>
+                            <div class="feature-desc">Hoa tươi, cây cảnh, chậu & phụ kiện</div>
                         </div>
-                    </div>
+                    </a>
                 </div>
+
                 <div class="col-6 col-md-3">
-                    <div class="feature-box">
-                        <div class="feature-icon">🎨</div>
+                    <a href="{{ route('frontend.product.index') }}" class="feature-box text-decoration-none">
+                        <div class="feature-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div>
+                            <div class="feature-title">Quà tặng theo dịp</div>
+                            <div class="feature-desc">Sinh nhật, khai trương, cưới hỏi, lễ tết</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <a href="https://zalo.me/0909123456" target="_blank" rel="noopener noreferrer"
+                        class="feature-box text-decoration-none">
+                        <div class="feature-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
                         <div>
                             <div class="feature-title">Thiết kế theo yêu cầu</div>
-                            <div class="feature-desc">Tùy chỉnh màu sắc & kiểu dáng</div>
+                            <div class="feature-desc">Tư vấn mẫu hoa, phối màu theo ngân sách</div>
                         </div>
-                    </div>
+                    </a>
                 </div>
+
                 <div class="col-6 col-md-3">
-                    <div class="feature-box">
-                        <div class="feature-icon">💬</div>
-                        <div>
-                            <div class="feature-title">Tư vấn 24/7</div>
-                            <div class="feature-desc">Hỗ trợ qua Zalo & điện thoại</div>
+                    <a href="https://zalo.me/0909123456" target="_blank" rel="noopener noreferrer"
+                        class="feature-box text-decoration-none">
+                        <div class="feature-icon">
+                            <i class="fas fa-comments"></i>
                         </div>
-                    </div>
+                        <div>
+                            <div class="feature-title">Tư vấn nhanh qua Zalo</div>
+                            <div class="feature-desc">Hỗ trợ đặt hoa, chậu, đồ gỗ & phụ kiện</div>
+                        </div>
+                    </a>
                 </div>
+
             </div>
         </div>
     </section>
-
     <section class="section-py" hidden>
         <div class="container">
             <div class="text-center mb-5">
@@ -266,8 +278,8 @@
         </div>
     </section>
     <!-- ═══════════════════════════════════════
-                                                                                         FEATURED PRODUCTS
-                                                                                        ═══════════════════════════════════════ -->
+                                                                                                             FEATURED PRODUCTS
+                                                                                                            ═══════════════════════════════════════ -->
     <section class="section-py bg-pale">
         <div class="container">
             <div class="d-flex align-items-end justify-content-between mb-4">
@@ -376,8 +388,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                                                                                         PROMO BANNERS
-                                                                        ═══════════════════════════════════════ -->
+                                                                                                             PROMO BANNERS
+                                                                                            ═══════════════════════════════════════ -->
     <section class="section-py">
         <div class="container">
             <div class="row g-3">
@@ -394,7 +406,8 @@
                             <p style="color:#b2e8ea;font-size:.85rem;margin-bottom:18px;">Dịch vụ trang trí đám cưới từ
                                 A-Z. Đặt lịch
                                 trước 30 ngày.</p>
-                            <a href="#" class="btn-primary-hero" style="padding:10px 24px;font-size:.85rem;">Xem ngay
+                            <a href="#" style="color:#f0c88c;font-size:.82rem;font-weight:600;text-decoration:none;">Đặt
+                                ngay
                                 →</a>
                         </div>
                     </div>
@@ -434,6 +447,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -442,8 +456,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                                                                                         TESTIMONIALS
-                                                                                        ═══════════════════════════════════════ -->
+    TESTIMONIALS
+     ═══════════════════════════════════════ -->
     <section class="section-py bg-pale">
         <div class="container">
             <div class="text-center mb-5">
@@ -508,8 +522,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                                                                                         BLOG / TIN TỨC
-                                                                                        ═══════════════════════════════════════ -->
+                                                                                                             BLOG / TIN TỨC
+                                                                                                            ═══════════════════════════════════════ -->
     <section class="section-py">
         <div class="container">
             <div class="d-flex align-items-end justify-content-between mb-4">
@@ -564,8 +578,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                                                                                         NEWSLETTER
-                                                                                        ═══════════════════════════════════════ -->
+                                                                                                             NEWSLETTER
+                                                                                                            ═══════════════════════════════════════ -->
     <section class="py-5">
         <div class="container">
             <div class="newsletter-section p-4 p-md-5 text-center">

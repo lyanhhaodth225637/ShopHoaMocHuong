@@ -201,7 +201,7 @@
                                                             <a class="dropdown-item btn-edit-product" href="#" data-bs-toggle="modal"
                                                                 data-bs-target="#modal-edit-product"
                                                                 data-update-url="{{ route('admin.product.update', ['id'=>$item->id,'slug'=>$item->slug]) }}"
-                                                                data-name="{{ e($item->name) }}" data-price="{{ $item->price }}"
+                                                                data-name="{{ e($item->name) }}" data-sku="{{ e($item->sku) }}" data-price="{{ $item->price }}"
                                                                 data-stock-quantity="{{ $item->stock_quantity }}"
                                                                 data-short-description="{{ e($item->short_description) }}"
                                                                 data-description="{{ e($item->description) }}"
@@ -290,6 +290,7 @@
 
                     const fields = {
                         edit_name: this.dataset.name,
+                        edit_sku: this.dataset.sku,
                         edit_price: this.dataset.price,
                         edit_stock_quantity: this.dataset.stockQuantity,
                         edit_short_description: this.dataset.shortDescription,

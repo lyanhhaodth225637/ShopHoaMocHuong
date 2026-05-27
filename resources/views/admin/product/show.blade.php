@@ -22,6 +22,7 @@
                                 data-bs-target="#modal-edit-product"
                                 data-update-url="{{ route('admin.product.update', ['id' => $product->id, 'slug' => $product->slug]) }}"
                                 data-name="{{ e($product->name) }}"
+                                data-sku="{{ e($product->sku) }}"
                                 data-price="{{ $product->price }}"
                                 data-stock-quantity="{{ $product->stock_quantity }}"
                                 data-short-description="{{ e($product->short_description) }}"
