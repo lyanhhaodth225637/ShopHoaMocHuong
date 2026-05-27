@@ -212,6 +212,7 @@
                                                                 data-og-title="{{ e($item->og_title) }}"
                                                                 data-og-description="{{ e($item->og_description) }}"
                                                                 data-sort-order="{{ $item->sort_order }}"
+                                                                data-video-url="{{ e($item->video_url) }}"
                                                                 data-is-active="{{ $item->is_active ? 1 : 0 }}"
                                                                 data-is-featured="{{ $item->is_featured ? 1 : 0 }}"
                                                                 data-category-ids='@json($item->categories->pluck("id")->values())'
@@ -300,6 +301,7 @@
                         edit_og_title: this.dataset.ogTitle,
                         edit_og_description: this.dataset.ogDescription,
                         edit_sort_order: this.dataset.sortOrder,
+                        edit_video_url: this.dataset.videoUrl,
                     };
 
                     Object.keys(fields).forEach(id => {

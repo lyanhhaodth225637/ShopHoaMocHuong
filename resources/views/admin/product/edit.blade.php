@@ -98,10 +98,24 @@
                         </div>
                     </div>
 
+                    <div class="col-lg-12">
+                        <div class="mb-3">
+                            <label class="form-label">Link video san pham</label>
+                            <input type="url" id="edit_video_url"
+                                class="form-control @error('video_url') is-invalid @enderror" name="video_url"
+                                placeholder="https://www.youtube.com/watch?v=... hoac https://youtube.com/shorts/...">
+                            @error('video_url')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <small class="form-hint">Ho tro link YouTube watch, shorts, youtu.be hoac embed.</small>
+                        </div>
+                    </div>
+
                     {{-- Ảnh chính --}}
                     <div class="col-lg-6">
                         <div class="mb-3">
                             <label class="form-label">Ảnh chính</label>
+
 
                             <div class="image-upload-zone" id="edit-main-image-zone"
                                 onclick="document.getElementById('edit_main_image_input').click()"
@@ -776,6 +790,7 @@
                 document.getElementById('edit_price').value = this.dataset.price || 0;
                 document.getElementById('edit_stock_quantity').value = this.dataset.stockQuantity || 0;
                 document.getElementById('edit_sort_order').value = this.dataset.sortOrder || 0;
+                document.getElementById('edit_video_url').value = this.dataset.videoUrl || '';
                 document.getElementById('edit_short_description').value = this.dataset.shortDescription || '';
                 document.getElementById('edit_description').value = this.dataset.description || '';
 

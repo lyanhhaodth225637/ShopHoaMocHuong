@@ -182,7 +182,7 @@
         </div>
     </section>
 
-    <section class="section-py">
+    <section class="section-py" hidden>
         <div class="container">
             <div class="text-center mb-5">
                 <div class="section-label">Danh mục</div>

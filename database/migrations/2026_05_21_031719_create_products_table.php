@@ -31,6 +31,7 @@ return new class extends Migration {
 
             // Ảnh chính
             $table->string('main_image')->nullable();
+            $table->string('video_url')->nullable();
 
             // Trạng thái
             $table->boolean('is_active')->default(true);

@@ -4,15 +4,13 @@
 
 @section('content')
     <style>
-        /* ─── PRODUCT DETAIL PAGE ─── */
         .product-detail-page {
             background: var(--cream);
         }
 
-        /* Breadcrumb */
+        /* ─── BREADCRUMB ─── */
         .product-detail-page .breadcrumb {
-            font-size: 0.82rem;
-            color: var(--text-muted);
+            font-size: .82rem;
         }
 
         .product-detail-page .breadcrumb-item a {
@@ -32,7 +30,7 @@
             color: #b2e8ea;
         }
 
-        /* ─── GALLERY ─── */
+        /* ─── MAIN IMAGE ─── */
         .main-image-box {
             position: relative;
             width: 100%;
@@ -89,10 +87,28 @@
             right: 10px;
         }
 
-        .thumb-list {
+        /* ─── THUMB STRIP (scroll ngang) ─── */
+        .thumb-strip-wrap {
+            position: relative;
+        }
+
+        .thumb-strip {
             display: flex;
             gap: 10px;
-            flex-wrap: wrap;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-bottom: 4px;
+            cursor: grab;
+        }
+
+        .thumb-strip:active {
+            cursor: grabbing;
+        }
+
+        .thumb-strip::-webkit-scrollbar {
+            display: none;
         }
 
         .thumb-btn {
@@ -106,6 +122,7 @@
             cursor: pointer;
             transition: border-color .2s, box-shadow .2s;
             flex-shrink: 0;
+            scroll-snap-align: start;
         }
 
         .thumb-btn img {
@@ -122,6 +139,125 @@
         .thumb-btn.active {
             border-color: var(--green-main);
             box-shadow: 0 0 0 3px var(--green-pale);
+        }
+
+        /* thumb video badge */
+        .thumb-btn.is-video {
+            position: relative;
+        }
+
+        .thumb-btn.is-video::after {
+            content: '\F4F4';
+            font-family: 'Bootstrap-icons';
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: #fff;
+            background: rgba(0, 0, 0, .35);
+            border-radius: 10px;
+        }
+
+        /* thumb strip fade edges */
+        .thumb-strip-wrap::before,
+        .thumb-strip-wrap::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 4px;
+            width: 24px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .thumb-strip-wrap::before {
+            left: 0;
+            background: linear-gradient(to right, #fff, transparent);
+        }
+
+        .thumb-strip-wrap::after {
+            right: 0;
+            background: linear-gradient(to left, #fff, transparent);
+        }
+
+        /* strip nav arrows */
+        .strip-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 3;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 1.5px solid #b2e8ea;
+            background: #fff;
+            color: var(--green-dark);
+            font-size: .7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all .2s;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
+        }
+
+        .strip-nav-btn:hover {
+            background: var(--green-main);
+            border-color: var(--green-main);
+            color: #fff;
+        }
+
+        .strip-nav-btn.prev {
+            left: -14px;
+        }
+
+        .strip-nav-btn.next {
+            right: -14px;
+        }
+
+        /* ─── VIDEO EMBED (9:16) ─── */
+        .video-embed-box {
+            width: 100%;
+            max-width: 260px;
+            margin: 16px auto 0;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1.5px solid #e8f5f5;
+            background: #000;
+            position: relative;
+        }
+
+        .video-embed-box::before {
+            content: '';
+            display: block;
+            padding-top: 177.78%;
+            /* 9:16 */
+        }
+
+        .video-embed-box iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-label {
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .video-label i {
+            color: var(--green-main);
         }
 
         /* ─── PRODUCT INFO ─── */
@@ -148,7 +284,7 @@
         }
 
         .product-short-description {
-            font-size: 0.9rem;
+            font-size: .9rem;
             color: var(--text-muted);
             line-height: 1.75;
             border-left: 3px solid var(--green-accent);
@@ -157,11 +293,11 @@
 
         .product-info .fw-semibold {
             color: var(--text-dark);
-            font-size: 0.875rem;
+            font-size: .875rem;
         }
 
         .product-info .fw-semibold+span {
-            font-size: 0.875rem;
+            font-size: .875rem;
             color: var(--text-muted);
             margin-left: 6px;
         }
@@ -205,7 +341,7 @@
             border-left: 1px solid #b2e8ea;
             border-right: 1px solid #b2e8ea;
             text-align: center;
-            font-size: 0.95rem;
+            font-size: .95rem;
             font-weight: 700;
             color: var(--text-dark);
             outline: none;
@@ -219,7 +355,7 @@
 
         .product-info .btn-add-cart {
             padding: 14px 36px;
-            font-size: 0.95rem;
+            font-size: .95rem;
             border-radius: 50px;
             width: auto;
             display: inline-flex;
@@ -227,7 +363,7 @@
             gap: 8px;
         }
 
-        /* ─── DESCRIPTION SECTION ─── */
+        /* ─── DESCRIPTION ─── */
         .product-description {
             background: #fff;
             border-radius: 20px;
@@ -246,7 +382,7 @@
         }
 
         .description-content {
-            font-size: 0.9rem;
+            font-size: .9rem;
             color: var(--text-muted);
             line-height: 1.85;
         }
@@ -290,7 +426,7 @@
             text-decoration: underline;
         }
 
-        /* ─── RELATED PRODUCTS ─── */
+        /* ─── RELATED ─── */
         .related-products h3 {
             font-family: 'Playfair Display', serif;
             font-size: 1.3rem;
@@ -322,7 +458,7 @@
 
         .product-card-title {
             font-family: 'Playfair Display', serif;
-            font-size: 0.9rem;
+            font-size: .9rem;
             font-weight: 600;
             margin-bottom: 6px;
             display: -webkit-box;
@@ -349,14 +485,14 @@
 
         .btn-add-cart.btn-sm {
             padding: 8px 0;
-            font-size: 0.8rem;
+            font-size: .8rem;
             border-radius: 8px;
         }
 
         .badge.bg-success-subtle {
             background: var(--green-pale) !important;
             color: var(--green-dark) !important;
-            font-size: 0.72rem;
+            font-size: .72rem;
             font-weight: 600;
             padding: 4px 12px;
             border-radius: 50px;
@@ -384,6 +520,10 @@
                 width: 60px;
                 height: 60px;
             }
+
+            .video-embed-box {
+                max-width: 200px;
+            }
         }
     </style>
 
@@ -393,59 +533,118 @@
             {{-- Breadcrumb --}}
             <nav class="mb-4">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="{{ route('frontend.home.index') }}">Trang chủ</a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a href="#">Sản phẩm</a>
-                    </li>
+                    <li class="breadcrumb-item"><a href="{{ route('frontend.home.index') }}">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="#">Sản phẩm</a></li>
                     <li class="breadcrumb-item active">{{ $product->name }}</li>
                 </ol>
             </nav>
 
             <div class="row g-4">
-                {{-- Ảnh sản phẩm --}}
+
+                {{-- ── Cột ảnh ── --}}
                 <div class="col-lg-6">
-                    <div class="product-gallery">
-                        <div class="main-image-box">
-                            <button type="button" class="gallery-nav prev">
-                                <i class="bi bi-chevron-left"></i>
-                            </button>
 
-                            <img id="mainProductImage"
-                                src="{{ $product->main_image ? asset('storage/' . $product->main_image) : asset('images/no-image.png') }}"
-                                alt="{{ $product->name }}">
+                    {{-- Ảnh chính --}}
+                    <div class="main-image-box">
+                        <button type="button" class="gallery-nav prev"><i class="bi bi-chevron-left"></i></button>
+                        <img id="mainProductImage"
+                            src="{{ $product->main_image ? asset('storage/' . $product->main_image) : asset('images/no-image.png') }}"
+                            alt="{{ $product->name }}">
+                        <button type="button" class="gallery-nav next"><i class="bi bi-chevron-right"></i></button>
+                    </div>
 
-                            <button type="button" class="gallery-nav next">
-                                <i class="bi bi-chevron-right"></i>
-                            </button>
-                        </div>
+                    {{-- Thumb strip kéo ngang --}}
+                    <div class="thumb-strip-wrap px-3">
+                        <button class="strip-nav-btn prev" id="stripPrev"><i class="bi bi-chevron-left"></i></button>
 
-                        <div class="thumb-list">
+                        <div class="thumb-strip" id="thumbStrip">
                             @if($product->main_image)
                                 <button type="button" class="thumb-btn active"
-                                    data-image="{{ asset('storage/' . $product->main_image) }}">
+                                    data-image="{{ asset('storage/' . $product->main_image) }}" data-type="image">
                                     <img src="{{ asset('storage/' . $product->main_image) }}" alt="{{ $product->name }}">
                                 </button>
                             @endif
 
                             @foreach($product->images as $image)
-                                <button type="button" class="thumb-btn" data-image="{{ asset('storage/' . $image->image) }}">
+                                <button type="button" class="thumb-btn" data-image="{{ asset('storage/' . $image->image) }}"
+                                    data-type="image">
                                     <img src="{{ asset('storage/' . $image->image) }}" alt="{{ $product->name }}">
                                 </button>
                             @endforeach
+
+                            {{-- Thumb video (nếu có video_url) --}}
+                            @if($product->video_url ?? null)
+                                <button type="button" class="thumb-btn is-video" data-type="video"
+                                    data-video="{{ $product->video_url }}">
+                                    <img src="{{ $product->main_image ? asset('storage/' . $product->main_image) : asset('images/no-image.png') }}"
+                                        alt="Video">
+                                </button>
+                            @endif
                         </div>
+
+                        <button class="strip-nav-btn next" id="stripNext"><i class="bi bi-chevron-right"></i></button>
                     </div>
+
+                    {{-- Video embed 9:16 --}}
+                    {{--
+                    $product->video_url lưu dạng bất kỳ:
+                    - https://youtube.com/shorts/VIDEO_ID
+                    - https://youtu.be/VIDEO_ID
+                    - https://youtube.com/watch?v=VIDEO_ID
+                    - https://www.youtube.com/embed/VIDEO_ID (đã là embed)
+                    --}}
+
+                    @if($product->video_url ?? null)
+                        @php
+                            $videoUrl = $product->video_url;
+                            $videoId = null;
+
+                            // shorts: /shorts/VIDEO_ID
+                            if (preg_match('/shorts\/([a-zA-Z0-9_-]+)/', $videoUrl, $m)) {
+                                $videoId = $m[1];
+                            }
+                            // youtu.be/VIDEO_ID
+                            elseif (preg_match('/youtu\.be\/([a-zA-Z0-9_-]+)/', $videoUrl, $m)) {
+                                $videoId = $m[1];
+                            }
+                            // watch?v=VIDEO_ID
+                            elseif (preg_match('/[?&]v=([a-zA-Z0-9_-]+)/', $videoUrl, $m)) {
+                                $videoId = $m[1];
+                            }
+                            // embed/VIDEO_ID
+                            elseif (preg_match('/embed\/([a-zA-Z0-9_-]+)/', $videoUrl, $m)) {
+                                $videoId = $m[1];
+                            }
+
+                            $embedUrl = $videoId
+                                ? 'https://www.youtube.com/embed/' . $videoId . '?rel=0&playsinline=1'
+                                : null;
+                        @endphp
+
+                        @if($embedUrl)
+                            <div class="mt-4" id="videoSection">
+                                <div class="video-label">
+                                    <i class="bi bi-youtube" style="color:#ff0000;"></i> Video sản phẩm
+                                </div>
+                                {{-- Khung 9:16 cho Shorts --}}
+                                <div class="video-embed-box">
+                                    <iframe src="{{ $embedUrl }}" title="Video sản phẩm {{ $product->name }}"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowfullscreen>
+                                    </iframe>
+                                </div>
+                            </div>
+                        @endif
+                    @endif
+
                 </div>
 
-                {{-- Thông tin sản phẩm --}}
+                {{-- ── Cột thông tin ── --}}
                 <div class="col-lg-6">
                     <div class="product-info">
                         <div class="mb-2">
                             @foreach($product->categories as $category)
-                                <span class="badge bg-success-subtle text-success me-1">
-                                    {{ $category->name }}
-                                </span>
+                                <span class="badge bg-success-subtle text-success me-1">{{ $category->name }}</span>
                             @endforeach
                         </div>
 
@@ -456,9 +655,7 @@
                         </div>
 
                         @if($product->short_description)
-                            <p class="product-short-description mb-4">
-                                {{ $product->short_description }}
-                            </p>
+                            <p class="product-short-description mb-4">{{ $product->short_description }}</p>
                         @endif
 
                         <div class="mb-3">
@@ -480,7 +677,6 @@
                                 action="{{ route('user.cart.add', ['id' => $product->id, 'slug' => $product->slug]) }}"
                                 method="POST">
                                 @csrf
-
                                 <div class="d-flex align-items-center gap-3 mb-4">
                                     <div class="quantity-box d-flex align-items-center">
                                         <button type="button" class="qty-minus">-</button>
@@ -488,22 +684,18 @@
                                         <button type="button" class="qty-plus">+</button>
                                     </div>
                                 </div>
-
                                 <button type="submit" class="btn-add-cart">
-                                    <i class="bi bi-bag-plus me-1"></i>
-                                    Thêm vào giỏ
+                                    <i class="bi bi-bag-plus me-1"></i>Thêm vào giỏ
                                 </button>
                             </form>
                         @else
-                            <button type="button" class="btn btn-secondary" disabled>
-                                Sản phẩm đã hết hàng
-                            </button>
+                            <button type="button" class="btn btn-secondary" disabled>Sản phẩm đã hết hàng</button>
                         @endif
                     </div>
                 </div>
             </div>
 
-            {{-- Mô tả chi tiết --}}
+            {{-- Mô tả --}}
             <section class="product-description mt-5">
                 <h3 class="mb-3">Mô tả sản phẩm</h3>
                 <div class="description-content">
@@ -517,7 +709,6 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h3 class="mb-0">Sản phẩm liên quan</h3>
                     </div>
-
                     <div class="row g-4">
                         @foreach($relatedProducts as $item)
                             <div class="col-6 col-md-4 col-lg-3">
@@ -527,26 +718,19 @@
                                         <img src="{{ $item->main_image ? asset('storage/' . $item->main_image) : asset('images/no-image.png') }}"
                                             alt="{{ $item->name }}">
                                     </a>
-
                                     <div class="product-card-body">
                                         <h4 class="product-card-title">
-                                            <a href="{{ route('product.show', ['id' => $item->id, 'slug' => $item->slug]) }}">
-                                                {{ $item->name }}
-                                            </a>
+                                            <a
+                                                href="{{ route('product.show', ['id' => $item->id, 'slug' => $item->slug]) }}">{{ $item->name }}</a>
                                         </h4>
-
-                                        <div class="product-card-price">
-                                            {{ number_format($item->price, 0, ',', '.') }}đ
-                                        </div>
-
+                                        <div class="product-card-price">{{ number_format($item->price, 0, ',', '.') }}đ</div>
                                         <form class="ajax-add-cart-form"
                                             action="{{ route('user.cart.add', ['id' => $item->id, 'slug' => $item->slug]) }}"
                                             method="POST">
                                             @csrf
                                             <input type="hidden" name="quantity" value="1">
                                             <button type="submit" class="btn-add-cart btn-sm w-100">
-                                                <i class="bi bi-bag-plus me-1"></i>
-                                                Thêm vào giỏ
+                                                <i class="bi bi-bag-plus me-1"></i>Thêm vào giỏ
                                             </button>
                                         </form>
                                     </div>
@@ -566,34 +750,67 @@
             const mainImg = document.getElementById('mainProductImage');
             const btnPrev = document.querySelector('.gallery-nav.prev');
             const btnNext = document.querySelector('.gallery-nav.next');
+            const strip = document.getElementById('thumbStrip');
+            const sPrev = document.getElementById('stripPrev');
+            const sNext = document.getElementById('stripNext');
+            const vidFrame = document.getElementById('productVideoFrame');
+            const vidSection = document.getElementById('videoSection');
 
             if (!thumbs.length || !mainImg) return;
 
+            // chỉ tính thumb loại image
+            const imageThumbs = thumbs.filter(function (t) { return t.dataset.type !== 'video'; });
             let current = 0;
 
             function goTo(index) {
-                thumbs[current].classList.remove('active');
-                current = (index + thumbs.length) % thumbs.length;
-                mainImg.src = thumbs[current].dataset.image;
-                thumbs[current].classList.add('active');
+                imageThumbs[current]?.classList.remove('active');
+                current = (index + imageThumbs.length) % imageThumbs.length;
+                mainImg.src = imageThumbs[current].dataset.image;
+                imageThumbs[current].classList.add('active');
+                // scroll thumb vào view
+                imageThumbs[current].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                // ẩn video section khi xem ảnh
+                if (vidSection) vidSection.style.display = '';
             }
 
-            thumbs.forEach(function (btn, i) {
+            imageThumbs.forEach(function (btn, i) {
                 btn.addEventListener('click', function () { goTo(i); });
+            });
+
+            // thumb video click → cuộn xuống video
+            thumbs.filter(function (t) { return t.dataset.type === 'video'; }).forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    imageThumbs.forEach(function (b) { b.classList.remove('active'); });
+                    btn.classList.add('active');
+                    if (vidSection) {
+                        vidSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
             });
 
             if (btnPrev) btnPrev.addEventListener('click', function () { goTo(current - 1); });
             if (btnNext) btnNext.addEventListener('click', function () { goTo(current + 1); });
 
-            // Quantity box
+            // Strip nav arrows
+            if (sPrev) sPrev.addEventListener('click', function () { strip.scrollBy({ left: -160, behavior: 'smooth' }); });
+            if (sNext) sNext.addEventListener('click', function () { strip.scrollBy({ left: 160, behavior: 'smooth' }); });
+
+            // Drag strip
+            let isDown = false, startX, scrollLeft;
+            strip.addEventListener('mousedown', function (e) { isDown = true; startX = e.pageX - strip.offsetLeft; scrollLeft = strip.scrollLeft; strip.style.cursor = 'grabbing'; });
+            strip.addEventListener('mouseleave', function () { isDown = false; strip.style.cursor = 'grab'; });
+            strip.addEventListener('mouseup', function () { isDown = false; strip.style.cursor = 'grab'; });
+            strip.addEventListener('mousemove', function (e) {
+                if (!isDown) return;
+                e.preventDefault();
+                strip.scrollLeft = scrollLeft - (e.pageX - strip.offsetLeft - startX);
+            });
+
+            // Quantity
             const qtyInput = document.querySelector('.qty-input');
             if (qtyInput) {
-                document.querySelector('.qty-minus').addEventListener('click', function () {
-                    if (qtyInput.value > 1) qtyInput.value--;
-                });
-                document.querySelector('.qty-plus').addEventListener('click', function () {
-                    if (qtyInput.value < 10) qtyInput.value++;
-                });
+                document.querySelector('.qty-minus')?.addEventListener('click', function () { if (qtyInput.value > 1) qtyInput.value--; });
+                document.querySelector('.qty-plus')?.addEventListener('click', function () { if (qtyInput.value < 10) qtyInput.value++; });
             }
         })();
     </script>

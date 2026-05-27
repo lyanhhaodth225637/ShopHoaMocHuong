@@ -34,10 +34,10 @@ class StoreProductRequest extends FormRequest
             'stock_quantity' => ['nullable', 'integer', 'min:0'],
 
             'main_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+            'video_url' => ['nullable', 'url', 'max:255'],
 
             'images' => ['nullable', 'array'],
             'images.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
-           
 
             'og_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
 
@@ -76,6 +76,9 @@ class StoreProductRequest extends FormRequest
             'main_image.image' => 'Ảnh chính phải là file hình ảnh.',
             'main_image.mimes' => 'Ảnh chính chỉ chấp nhận jpg, jpeg, png, webp.',
             'main_image.max' => 'Ảnh chính không được vượt quá 5MB.',
+
+            'video_url.url' => 'Link video không đúng định dạng URL.',
+            'video_url.max' => 'Link video không được vượt quá 255 ký tự.',
 
             'images.array' => 'Danh sách ảnh phụ không hợp lệ.',
             'images.*.image' => 'Ảnh phụ phải là file hình ảnh.',

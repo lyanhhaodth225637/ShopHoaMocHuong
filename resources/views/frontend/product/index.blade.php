@@ -71,13 +71,18 @@
             <div class="row g-3">
                 @forelse ($products as $product)
                     <div class="col-6 col-md-3">
+
                         <div class="product-card h-100">
                             <div class="img-wrap">
-                                @if ($product->main_image)
-                                    <img src="{{ asset('storage/' . $product->main_image) }}" alt="{{ $product->name }}">
-                                @else
-                                    <img src="{{ asset('assets/img/no-image.png') }}" alt="{{ $product->name }}">
-                                @endif
+
+                                <a
+                                    href="{{ route('frontend.product.show', ['id' => $product->id, 'slug' => $product->slug]) }}">
+                                    @if ($product->main_image)
+                                        <img src="{{ asset('storage/' . $product->main_image) }}" alt="{{ $product->name }}">
+                                    @else
+                                        <img src="{{ asset('assets/img/no-image.png') }}" alt="{{ $product->name }}">
+                                    @endif
+                                </a>
 
                                 @if ($product->is_featured)
                                     <span class="product-badge bg-danger text-white">
@@ -91,7 +96,7 @@
                                     </span>
                                 @endif
 
-                                <button class="product-wishlist">
+                                <button class="product-wishlist" type="button">
                                     <i class="bi bi-heart"></i>
                                 </button>
                             </div>
@@ -102,9 +107,10 @@
                                     <span style="color:#aaa;font-size:.75rem">(0)</span>
                                 </div>
 
-                                <div class="product-name">
+                                <a href="{{ route('frontend.product.show', ['id' => $product->id, 'slug' => $product->slug]) }}"
+                                    class="product-name text-decoration-none d-block">
                                     {{ $product->name }}
-                                </div>
+                                </a>
 
                                 <div class="mt-2 mb-3">
                                     <span class="product-price">

@@ -96,11 +96,10 @@
                             @enderror
                         </div>
                     </div>
-
                     {{-- Sort order --}}
                     <div class="col-lg-4">
                         <div class="mb-3">
-                            <label class="form-label">Thứ tự sắp xếp</label>
+                            <label class="form-label">Thá»© tá»± sáº¯p xáº¿p</label>
                             <input type="number"
                                 class="form-control @error('sort_order') is-invalid @enderror"
                                 name="sort_order"
@@ -112,11 +111,24 @@
                         </div>
                     </div>
 
+                    <div class="col-lg-12">
+                        <div class="mb-3">
+                            <label class="form-label">Link video san pham</label>
+                            <input type="url"
+                                class="form-control @error('video_url') is-invalid @enderror"
+                                name="video_url"
+                                value="{{ old('video_url') }}"
+                                placeholder="https://www.youtube.com/watch?v=... hoac https://youtube.com/shorts/...">
+                            @error('video_url')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <small class="form-hint">Ho tro link YouTube watch, shorts, youtu.be hoac embed.</small>
+                        </div>
+                    </div>
                     {{-- Ảnh chính --}}
                     <div class="col-lg-6">
                         <div class="mb-3">
                             <label class="form-label">Ảnh chính</label>
-
                             <div class="image-upload-zone" id="main-image-zone"
                                 onclick="document.getElementById('main_image_input').click()"
                                 ondragover="handleDragOver(event)"
@@ -767,3 +779,4 @@ function handleDrop(event, inputId, previewId, placeholderId) {
     reader.readAsDataURL(file);
 }
 </script>
+

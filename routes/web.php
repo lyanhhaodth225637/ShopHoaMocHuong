@@ -50,22 +50,21 @@ Route::prefix('admin')->middleware(['auth', 'role:super-admin'])->name('admin.')
     //icon
     Route::get('/icons', [AdminIcon::class, 'index'])->name('icon.index');
 
+
     //setting
     Route::get('/settings', [AdminSetting::class, 'index'])->name('setting.index');
-    
+
     Route::get('home-hero', [HomeHeroController::class, 'index'])->name('home-hero.index');
     Route::post('home-hero/update', [HomeHeroController::class, 'updateHero'])->name('home-hero.update');
     Route::post('home-hero/slides', [HomeHeroController::class, 'storeSlide'])->name('home-hero.slides.store');
-    Route::put('home-hero/slides/{slide}', [HomeHeroController::class, 'updateSlide']) ->name('home-hero.slides.update');
-    Route::delete('home-hero/slides/{slide}', [HomeHeroController::class, 'destroySlide']) ->name('home-hero.slides.destroy');
+    Route::put('home-hero/slides/{slide}', [HomeHeroController::class, 'updateSlide'])->name('home-hero.slides.update');
+    Route::delete('home-hero/slides/{slide}', [HomeHeroController::class, 'destroySlide'])->name('home-hero.slides.destroy');
     Route::post('home-hero/stats', [HomeHeroController::class, 'storeStat'])->name('home-hero.stats.store');
     Route::put('home-hero/stats/{stat}', [HomeHeroController::class, 'updateStat'])
         ->name('home-hero.stats.update');
 
     Route::delete('home-hero/stats/{stat}', [HomeHeroController::class, 'destroyStat'])
         ->name('home-hero.stats.destroy');
-
-
 
 
 
@@ -77,7 +76,7 @@ Route::prefix('/')->name('frontend.')->group(function () {
     Route::get('danh-muc/{id}-{slug}', [FrontendHome::class, 'show'])->name('category.show');
 
     Route::get('san-pham/xem-tat-ca', [FrontendProduct::class, 'index'])->name('product.index');
-    Route::get('san-pham/xem-chi-tiet/{id}-{slug}', [FrontendProduct::class, 'show'])->name('product.show');
+    Route::get('san-pham/{id}-{slug}', [FrontendProduct::class, 'show'])->name('product.show');
 
     Route::get('/lien-he', [FrontendContact::class, 'index'])->name('contact.index');
 

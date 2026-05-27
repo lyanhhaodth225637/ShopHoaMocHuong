@@ -18,6 +18,7 @@ class Product extends Model implements Cartable
         'price',
         'stock_quantity',
         'main_image',
+        'video_url',
         'is_active',
         'is_featured',
         'meta_title',
