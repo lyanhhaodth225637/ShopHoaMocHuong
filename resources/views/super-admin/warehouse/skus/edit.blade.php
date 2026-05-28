@@ -1,0 +1,24 @@
+@extends('layouts.super-admin.app')
+
+@section('title', 'Sửa SKU')
+@section('pretitle', 'Quản lý kho')
+@section('page-title', 'Sửa SKU kho')
+
+@section('page-actions')
+    <a href="{{ route('admin.warehouse.skus.index') }}" class="btn btn-outline-secondary">
+        <i class="ti ti-arrow-left"></i> Quay lại
+    </a>
+@endsection
+
+@section('content')
+<form action="{{ route('admin.warehouse.skus.update', $sku) }}" method="POST" class="card">
+    @csrf
+    @method('PUT')
+    <div class="card-body">
+        @include('super-admin.warehouse.skus._form')
+    </div>
+    <div class="card-footer text-end">
+        <button class="btn btn-primary"><i class="ti ti-device-floppy"></i> Cập nhật</button>
+    </div>
+</form>
+@endsection

@@ -1,6 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SuperAdmin\Homecontroler as SPAdminHome;
+use App\Http\Controllers\SuperAdmin\Warehouse\UnitController;
+use App\Http\Controllers\SuperAdmin\Warehouse\SupplierController;
+use App\Http\Controllers\SuperAdmin\Warehouse\CustomerController;
+use App\Http\Controllers\SuperAdmin\Warehouse\SkuController;
+use App\Http\Controllers\SuperAdmin\Warehouse\InputSlipController;
+use App\Http\Controllers\SuperAdmin\Warehouse\OutputSlipController;
+
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\CategoryController as AdminCategory;
 use App\Http\Controllers\Admin\ProductController as AdminProduct;
@@ -31,7 +39,7 @@ Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->nam
 // });
 
 
-Route::prefix('admin')->middleware(['auth', 'single_session', 'role:super-admin'])->name('admin.')->group(function () {
+Route::prefix('admin')->middleware(['auth', 'single_session', 'role:super-admin|admin'])->name('admin.')->group(function () {
     //2FA
     Route::get('/2fa/setup', [TwoFactorController::class, 'setup'])->name('2fa.setup');
     Route::post('/2fa/enable', [TwoFactorController::class, 'enable'])->name('2fa.enable');
@@ -76,6 +84,11 @@ Route::prefix('admin')->middleware(['auth', 'single_session', 'role:super-admin'
 
         Route::delete('home-hero/stats/{stat}', [HomeHeroController::class, 'destroyStat'])
             ->name('home-hero.stats.destroy');
+
+
+        Route::get('quan-ly-kho', [HomeHeroController::class, 'index'])->name('home-hero.index');
+
+
     });
 
 });
@@ -108,3 +121,43 @@ Route::prefix('/user')->name('user.')->group(function () {
     Route::delete('gio-hang/xoa-tat-ca', [FrontendCart::class, 'clear'])->name('cart.clear');
     Route::get('gio-hang/du-lieu', [FrontendCart::class, 'summary'])->name('cart.summary');
 });
+
+
+
+Route::prefix('super-admin')
+    ->middleware(['auth', 'single_session', 'role:super-admin'])
+    ->name('admin.')
+    ->group(function () {
+
+        // 2FA
+        Route::get('/2fa/setup', [TwoFactorController::class, 'setup'])->name('2fa.setup');
+        Route::post('/2fa/enable', [TwoFactorController::class, 'enable'])->name('2fa.enable');
+        Route::post('/2fa/disable', [TwoFactorController::class, 'disable'])->name('2fa.disable');
+        Route::get('/2fa/challenge', [TwoFactorController::class, 'challenge'])->name('2fa.challenge');
+        Route::post('/2fa/verify', [TwoFactorController::class, 'verify'])->name('2fa.verify');
+
+        Route::middleware('2fa')->group(function () {
+            Route::get('/', [SPAdminHome::class, 'index'])->name('dashboard');
+
+            Route::prefix('warehouse')->name('warehouse.')->group(function () {
+                Route::resource('units', UnitController::class);
+                Route::resource('suppliers', SupplierController::class);
+                Route::resource('customers', CustomerController::class);
+                Route::resource('skus', SkuController::class);
+
+                Route::resource('input-slips', InputSlipController::class);
+                Route::post('input-slips/{inputSlip}/complete', [InputSlipController::class, 'complete'])
+                    ->name('input-slips.complete');
+
+                Route::post('input-slips/{inputSlip}/cancel', [InputSlipController::class, 'cancel'])
+                    ->name('input-slips.cancel');
+
+                Route::resource('output-slips', OutputSlipController::class);
+                Route::post('output-slips/{outputSlip}/complete', [OutputSlipController::class, 'complete'])
+                    ->name('output-slips.complete');
+
+                Route::post('output-slips/{outputSlip}/cancel', [OutputSlipController::class, 'cancel'])
+                    ->name('output-slips.cancel');
+            });
+        });
+    });

@@ -4,19 +4,6 @@
     <div class="container mt-4">
         <h1 class="mb-4">Dashboard - Mộc Hương Flower Shop</h1>
 
-        {{-- Stat Cards Row --}}
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="card text-white bg-success">
-                    <div class="card-body">
-                        <h5>Đơn hàng hôm nay</h5>
-                        <h3>28</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- Page Header --}}
         <div class="page-header d-print-none">
             <div class="container-xl">
                 <div class="row g-2 align-items-center">
@@ -28,44 +15,40 @@
                             Dashboard
                         </h2>
                     </div>
-                    {{-- Page title actions --}}
+
                     <div class="col-12 col-md-auto ms-auto d-print-none">
                         <div class="btn-list">
-                            <span class="d-none d-sm-inline">
-                                <a href="{{ route('admin.2fa.setup') }}" class="nav-link">
-                                    <i class="bi bi-shield-lock"></i>
-                                    <span>Bảo mật 2FA</span>
+                            @if (auth()->check() && auth()->user()->hasRole('super-admin'))
+                                <a href="{{ route('admin.dashboard') }}" class="btn btn-primary d-none d-sm-inline-block"
+                                    >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <line x1="12" y1="5" x2="12" y2="19" />
+                                        <line x1="5" y1="12" x2="19" y2="12" />
+                                    </svg>
+                                    Quản lý Kho
                                 </a>
-                            </span>
-                            <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
-                                data-bs-target="#modal-editCategory">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <line x1="12" y1="5" x2="12" y2="19" />
-                                    <line x1="5" y1="12" x2="19" y2="12" />
-                                </svg>
-                                Create new report
-                            </a>
-                            <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
-                                data-bs-target="#modal-report" aria-label="Create new report">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <line x1="12" y1="5" x2="12" y2="19" />
-                                    <line x1="5" y1="12" x2="19" y2="12" />
-                                </svg>
-                            </a>
+
+                                <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
+                                    data-bs-target="#modal-editCategory" aria-label="Quản lý kho">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <line x1="12" y1="5" x2="12" y2="19" />
+                                        <line x1="5" y1="12" x2="19" y2="12" />
+                                    </svg>
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- Page Body --}}
-        <div class="page-body">
+        <div class="page-body" hidden>
             <div class="container-xl">
                 <div class="row row-deck row-cards">
                     <div class="col-12">
@@ -116,10 +99,7 @@
                                                     aria-label="Select invoice"></td>
                                             <td><span class="text-muted">001401</span></td>
                                             <td><a href="#" class="text-reset">Design Works</a></td>
-                                            <td>
-                                                <span class="flag flag-country-us"></span>
-                                                Carlson Limited
-                                            </td>
+                                            <td><span class="flag flag-country-us"></span> Carlson Limited</td>
                                             <td>87956621</td>
                                             <td>15 Dec 2017</td>
                                             <td><span class="badge bg-success">Paid</span></td>
@@ -136,239 +116,23 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td><input class="form-check-input m-0 align-middle" type="checkbox"
-                                                    aria-label="Select invoice"></td>
-                                            <td><span class="text-muted">001402</span></td>
-                                            <td><a href="invoice.html" class="text-reset" tabindex="-1">UX Wireframes</a>
-                                            </td>
-                                            <td>
-                                                <span class="flag flag-country-gb"></span>
-                                                Adobe
-                                            </td>
-                                            <td>87956421</td>
-                                            <td>12 Apr 2017</td>
-                                            <td><span class="badge bg-warning me-1"></span> Pending</td>
-                                            <td>$1200</td>
-                                            <td class="text-end">
-                                                <div class="dropdown">
-                                                    <button class="btn dropdown-toggle align-text-top"
-                                                        data-bs-boundary="viewport"
-                                                        data-bs-toggle="dropdown">Actions</button>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <a class="dropdown-item" href="#">Action</a>
-                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><input class="form-check-input m-0 align-middle" type="checkbox"
-                                                    aria-label="Select invoice"></td>
-                                            <td><span class="text-muted">001403</span></td>
-                                            <td><a href="invoice.html" class="text-reset" tabindex="-1">New Dashboard</a>
-                                            </td>
-                                            <td>
-                                                <span class="flag flag-country-de"></span>
-                                                Bluewolf
-                                            </td>
-                                            <td>87952621</td>
-                                            <td>23 Oct 2017</td>
-                                            <td><span class="badge bg-warning me-1"></span> Pending</td>
-                                            <td>$534</td>
-                                            <td class="text-end">
-                                                <div class="dropdown">
-                                                    <button class="btn dropdown-toggle align-text-top"
-                                                        data-bs-boundary="viewport"
-                                                        data-bs-toggle="dropdown">Actions</button>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <a class="dropdown-item" href="#">Action</a>
-                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><input class="form-check-input m-0 align-middle" type="checkbox"
-                                                    aria-label="Select invoice"></td>
-                                            <td><span class="text-muted">001404</span></td>
-                                            <td><a href="invoice.html" class="text-reset" tabindex="-1">Landing Page</a>
-                                            </td>
-                                            <td>
-                                                <span class="flag flag-country-br"></span>
-                                                Salesforce
-                                            </td>
-                                            <td>87953421</td>
-                                            <td>2 Sep 2017</td>
-                                            <td><span class="badge bg-secondary me-1"></span> Due in 2 Weeks</td>
-                                            <td>$1500</td>
-                                            <td class="text-end">
-                                                <div class="dropdown">
-                                                    <button class="btn dropdown-toggle align-text-top"
-                                                        data-bs-boundary="viewport"
-                                                        data-bs-toggle="dropdown">Actions</button>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <a class="dropdown-item" href="#">Action</a>
-                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><input class="form-check-input m-0 align-middle" type="checkbox"
-                                                    aria-label="Select invoice"></td>
-                                            <td><span class="text-muted">001405</span></td>
-                                            <td><a href="invoice.html" class="text-reset" tabindex="-1">Marketing
-                                                    Templates</a></td>
-                                            <td>
-                                                <span class="flag flag-country-pl"></span>
-                                                Printic
-                                            </td>
-                                            <td>87956621</td>
-                                            <td>29 Jan 2018</td>
-                                            <td><span class="badge bg-danger me-1"></span> Paid Today</td>
-                                            <td>$648</td>
-                                            <td class="text-end">
-                                                <div class="dropdown">
-                                                    <button class="btn dropdown-toggle align-text-top"
-                                                        data-bs-boundary="viewport"
-                                                        data-bs-toggle="dropdown">Actions</button>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <a class="dropdown-item" href="#">Action</a>
-                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><input class="form-check-input m-0 align-middle" type="checkbox"
-                                                    aria-label="Select invoice"></td>
-                                            <td><span class="text-muted">001406</span></td>
-                                            <td><a href="invoice.html" class="text-reset" tabindex="-1">Sales
-                                                    Presentation</a></td>
-                                            <td>
-                                                <span class="flag flag-country-br"></span>
-                                                Tabdaq
-                                            </td>
-                                            <td>87956621</td>
-                                            <td>4 Feb 2018</td>
-                                            <td><span class="badge bg-secondary me-1"></span> Due in 3 Weeks</td>
-                                            <td>$300</td>
-                                            <td class="text-end">
-                                                <div class="dropdown">
-                                                    <button class="btn dropdown-toggle align-text-top"
-                                                        data-bs-boundary="viewport"
-                                                        data-bs-toggle="dropdown">Actions</button>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <a class="dropdown-item" href="#">Action</a>
-                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><input class="form-check-input m-0 align-middle" type="checkbox"
-                                                    aria-label="Select invoice"></td>
-                                            <td><span class="text-muted">001407</span></td>
-                                            <td><a href="invoice.html" class="text-reset" tabindex="-1">Logo & Print</a>
-                                            </td>
-                                            <td>
-                                                <span class="flag flag-country-us"></span>
-                                                Apple
-                                            </td>
-                                            <td>87956621</td>
-                                            <td>22 Mar 2018</td>
-                                            <td><span class="badge bg-success me-1"></span> Paid Today</td>
-                                            <td>$2500</td>
-                                            <td class="text-end">
-                                                <div class="dropdown">
-                                                    <button class="btn dropdown-toggle align-text-top"
-                                                        data-bs-boundary="viewport"
-                                                        data-bs-toggle="dropdown">Actions</button>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <a class="dropdown-item" href="#">Action</a>
-                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><input class="form-check-input m-0 align-middle" type="checkbox"
-                                                    aria-label="Select invoice"></td>
-                                            <td><span class="text-muted">001408</span></td>
-                                            <td><a href="invoice.html" class="text-reset" tabindex="-1">Icons</a></td>
-                                            <td>
-                                                <span class="flag flag-country-pl"></span>
-                                                Tookapic
-                                            </td>
-                                            <td>87956621</td>
-                                            <td>13 May 2018</td>
-                                            <td><span class="badge bg-success me-1"></span> Paid Today</td>
-                                            <td>$940</td>
-                                            <td class="text-end">
-                                                <div class="dropdown">
-                                                    <button class="btn dropdown-toggle align-text-top"
-                                                        data-bs-boundary="viewport"
-                                                        data-bs-toggle="dropdown">Actions</button>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <a class="dropdown-item" href="#">Action</a>
-                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
                             <div class="card-footer d-flex align-items-center">
                                 <p class="m-0 text-muted">Showing <span>1</span> to <span>8</span> of <span>16</span>
                                     entries</p>
-                                <ul class="pagination m-0 ms-auto">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                                stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <polyline points="15 6 9 12 15 18" />
-                                            </svg>
-                                            prev
-                                        </a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">
-                                            next
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                                stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <polyline points="9 6 15 12 9 18" />
-                                            </svg>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                {{--
-                                Built In Paginator Component
-                                {!! $modelName->links('tablar::pagination') !!}
-                                --}}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
+
     @include('admin.dashboard.edit')
 @endsection
 
-{{-- ==================== JAVASCRIPT ==================== --}}
 @section('js')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -378,13 +142,16 @@
                     new Tabler.Table(table);
                 }
             });
-        });
-        document.querySelector('input[aria-label="Search invoice"]')
-            .addEventListener('input', function () {
-                const keyword = this.value.toLowerCase();
-                document.querySelectorAll('.datatable tbody tr').forEach(row => {
-                    row.style.display = row.textContent.toLowerCase().includes(keyword) ? '' : 'none';
+
+            const searchInput = document.querySelector('input[aria-label="Search invoice"]');
+            if (searchInput) {
+                searchInput.addEventListener('input', function () {
+                    const keyword = this.value.toLowerCase();
+                    document.querySelectorAll('.datatable tbody tr').forEach(row => {
+                        row.style.display = row.textContent.toLowerCase().includes(keyword) ? '' : 'none';
+                    });
                 });
-            });
+            }
+        });
     </script>
 @endsection

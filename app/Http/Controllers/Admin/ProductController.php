@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Product\StoreProductRequest;
 use App\Http\Requests\Admin\Product\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Sku;
 use App\Services\ProductService;
 
 class ProductController extends Controller
@@ -18,13 +19,15 @@ class ProductController extends Controller
     public function index()
     {
         $products = $this->productService->getList();
-
         $categories = Category::with('parent')
             ->where('is_active', true)
             ->orderBy('name', 'asc')
             ->get();
 
-        return view('admin.product.index', compact('products', 'categories'));
+        $allSkus = $this->getSelectableSkus();
+        $availableSkus = $allSkus->filter(fn ($sku) => $sku->products->isEmpty())->values();
+
+        return view('admin.product.index', compact('products', 'categories', 'availableSkus', 'allSkus'));
     }
 
     public function store(StoreProductRequest $request)
@@ -44,7 +47,10 @@ class ProductController extends Controller
             ->orderBy('name', 'asc')
             ->get();
 
-        return view('admin.product.show', compact('product', 'categories'));
+        $allSkus = $this->getSelectableSkus();
+        $availableSkus = $allSkus->filter(fn ($sku) => $sku->products->isEmpty())->values();
+
+        return view('admin.product.show', compact('product', 'categories', 'availableSkus', 'allSkus'));
     }
 
     public function update(UpdateProductRequest $request, int $id, string $slug)
@@ -71,7 +77,18 @@ class ProductController extends Controller
             ->with('success', 'Xóa sản phẩm thành công.');
     }
 
-    public function khachHang(){
+    public function khachHang()
+    {
         return view('admin.customer.index');
+    }
+
+    private function getSelectableSkus()
+    {
+        return Sku::query()
+            ->with(['inventory', 'products:id,sku_id'])
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->orderBy('sku')
+            ->get();
     }
 }

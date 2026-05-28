@@ -52,4 +52,18 @@ class User extends Authenticatable
     {
         return !empty($this->google2fa_secret) && !is_null($this->google2fa_enabled_at);
     }
+    public function inputSlips()
+    {
+        return $this->hasMany(InputSlip::class, 'created_by', 'id');
+    }
+
+    public function outputSlips()
+    {
+        return $this->hasMany(OutputSlip::class, 'created_by', 'id');
+    }
+
+    public function inventoryMovements()
+    {
+        return $this->hasMany(InventoryMovement::class, 'created_by', 'id');
+    }
 }

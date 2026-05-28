@@ -15,10 +15,11 @@ class UserSeeder extends Seeder
         // 1. Super Admin (quyền cao nhất)
         $superAdmin = User::create([
             'name' => 'Super Administrator',
-            'email' => 'lyanhhaodth225637@gmail.com',
+            'email' => 'hoagomochuong@gmail.com',
             'password' => Hash::make('12345678'),   // mật khẩu: 123456
         ]);
         $superAdmin->assignRole('super-admin');
+
 
         // 2. Admin
         $admin = User::create([
@@ -26,7 +27,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => Hash::make('12345678'),
         ]);
-        $admin->assignRole('admin');
+        $admin->assignRole('super-admin');
 
         // 3. Staff (Nhân viên)
         $staff = User::create([
@@ -45,7 +46,7 @@ class UserSeeder extends Seeder
         $customer->assignRole('customer');
 
         $this->command->info('✅ Đã tạo 4 tài khoản thành công!');
-        $this->command->info('   Email: lyanhhaodth225637@gmail.com     | Mật khẩu: 12345678');
+        $this->command->info('   Email: hoagomochuong@gmail.com     | Mật khẩu: 12345678');
         $this->command->info('   Email: admin@gmail.com          | Mật khẩu: 12345678');
         $this->command->info('   Email: staff@gmail.com          | Mật khẩu: 12345678');
         $this->command->info('   Email: customer@gmail.com       | Mật khẩu: 12345678');

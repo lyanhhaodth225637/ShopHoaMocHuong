@@ -2,21 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Binafy\LaravelCart\Cartable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends Model implements Cartable
 {
     protected $table = 'products';
 
     protected $with = [
-        'defaultSku.inventory',
+        'sku.inventory',
     ];
 
     protected $fillable = [
+        'sku_id',
         'name',
         'slug',
         'short_description',
@@ -40,11 +41,12 @@ class Product extends Model implements Cartable
         'product_type' => 'string',
         'is_active' => 'boolean',
         'is_featured' => 'boolean',
+        'sort_order' => 'integer',
     ];
 
     public function getPrice(): float
     {
-        return (float) ($this->defaultSku?->price ?? 0);
+        return (float) ($this->sku?->default_sale_price ?? 0);
     }
 
     public function getName(): string
@@ -52,9 +54,9 @@ class Product extends Model implements Cartable
         return $this->name;
     }
 
-    public function getSkuAttribute(): ?string
+    public function getSkuCodeAttribute(): ?string
     {
-        return $this->defaultSku?->sku;
+        return $this->sku?->sku;
     }
 
     public function getPriceAttribute(): float
@@ -62,28 +64,69 @@ class Product extends Model implements Cartable
         return $this->getPrice();
     }
 
+    public function getCostPriceAttribute(): float
+    {
+        return (float) ($this->sku?->default_cost_price ?? 0);
+    }
+
     public function getStockQuantityAttribute(): int
     {
-        if (!$this->defaultSku?->track_inventory) {
+        if (!$this->sku?->track_inventory) {
             return 0;
         }
 
-        return (int) ($this->defaultSku?->inventory?->quantity ?? 0);
+        return (int) ($this->sku?->inventory?->quantity ?? 0);
     }
 
     public function getMinQuantityAttribute(): int
     {
-        return (int) ($this->defaultSku?->inventory?->min_quantity ?? 0);
-    }
-
-    public function getCostPriceAttribute(): float
-    {
-        return (float) ($this->defaultSku?->cost_price ?? 0);
+        return (int) ($this->sku?->min_quantity ?? 0);
     }
 
     public function getTrackInventoryAttribute(): bool
     {
-        return (bool) ($this->defaultSku?->track_inventory ?? false);
+        return (bool) ($this->sku?->track_inventory ?? false);
+    }
+
+    public function getStockStatusAttribute(): string
+    {
+        if (!$this->sku) {
+            return 'not_linked';
+        }
+
+        if (!$this->sku->track_inventory) {
+            return 'not_tracked';
+        }
+
+        $quantity = (int) ($this->sku->inventory?->quantity ?? 0);
+
+        if ($quantity <= 0) {
+            return 'out_of_stock';
+        }
+
+        if ($quantity <= $this->sku->min_quantity) {
+            return 'low_stock';
+        }
+
+        return 'in_stock';
+    }
+
+    public function getIsInStockAttribute(): bool
+    {
+        if (!$this->sku) {
+            return false;
+        }
+
+        if (!$this->sku->track_inventory) {
+            return true;
+        }
+
+        return $this->stock_quantity > 0;
+    }
+
+    public function sku(): BelongsTo
+    {
+        return $this->belongsTo(Sku::class, 'sku_id', 'id');
     }
 
     public function categories(): BelongsToMany
@@ -101,15 +144,5 @@ class Product extends Model implements Cartable
     public function images(): HasMany
     {
         return $this->hasMany(ProductImage::class, 'product_id', 'id');
-    }
-
-    public function skus(): HasMany
-    {
-        return $this->hasMany(ProductSku::class, 'product_id', 'id');
-    }
-
-    public function defaultSku(): HasOne
-    {
-        return $this->hasOne(ProductSku::class, 'product_id', 'id')->oldestOfMany();
     }
 }

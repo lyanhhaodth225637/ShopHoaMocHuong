@@ -4,14 +4,13 @@ namespace App\Services;
 
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductSku;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Format;
+use Intervention\Image\ImageManager;
 
 class ProductService
 {
@@ -20,7 +19,7 @@ class ProductService
         return Product::with([
             'categories.parent',
             'images',
-            'skus.inventory',
+            'sku.inventory',
         ])
             ->orderBy('id', 'desc')
             ->paginate(10);
@@ -31,7 +30,7 @@ class ProductService
         return $product->load([
             'categories.parent',
             'images',
-            'skus.inventory',
+            'sku.inventory',
         ]);
     }
 
@@ -49,20 +48,20 @@ class ProductService
         return DB::transaction(function () use ($data) {
             $categoryIds = $data['category_ids'] ?? [];
             $galleryImages = $data['images'] ?? [];
-
             $productData = $this->extractProductPayload($data);
-            $skuData = $this->extractSkuPayload($data);
+
+            $this->ensureSkuAvailable($productData['sku_id']);
 
             $productData['slug'] = $this->makeUniqueSlug($productData['name']);
 
-            if (!empty($productData['main_image'])) {
+            if (! empty($productData['main_image'])) {
                 $productData['main_image'] = $this->uploadCompressedImage(
                     $productData['main_image'],
                     'products/main'
                 );
             }
 
-            if (!empty($productData['og_image'])) {
+            if (! empty($productData['og_image'])) {
                 $productData['og_image'] = $this->uploadCompressedImage(
                     $productData['og_image'],
                     'products/og'
@@ -71,21 +70,6 @@ class ProductService
 
             $product = Product::create($productData);
 
-            $sku = $product->skus()->create([
-                'sku' => $this->resolveSkuValue($skuData['sku'], $product->id),
-                'name' => $skuData['name'] ?: $product->name,
-                'price' => $skuData['price'],
-                'cost_price' => $skuData['cost_price'],
-                'track_inventory' => $skuData['track_inventory'],
-                'attributes' => $skuData['attributes'],
-                'is_active' => true,
-            ]);
-
-            $sku->inventory()->create([
-                'quantity' => $skuData['stock_quantity'],
-                'min_quantity' => $skuData['min_quantity'],
-            ]);
-
             $product->categories()->sync($categoryIds);
 
             $this->uploadGalleryImages($product, $galleryImages);
@@ -93,7 +77,7 @@ class ProductService
             return $product->fresh([
                 'categories.parent',
                 'images',
-                'skus.inventory',
+                'sku.inventory',
             ]);
         });
     }
@@ -104,11 +88,12 @@ class ProductService
             $categoryIds = $data['category_ids'] ?? [];
             $galleryImages = $data['images'] ?? [];
             $productData = $this->extractProductPayload($data);
-            $skuData = $this->extractSkuPayload($data);
+
+            $this->ensureSkuAvailable($productData['sku_id'], $product->id);
 
             $productData['slug'] = $this->makeUniqueSlug($productData['name'], $product->id);
 
-            if (!empty($productData['main_image'])) {
+            if (! empty($productData['main_image'])) {
                 $this->deleteImage($product->main_image);
 
                 $productData['main_image'] = $this->uploadCompressedImage(
@@ -119,7 +104,7 @@ class ProductService
                 unset($productData['main_image']);
             }
 
-            if (!empty($productData['og_image'])) {
+            if (! empty($productData['og_image'])) {
                 $this->deleteImage($product->og_image);
 
                 $productData['og_image'] = $this->uploadCompressedImage(
@@ -131,42 +116,6 @@ class ProductService
             }
 
             $updated = $product->update($productData);
-
-            $defaultSku = $product->defaultSku()->first();
-
-            if (!$defaultSku) {
-                $defaultSku = $product->skus()->create([
-                    'sku' => $this->resolveSkuValue($skuData['sku'], $product->id),
-                    'name' => $skuData['name'] ?: $product->name,
-                    'price' => $skuData['price'],
-                    'cost_price' => $skuData['cost_price'],
-                    'track_inventory' => $skuData['track_inventory'],
-                    'attributes' => $skuData['attributes'],
-                    'is_active' => true,
-                ]);
-            } else {
-                $defaultSku->update([
-                    'sku' => $this->resolveSkuValue(
-                        $skuData['sku'] ?: $defaultSku->sku,
-                        $product->id,
-                        $defaultSku->id
-                    ),
-                    'name' => $skuData['name'] ?: $productData['name'],
-                    'price' => $skuData['price'],
-                    'cost_price' => $skuData['cost_price'],
-                    'track_inventory' => $skuData['track_inventory'],
-                    'attributes' => $skuData['attributes'],
-                    'is_active' => true,
-                ]);
-            }
-
-            $defaultSku->inventory()->updateOrCreate(
-                [],
-                [
-                    'quantity' => $skuData['stock_quantity'],
-                    'min_quantity' => $skuData['min_quantity'],
-                ]
-            );
 
             $product->categories()->sync($categoryIds);
 
@@ -196,7 +145,7 @@ class ProductService
     private function uploadGalleryImages(Product $product, array $images): void
     {
         foreach ($images as $index => $image) {
-            if (!$image instanceof UploadedFile) {
+            if (! $image instanceof UploadedFile) {
                 continue;
             }
 
@@ -213,6 +162,7 @@ class ProductService
     private function extractProductPayload(array $data): array
     {
         return [
+            'sku_id' => $data['sku_id'],
             'name' => $data['name'],
             'short_description' => $data['short_description'] ?? null,
             'description' => $data['description'] ?? null,
@@ -232,18 +182,18 @@ class ProductService
         ];
     }
 
-    private function extractSkuPayload(array $data): array
+    private function ensureSkuAvailable(int $skuId, ?int $ignoreProductId = null): void
     {
-        return [
-            'sku' => $data['sku'] ?? null,
-            'name' => $data['sku_name'] ?? null,
-            'price' => $data['price'] ?? 0,
-            'cost_price' => $data['cost_price'] ?? 0,
-            'track_inventory' => $data['track_inventory'] ?? true,
-            'attributes' => $data['attributes'] ?? null,
-            'stock_quantity' => $data['stock_quantity'] ?? 0,
-            'min_quantity' => $data['min_quantity'] ?? 0,
-        ];
+        $exists = Product::query()
+            ->where('sku_id', $skuId)
+            ->when($ignoreProductId, function ($query) use ($ignoreProductId) {
+                $query->where('id', '!=', $ignoreProductId);
+            })
+            ->exists();
+
+        if ($exists) {
+            throw new \RuntimeException('SKU này đã được gán cho sản phẩm khác.');
+        }
     }
 
     private function uploadCompressedImage(
@@ -277,45 +227,6 @@ class ProductService
         }
     }
 
-    private function makeSku(int $id): string
-    {
-        return 'HMH' . str_pad($id, 6, '0', STR_PAD_LEFT);
-    }
-
-    private function resolveSkuValue(?string $inputSku, int $productId, ?int $ignoreSkuId = null): string
-    {
-        $baseSku = trim((string) $inputSku);
-
-        if ($baseSku === '') {
-            $baseSku = $this->makeSku($productId);
-        }
-
-        $candidate = $baseSku;
-
-        if ($this->skuExists($candidate, $ignoreSkuId)) {
-            $candidate = $baseSku . '-' . $productId;
-        }
-
-        $suffix = 1;
-
-        while ($this->skuExists($candidate, $ignoreSkuId)) {
-            $candidate = $baseSku . '-' . $productId . '-' . $suffix;
-            $suffix++;
-        }
-
-        return $candidate;
-    }
-
-    private function skuExists(string $sku, ?int $ignoreSkuId = null): bool
-    {
-        return ProductSku::query()
-            ->where('sku', $sku)
-            ->when($ignoreSkuId, function ($query) use ($ignoreSkuId) {
-                $query->where('id', '!=', $ignoreSkuId);
-            })
-            ->exists();
-    }
-
     private function makeUniqueSlug(string $name, ?int $ignoreId = null): string
     {
         $baseSlug = Str::slug($name);
@@ -336,8 +247,6 @@ class ProductService
         return $slug;
     }
 
-
-    //frontend
     public function getParentCategoriesForTabs()
     {
         return Category::with('children')
@@ -360,7 +269,7 @@ class ProductService
                 ->values()
                 ->toArray();
 
-            $productsByCategory[$parentCategory->id] = Product::with(['images', 'categories', 'skus.inventory'])
+            $productsByCategory[$parentCategory->id] = Product::with(['images', 'categories', 'sku.inventory'])
                 ->where('is_active', true)
                 ->whereHas('categories', function ($query) use ($categoryIds) {
                     $query->whereIn('categories.id', $categoryIds);
