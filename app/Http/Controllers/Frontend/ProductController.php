@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\ProductSku;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -19,13 +18,6 @@ class ProductController extends Controller
             ->orderBy('id', 'asc')
             ->get();
 
-        $defaultPriceQuery = ProductSku::query()
-            ->select('price')
-            ->whereColumn('product_id', 'products.id')
-            ->where('is_active', true)
-            ->orderBy('id')
-            ->limit(1);
-
         $products = Product::with(['categories.parent', 'images'])
             ->where('is_active', true)
             ->when($request->filled('keyword'), function ($query) use ($request) {
@@ -34,7 +26,7 @@ class ProductController extends Controller
                 $query->where(function ($q) use ($keyword) {
                     $q->where('name', 'like', '%' . $keyword . '%')
                         ->orWhere('short_description', 'like', '%' . $keyword . '%')
-                        ->orWhereHas('skus', function ($skuQuery) use ($keyword) {
+                        ->orWhereHas('sku', function ($skuQuery) use ($keyword) {
                             $skuQuery->where('sku', 'like', '%' . $keyword . '%');
                         });
                 });
@@ -57,17 +49,17 @@ class ProductController extends Controller
                 }
             })
             ->when($request->filled('min_price'), function ($query) use ($request) {
-                $query->whereHas('skus', function ($skuQuery) use ($request) {
+                $query->whereHas('sku', function ($skuQuery) use ($request) {
                     $skuQuery
                         ->where('is_active', true)
-                        ->where('price', '>=', $request->min_price);
+                        ->where('default_sale_price', '>=', $request->min_price);
                 });
             })
             ->when($request->filled('max_price'), function ($query) use ($request) {
-                $query->whereHas('skus', function ($skuQuery) use ($request) {
+                $query->whereHas('sku', function ($skuQuery) use ($request) {
                     $skuQuery
                         ->where('is_active', true)
-                        ->where('price', '<=', $request->max_price);
+                        ->where('default_sale_price', '<=', $request->max_price);
                 });
             })
             ->when($request->filled('featured'), function ($query) use ($request) {
@@ -77,21 +69,25 @@ class ProductController extends Controller
             })
             ->when($request->filled('stock_status'), function ($query) use ($request) {
                 if ($request->stock_status === 'in_stock') {
-                    $query->whereHas('skus.inventory', function ($inventoryQuery) {
+                    $query->whereHas('sku.inventory', function ($inventoryQuery) {
                         $inventoryQuery->where('quantity', '>', 0);
                     });
                 }
 
                 if ($request->stock_status === 'out_of_stock') {
-                    $query->whereDoesntHave('skus.inventory', function ($inventoryQuery) {
+                    $query->whereDoesntHave('sku.inventory', function ($inventoryQuery) {
                         $inventoryQuery->where('quantity', '>', 0);
                     });
                 }
             });
 
         match ($request->sort) {
-            'price_asc' => $products->orderBy($defaultPriceQuery, 'asc'),
-            'price_desc' => $products->orderBy($defaultPriceQuery, 'desc'),
+            'price_asc' => $products->join('skus', 'skus.id', '=', 'products.sku_id')
+                ->orderBy('skus.default_sale_price', 'asc')
+                ->select('products.*'),
+            'price_desc' => $products->join('skus', 'skus.id', '=', 'products.sku_id')
+                ->orderBy('skus.default_sale_price', 'desc')
+                ->select('products.*'),
             'name_asc' => $products->orderBy('name', 'asc'),
             'newest' => $products->orderBy('id', 'desc'),
             'random' => $products->inRandomOrder(),
@@ -108,14 +104,14 @@ class ProductController extends Controller
     public function show($id, $slug)
     {
         $product = Product::query()
-            ->with(['categories', 'images', 'skus.inventory'])
+            ->with(['categories', 'images', 'sku.inventory'])
             ->where('id', $id)
             ->where('slug', $slug)
             ->where('is_active', true)
             ->firstOrFail();
 
         $relatedProducts = Product::query()
-            ->with(['categories', 'images', 'skus.inventory'])
+            ->with(['categories', 'images', 'sku.inventory'])
             ->where('id', '!=', $product->id)
             ->where('is_active', true)
             ->whereHas('categories', function ($query) use ($product) {

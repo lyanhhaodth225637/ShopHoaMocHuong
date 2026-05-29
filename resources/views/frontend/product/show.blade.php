@@ -894,7 +894,7 @@
                             <span style="color:#ccc">|</span>
                             <span>0 đánh giá</span>
                             <span style="color:#ccc">|</span>
-                            <span>{{ $product->sku ?? 'SKU đang cập nhật' }}</span>
+                            <span>{{ $product->sku_code ?? 'SKU đang cập nhật' }}</span>
                         </div>
 
                         {{-- Giá --}}
@@ -960,6 +960,10 @@
                                     <button type="submit" class="btn-cart-main">
                                         <i class="bi bi-bag-plus"></i> Thêm vào giỏ hàng
                                     </button>
+                                    <a href="{{ route('user.cart.index') }}" class="btn-cart-main"
+                                        style="background:#fff;color:var(--green-dark);border:1.5px solid #b2e8ea;text-decoration:none;">
+                                        <i class="bi bi-cart3"></i> Xem giỏ hàng
+                                    </a>
                                     <button type="button" class="btn-wishlist" title="Lưu yêu thích">
                                         <i class="bi bi-heart"></i>
                                     </button>
@@ -1014,7 +1018,7 @@
                             <tbody>
                                 <tr>
                                     <td style="color:var(--text-muted);width:150px;">Mã sản phẩm</td>
-                                    <td class="fw-600">{{ $product->sku ?? '—' }}</td>
+                                    <td class="fw-600">{{ $product->sku_code ?? '—' }}</td>
                                 </tr>
                                 <tr>
                                     <td style="color:var(--text-muted);">Tồn kho</td>
@@ -1049,16 +1053,23 @@
                                     <div class="rel-card__body" style="flex:1;display:flex;flex-direction:column;">
                                         <div class="rel-card__name" style="flex:1;">{{ $item->name }}</div>
                                         <div class="rel-card__price">{{ number_format($item->price, 0, ',', '.') }}đ</div>
-                                        <form class="ajax-add-cart-form"
-                                            action="{{ route('user.cart.add', ['id' => $item->id, 'slug' => $item->slug]) }}"
-                                            method="POST">
-                                            @csrf
-                                            <input type="hidden" name="quantity" value="1">
-                                            <button type="submit" class="btn-add-cart"
-                                                style="border-radius:10px;padding:9px 0;font-size:.82rem;">
-                                                <i class="bi bi-bag-plus me-1"></i>Thêm vào giỏ
+                                        @if($item->stock_quantity > 0 || ! $item->track_inventory)
+                                            <form class="ajax-add-cart-form"
+                                                action="{{ route('user.cart.add', ['id' => $item->id, 'slug' => $item->slug]) }}"
+                                                method="POST">
+                                                @csrf
+                                                <input type="hidden" name="quantity" value="1">
+                                                <button type="submit" class="btn-add-cart"
+                                                    style="border-radius:10px;padding:9px 0;font-size:.82rem;">
+                                                    <i class="bi bi-bag-plus me-1"></i>Thêm vào giỏ
+                                                </button>
+                                            </form>
+                                        @else
+                                            <button type="button" class="btn-add-cart" disabled
+                                                style="border-radius:10px;padding:9px 0;font-size:.82rem;opacity:.65;">
+                                                Hết hàng
                                             </button>
-                                        </form>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

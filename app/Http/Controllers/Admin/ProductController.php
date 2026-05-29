@@ -14,7 +14,8 @@ class ProductController extends Controller
 {
     public function __construct(
         protected ProductService $productService
-    ) {}
+    ) {
+    }
 
     public function index()
     {
@@ -25,7 +26,7 @@ class ProductController extends Controller
             ->get();
 
         $allSkus = $this->getSelectableSkus();
-        $availableSkus = $allSkus->filter(fn ($sku) => $sku->products->isEmpty())->values();
+        $availableSkus = $allSkus->filter(fn($sku) => $sku->products->isEmpty())->values();
 
         return view('admin.product.index', compact('products', 'categories', 'availableSkus', 'allSkus'));
     }
@@ -48,7 +49,7 @@ class ProductController extends Controller
             ->get();
 
         $allSkus = $this->getSelectableSkus();
-        $availableSkus = $allSkus->filter(fn ($sku) => $sku->products->isEmpty())->values();
+        $availableSkus = $allSkus->filter(fn($sku) => $sku->products->isEmpty())->values();
 
         return view('admin.product.show', compact('product', 'categories', 'availableSkus', 'allSkus'));
     }

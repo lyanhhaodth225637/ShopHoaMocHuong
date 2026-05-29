@@ -47,7 +47,7 @@ Route::prefix('admin')->middleware(['auth', 'single_session', 'role:super-admin|
     Route::get('/2fa/challenge', [TwoFactorController::class, 'challenge'])->name('2fa.challenge');
     Route::post('/2fa/verify', [TwoFactorController::class, 'verify'])->name('2fa.verify');
 
-    Route::middleware('2fa')->group(function () {
+    Route::middleware('')->group(function () {
         Route::get('/', [AdminDashboard::class, 'index'])->name('index');
 
         //category
@@ -136,7 +136,7 @@ Route::prefix('super-admin')
         Route::get('/2fa/challenge', [TwoFactorController::class, 'challenge'])->name('2fa.challenge');
         Route::post('/2fa/verify', [TwoFactorController::class, 'verify'])->name('2fa.verify');
 
-        Route::middleware('2fa')->group(function () {
+        Route::middleware('')->group(function () {
             Route::get('/', [SPAdminHome::class, 'index'])->name('dashboard');
 
             Route::prefix('warehouse')->name('warehouse.')->group(function () {

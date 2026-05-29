@@ -49,7 +49,7 @@ class HomeController extends Controller
         $products = Product::whereHas('categories', function ($query) use ($category) {
             $query->where('categories.id', $category->id);
         })
-            ->with(['images', 'categories', 'skus.inventory'])
+            ->with(['images', 'categories', 'sku.inventory'])
             ->where('is_active', true)
             ->latest()
             ->paginate(12);

@@ -129,6 +129,11 @@ class Product extends Model implements Cartable
         return $this->belongsTo(Sku::class, 'sku_id', 'id');
     }
 
+    public function defaultSku(): BelongsTo
+    {
+        return $this->sku();
+    }
+
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(
