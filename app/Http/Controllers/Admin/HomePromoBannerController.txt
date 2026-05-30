@@ -1,0 +1,47 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\HomePromoBanner\StoreHomePromoBannerRequest;
+use App\Http\Requests\Admin\HomePromoBanner\UpdateHomePromoBannerRequest;
+use App\Models\HomePromoBanner;
+use App\Services\Settings\HomePromoBannerService;
+
+class HomePromoBannerController extends Controller
+{
+    protected HomePromoBannerService $homePromoBannerService;
+
+    public function __construct(HomePromoBannerService $homePromoBannerService)
+    {
+        $this->homePromoBannerService = $homePromoBannerService;
+    }
+
+    public function index()
+    {
+        $promoBanners = $this->homePromoBannerService->getList();
+
+        return view('admin.setting', compact('promoBanners'));
+    }
+
+    public function store(StoreHomePromoBannerRequest $request)
+    {
+        $this->homePromoBannerService->store($request->validated());
+
+        return back()->with('message', 'Thêm banner khuyến mãi thành công');
+    }
+
+    public function update(UpdateHomePromoBannerRequest $request, HomePromoBanner $homePromoBanner)
+    {
+        $this->homePromoBannerService->update($homePromoBanner, $request->validated());
+
+        return back()->with('message', 'Cập nhật banner khuyến mãi thành công');
+    }
+
+    public function destroy(HomePromoBanner $homePromoBanner)
+    {
+        $this->homePromoBannerService->delete($homePromoBanner);
+
+        return back()->with('message', 'Xóa banner khuyến mãi thành công');
+    }
+}

@@ -348,7 +348,7 @@
                                 <h2 class="bf-title">{{ $featured->title }}</h2>
                                 <p class="bf-excerpt">{{ Str::limit($featured->excerpt ?? strip_tags($featured->content), 160) }}</p>
                                 <div class="bf-meta">
-                                    <span><i class="bi bi-person"></i>{{ $featured->author->name ?? 'Mộc Hương' }}</span>
+                                    <span><i class="bi bi-person"></i>{{ $featured->user->name ?? 'Moc Huong' }}</span>
                                     <span><i class="bi bi-calendar3"></i>{{ $featured->created_at->format('d/m/Y') }}</span>
                                     <span><i class="bi bi-clock"></i>{{ $featured->read_time ?? '5' }} phút đọc</span>
                                 </div>

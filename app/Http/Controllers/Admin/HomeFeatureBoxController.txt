@@ -1,0 +1,47 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\HomeFeatureBox\StoreHomeFeatureBoxRequest;
+use App\Http\Requests\Admin\HomeFeatureBox\UpdateHomeFeatureBoxRequest;
+use App\Models\HomeFeatureBox;
+use App\Services\Settings\HomeFeatureBoxService;
+
+class HomeFeatureBoxController extends Controller
+{
+    protected HomeFeatureBoxService $homeFeatureBoxService;
+
+    public function __construct(HomeFeatureBoxService $homeFeatureBoxService)
+    {
+        $this->homeFeatureBoxService = $homeFeatureBoxService;
+    }
+
+    public function index()
+    {
+        $featureBoxes = $this->homeFeatureBoxService->getList();
+
+        return view('admin.setting.index', compact('featureBoxes'));
+    }
+
+    public function store(StoreHomeFeatureBoxRequest $request)
+    {
+        $this->homeFeatureBoxService->store($request->validated());
+
+        return back()->with('message', 'Thêm feature box thành công');
+    }
+
+    public function update(UpdateHomeFeatureBoxRequest $request, HomeFeatureBox $homeFeatureBox)
+    {
+        $this->homeFeatureBoxService->update($homeFeatureBox, $request->validated());
+
+        return back()->with('message', 'Cập nhật feature box thành công');
+    }
+
+    public function destroy(HomeFeatureBox $homeFeatureBox)
+    {
+        $this->homeFeatureBoxService->delete($homeFeatureBox);
+
+        return back()->with('message', 'Xóa feature box thành công');
+    }
+}

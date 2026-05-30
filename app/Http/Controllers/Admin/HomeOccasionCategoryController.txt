@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\HomeOccasionCategory\StoreHomeOccasionCategoryRequest;
+use App\Http\Requests\Admin\HomeOccasionCategory\UpdateHomeOccasionCategoryRequest;
+use App\Models\Category;
+use App\Models\HomeOccasionCategory;
+use App\Services\Settings\HomeOccasionCategoryService;
+
+class HomeOccasionCategoryController extends Controller
+{
+    protected HomeOccasionCategoryService $homeOccasionCategoryService;
+
+    public function __construct(HomeOccasionCategoryService $homeOccasionCategoryService)
+    {
+        $this->homeOccasionCategoryService = $homeOccasionCategoryService;
+    }
+
+    public function index()
+    {
+        $occasionCategories = $this->homeOccasionCategoryService->getList();
+
+        $categories = Category::where('is_active', true)
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
+
+        return view('admin.setting.index', compact(
+            'occasionCategories',
+            'categories'
+        ));
+    }
+
+    public function store(StoreHomeOccasionCategoryRequest $request)
+    {
+        $this->homeOccasionCategoryService->store($request->validated());
+
+        return back()->with('message', 'Thêm danh mục theo dịp thành công');
+    }
+
+    public function update(UpdateHomeOccasionCategoryRequest $request, HomeOccasionCategory $homeOccasionCategory)
+    {
+        $this->homeOccasionCategoryService->update($homeOccasionCategory, $request->validated());
+
+        return back()->with('message', 'Cập nhật danh mục theo dịp thành công');
+    }
+
+    public function destroy(HomeOccasionCategory $homeOccasionCategory)
+    {
+        $this->homeOccasionCategoryService->delete($homeOccasionCategory);
+
+        return back()->with('message', 'Xóa danh mục theo dịp thành công');
+    }
+}

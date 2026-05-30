@@ -73,9 +73,9 @@ return [
         ['header' => 'BÁO CÁO'],
 
         [
-            'text' => 'Doanh thu',
-            'url' => '/admin/reports/revenue',
-            'icon' => 'ti ti-chart-bar',
+            'text' => 'Bài viết',
+            'url' => '/admin/bai-viet',
+            'icon' => 'ti ti-news',
         ],
 
         [

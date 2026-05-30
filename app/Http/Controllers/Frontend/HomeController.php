@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\ProductService;
-use App\Services\HomeHeroService;
+use App\Services\Settings\HomeHeroService;
 use App\Models\Category;
 use App\Models\Product;
 
@@ -19,25 +19,33 @@ class HomeController extends Controller
 
 
     public function index()
-    {
-        $parentCategories = $this->productService->getParentCategoriesForTabs();
+{
+    $parentCategories = $this->productService->getParentCategoriesForTabs();
 
-        $productsByCategory = $this->productService->getProductsByParentCategories($parentCategories);
-        $heroData = $this->homeHeroService->getFrontendData();
-        $hero = $heroData['hero'] ?? null;
-        $heroSlides = $heroData['heroSlides'] ?? collect();
-        $heroStats = $heroData['heroStats'] ?? collect();
+    $productsByCategory = $this->productService->getProductsByParentCategories($parentCategories);
 
-        return view('frontend.home', compact(
-            'parentCategories',
-            'productsByCategory',
-            'heroData',
-            'hero',
-            'heroSlides',
-            'heroStats'
-        ));
+    $heroData = $this->homeHeroService->getFrontendData();
 
-    }
+    $hero = $heroData['hero'] ?? null;
+    $heroSlides = $heroData['heroSlides'] ?? collect();
+    $heroStats = $heroData['heroStats'] ?? collect();
+
+    $featureBoxes = $heroData['featureBoxes'] ?? collect();
+    $occasionCategories = $heroData['occasionCategories'] ?? collect();
+    $promoBanners = $heroData['promoBanners'] ?? collect();
+
+    return view('frontend.home', compact(
+        'parentCategories',
+        'productsByCategory',
+        'heroData',
+        'hero',
+        'heroSlides',
+        'heroStats',
+        'featureBoxes',
+        'occasionCategories',
+        'promoBanners'
+    ));
+}
     public function show($id, $slug)
     {
         // dd('vào đây');

@@ -14,7 +14,11 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategory;
 use App\Http\Controllers\Admin\ProductController as AdminProduct;
 use App\Http\Controllers\Admin\IconController as AdminIcon;
 use App\Http\Controllers\Admin\SettingController as AdminSetting;
-use App\Http\Controllers\Admin\HomeHeroController;
+use App\Http\Controllers\Admin\HomeHeroController as AdminHomeHero;
+use App\Http\Controllers\Admin\PostCategoryController as AdminPostCategory;
+use App\Http\Controllers\Admin\PostController as AdminPost;
+
+
 
 use App\Http\Controllers\Frontend\HomeController as FrontendHome;
 use App\Http\Controllers\Frontend\ProductController as FrontendProduct;
@@ -64,31 +68,91 @@ Route::prefix('admin')->middleware(['auth', 'single_session', 'role:super-admin|
         Route::put('/san-pham/cap-nhat/{id}-{slug}', [AdminProduct::class, 'update'])->name('product.update');
         Route::delete('/san-pham/xoa/{id}', [AdminProduct::class, 'destroy'])->name('product.destroy');
 
+        //post category
+        // Route::get('/bai-viet', [AdminPostCategory::class, 'index'])->name('post_category.index');
+        // Route::get('/bai-viet/xem/{id}-{slug}', [AdminPostCategory::class, 'show'])->name('post_category.show');
+        // Route::post('/bai-viet/them-moi', [AdminPostCategory::class, 'store'])->name('post_category.store');
+        // Route::put('/bai-viet/cap-nhat/{id}-{slug}', [AdminPostCategory::class, 'update'])->name('post_category.update');
+        // Route::delete('/bai-viet/xoa/{id}', [AdminPostCategory::class, 'destroy'])->name('post_category.destroy');
+
+        //post
+        Route::get('/bai-viet', [AdminPost::class, 'indexCategory'])->name('post.index_category');
+        Route::patch('/chu-de/{id}', [AdminPost::class, 'toggleCategoryStatus'])->name('post.category.toggle-status');
+        Route::post('/chu-de/them', [AdminPost::class, 'storeCategory'])->name('post.store_category');
+        Route::put('/chu-de/cap-nhat/{id}-{slug}', [AdminPost::class, 'updateCategory'])->name('post.update_category');
+        Route::delete('/chu-de/xoa/{id}', [AdminPost::class, 'destroyCategory'])->name('post.destroy_category');
+        Route::post('/bai-viet/them', [AdminPost::class, 'storePost'])->name('post.store');
+        Route::put('/bai-viet/cap-nhat/{id}-{slug}', [AdminPost::class, 'updatePost'])->name('post.update');
+        Route::delete('/bai-viet/xoa/{id}', [AdminPost::class, 'destroyPost'])->name('post.destroy');
+
+
+        // Route::get('/bai-viet', [AdminPost::class, 'index'])->name('post.index');
+
+
+
+
+        //customer
         Route::get('/khach-hang', [AdminProduct::class, 'khachHang'])->name('product.khachhang');
 
         //icon
         Route::get('/icons', [AdminIcon::class, 'index'])->name('icon.index');
 
 
-        //setting
-        Route::get('/settings', [AdminSetting::class, 'index'])->name('setting.index');
+        // setting trang chủ
+        Route::get('/settings', [AdminHomeHero::class, 'index'])
+            ->name('setting.index');
 
-        Route::get('home-hero', [HomeHeroController::class, 'index'])->name('home-hero.index');
-        Route::post('home-hero/update', [HomeHeroController::class, 'updateHero'])->name('home-hero.update');
-        Route::post('home-hero/slides', [HomeHeroController::class, 'storeSlide'])->name('home-hero.slides.store');
-        Route::put('home-hero/slides/{slide}', [HomeHeroController::class, 'updateSlide'])->name('home-hero.slides.update');
-        Route::delete('home-hero/slides/{slide}', [HomeHeroController::class, 'destroySlide'])->name('home-hero.slides.destroy');
-        Route::post('home-hero/stats', [HomeHeroController::class, 'storeStat'])->name('home-hero.stats.store');
-        Route::put('home-hero/stats/{stat}', [HomeHeroController::class, 'updateStat'])
+        // hero
+        Route::post('/home-hero/update', [AdminHomeHero::class, 'updateHero'])
+            ->name('home-hero.update');
+
+        Route::post('/home-hero/slides', [AdminHomeHero::class, 'storeSlide'])
+            ->name('home-hero.slides.store');
+
+        Route::put('/home-hero/slides/{slide}', [AdminHomeHero::class, 'updateSlide'])
+            ->name('home-hero.slides.update');
+
+        Route::delete('/home-hero/slides/{slide}', [AdminHomeHero::class, 'destroySlide'])
+            ->name('home-hero.slides.destroy');
+
+        Route::post('/home-hero/stats', [AdminHomeHero::class, 'storeStat'])
+            ->name('home-hero.stats.store');
+
+        Route::put('/home-hero/stats/{stat}', [AdminHomeHero::class, 'updateStat'])
             ->name('home-hero.stats.update');
 
-        Route::delete('home-hero/stats/{stat}', [HomeHeroController::class, 'destroyStat'])
+        Route::delete('/home-hero/stats/{stat}', [AdminHomeHero::class, 'destroyStat'])
             ->name('home-hero.stats.destroy');
 
+        // feature box
+        Route::post('/home-feature-boxes', [AdminHomeHero::class, 'storeFeatureBox'])
+            ->name('home-feature-boxes.store');
 
-        Route::get('quan-ly-kho', [HomeHeroController::class, 'index'])->name('home-hero.index');
+        Route::put('/home-feature-boxes/{homeFeatureBox}', [AdminHomeHero::class, 'updateFeatureBox'])
+            ->name('home-feature-boxes.update');
 
+        Route::delete('/home-feature-boxes/{homeFeatureBox}', [AdminHomeHero::class, 'destroyFeatureBox'])
+            ->name('home-feature-boxes.destroy');
 
+        // occasion category
+        Route::post('/home-occasion-categories', [AdminHomeHero::class, 'storeOccasionCategory'])
+            ->name('home-occasion-categories.store');
+
+        Route::put('/home-occasion-categories/{homeOccasionCategory}', [AdminHomeHero::class, 'updateOccasionCategory'])
+            ->name('home-occasion-categories.update');
+
+        Route::delete('/home-occasion-categories/{homeOccasionCategory}', [AdminHomeHero::class, 'destroyOccasionCategory'])
+            ->name('home-occasion-categories.destroy');
+
+        // promo banner
+        Route::post('/home-promo-banners', [AdminHomeHero::class, 'storePromoBanner'])
+            ->name('home-promo-banners.store');
+
+        Route::put('/home-promo-banners/{homePromoBanner}', [AdminHomeHero::class, 'updatePromoBanner'])
+            ->name('home-promo-banners.update');
+
+        Route::delete('/home-promo-banners/{homePromoBanner}', [AdminHomeHero::class, 'destroyPromoBanner'])
+            ->name('home-promo-banners.destroy');
     });
 
 });
@@ -104,6 +168,7 @@ Route::prefix('/')->name('frontend.')->group(function () {
     Route::get('/lien-he', [FrontendContact::class, 'index'])->name('contact.index');
 
     Route::get('/tin-tuc&cam-nang', [FrontendBlog::class, 'index'])->name('blog.index');
+    Route::get('/tin-tuc&cam-nang/{slug}', [FrontendBlog::class, 'show'])->name('blog.show');
 
 
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Services\HomeHeroService;
+use App\Services\Settings\HomeHeroService;
 
 class SettingController extends Controller
 {

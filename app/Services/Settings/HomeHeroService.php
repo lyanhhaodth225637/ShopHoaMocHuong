@@ -1,12 +1,18 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Settings;
 
 use App\Models\HomeHeroSetting;
 use App\Models\HomeHeroSlide;
 use App\Models\HomeHeroStat;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Category;
+use App\Models\HomeFeatureBox;
+
+use App\Models\HomeOccasionCategory;
+use App\Models\HomePromoBanner;
+;
 
 class HomeHeroService
 {
@@ -14,11 +20,31 @@ class HomeHeroService
     {
         return [
             'hero' => HomeHeroSetting::first(),
+
             'slides' => HomeHeroSlide::orderBy('sort_order')
                 ->orderBy('id')
                 ->get(),
+
             'stats' => HomeHeroStat::orderBy('sort_order')
                 ->orderBy('id')
+                ->get(),
+
+            'featureBoxes' => HomeFeatureBox::orderBy('sort_order')
+                ->orderByDesc('id')
+                ->get(),
+
+            'occasionCategories' => HomeOccasionCategory::with('category')
+                ->orderBy('sort_order')
+                ->orderByDesc('id')
+                ->get(),
+
+            'promoBanners' => HomePromoBanner::orderBy('sort_order')
+                ->orderByDesc('id')
+                ->get(),
+
+            'categories' => Category::where('is_active', true)
+                ->orderBy('sort_order')
+                ->orderBy('name')
                 ->get(),
         ];
     }
@@ -32,6 +58,20 @@ class HomeHeroService
                 ->orderBy('id')
                 ->get(),
             'heroStats' => HomeHeroStat::where('is_active', true)
+                ->orderBy('sort_order')
+                ->orderBy('id')
+                ->get(),
+            'featureBoxes' => HomeFeatureBox::where('is_active', true)
+                ->orderBy('sort_order')
+                ->orderBy('id')
+                ->get(),
+
+            'occasionCategories' => HomeOccasionCategory::where('is_active', true)
+                ->orderBy('sort_order')
+                ->orderBy('id')
+                ->get(),
+
+            'promoBanners' => HomePromoBanner::where('is_active', true)
                 ->orderBy('sort_order')
                 ->orderBy('id')
                 ->get(),
@@ -141,5 +181,5 @@ class HomeHeroService
             Storage::disk('public')->delete($path);
         }
     }
-    
+
 }

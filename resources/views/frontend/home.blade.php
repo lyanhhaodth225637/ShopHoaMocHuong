@@ -137,149 +137,69 @@
 
     </section>
 
-    <section style="background:#fff;padding:28px 0;border-bottom:1px solid #f0f0f0;">
-        <div class="container">
-            <div class="row g-4">
+    @if(isset($featureBoxes) && $featureBoxes->count())
+        <section style="background:#fff;padding:28px 0;border-bottom:1px solid #f0f0f0;">
+            <div class="container">
+                <div class="row g-4">
+                    @foreach($featureBoxes as $featureBox)
+                        <div class="col-6 col-md-3">
+                            <a href="{{ $featureBox->link_url ?? '#' }}" class="feature-box text-decoration-none"
+                                @if($featureBox->is_external) target="_blank" rel="noopener noreferrer" @endif>
 
-                <div class="col-6 col-md-3">
-                    <a href="{{ route('frontend.product.index') }}" class="feature-box text-decoration-none">
-                        <div class="feature-icon">
-                            <i class="fas fa-seedling"></i>
-                        </div>
-                        <div>
-                            <div class="feature-title">Sản phẩm đa dạng</div>
-                            <div class="feature-desc">Hoa tươi, cây cảnh, chậu & phụ kiện</div>
-                        </div>
-                    </a>
-                </div>
+                                <div class="feature-icon">
+                                    @if($featureBox->icon)
+                                        <i class="{{ $featureBox->icon }}"></i>
+                                    @endif
+                                </div>
 
-                <div class="col-6 col-md-3">
-                    <a href="{{ route('frontend.product.index') }}" class="feature-box text-decoration-none">
-                        <div class="feature-icon">
-                            <i class="fas fa-gift"></i>
-                        </div>
-                        <div>
-                            <div class="feature-title">Quà tặng theo dịp</div>
-                            <div class="feature-desc">Sinh nhật, khai trương, cưới hỏi, lễ tết</div>
-                        </div>
-                    </a>
-                </div>
+                                <div>
+                                    <div class="feature-title">
+                                        {{ $featureBox->title }}
+                                    </div>
 
-                <div class="col-6 col-md-3">
-                    <a href="https://zalo.me/0909123456" target="_blank" rel="noopener noreferrer"
-                        class="feature-box text-decoration-none">
-                        <div class="feature-icon">
-                            <i class="fas fa-palette"></i>
-                        </div>
-                        <div>
-                            <div class="feature-title">Thiết kế theo yêu cầu</div>
-                            <div class="feature-desc">Tư vấn mẫu hoa, phối màu theo ngân sách</div>
-                        </div>
-                    </a>
-                </div>
+                                    <div class="feature-desc">
+                                        {{ $featureBox->description }}
+                                    </div>
+                                </div>
 
-                <div class="col-6 col-md-3">
-                    <a href="https://zalo.me/0909123456" target="_blank" rel="noopener noreferrer"
-                        class="feature-box text-decoration-none">
-                        <div class="feature-icon">
-                            <i class="fas fa-comments"></i>
+                            </a>
                         </div>
-                        <div>
-                            <div class="feature-title">Tư vấn nhanh qua Zalo</div>
-                            <div class="feature-desc">Hỗ trợ đặt hoa, chậu, đồ gỗ & phụ kiện</div>
-                        </div>
-                    </a>
-                </div>
-
-            </div>
-        </div>
-    </section>
-    <section class="section-py" hidden>
-        <div class="container">
-            <div class="text-center mb-5">
-                <div class="section-label">Danh mục</div>
-                <h2 class="section-title">Khám phá theo dịp</h2>
-                <div class="divider-leaf mx-auto"></div>
-            </div>
-            <div class="row g-3">
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="#" class="cat-card">
-                        <div class="cat-icon">💍</div>
-                        <span>Hoa cưới</span>
-                    </a>
-                </div>
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="#" class="cat-card">
-                        <div class="cat-icon">🎂</div>
-                        <span>Sinh nhật</span>
-                    </a>
-                </div>
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="#" class="cat-card">
-                        <div class="cat-icon">🏪</div>
-                        <span>Khai trương</span>
-                    </a>
-                </div>
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="#" class="cat-card">
-                        <div class="cat-icon">🎓</div>
-                        <span>Tốt nghiệp</span>
-                    </a>
-                </div>
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="#" class="cat-card">
-                        <div class="cat-icon">🌸</div>
-                        <span>Lan hồ điệp</span>
-                    </a>
-                </div>
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="#" class="cat-card">
-                        <div class="cat-icon">🎁</div>
-                        <span>Quà tặng</span>
-                    </a>
-                </div>
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="#" class="cat-card">
-                        <div class="cat-icon">🪴</div>
-                        <span>Cây văn phòng</span>
-                    </a>
-                </div>
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="#" class="cat-card">
-                        <div class="cat-icon">🧺</div>
-                        <span>Giỏ quà tết</span>
-                    </a>
-                </div>
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="#" class="cat-card">
-                        <div class="cat-icon">🍰</div>
-                        <span>Bánh kem</span>
-                    </a>
-                </div>
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="#" class="cat-card">
-                        <div class="cat-icon">🍓</div>
-                        <span>Giỏ trái cây</span>
-                    </a>
-                </div>
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="#" class="cat-card">
-                        <div class="cat-icon">🕯️</div>
-                        <span>Hoa sáp</span>
-                    </a>
-                </div>
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="#" class="cat-card">
-                        <div class="cat-icon">🌹</div>
-                        <span>Hoa độc đáo</span>
-                    </a>
+                    @endforeach
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    @endif
+
+    @if(isset($occasionCategories) && $occasionCategories->count())
+        <section class="section-py">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <div class="section-label">Danh mục</div>
+                    <h2 class="section-title">Khám phá theo dịp</h2>
+                    <div class="divider-leaf mx-auto"></div>
+                </div>
+
+                <div class="row g-3">
+                    @foreach($occasionCategories as $occasionCategory)
+                        <div class="col-6 col-sm-4 col-lg-2">
+                            <a href="{{ $occasionCategory->link_url ?? '#' }}" class="cat-card">
+                                <div class="cat-icon">
+                                    <i class=" {{ $occasionCategory->icon }}"></i>
+                                </div>
+
+                                <span>
+                                    {{ $occasionCategory->title }}
+                                </span>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
     <!-- ═══════════════════════════════════════
-                                                                                                             FEATURED PRODUCTS
-                                                                                                            ═══════════════════════════════════════ -->
+                                                                                                                                             FEATURED PRODUCTS
+                                                                                                                                            ═══════════════════════════════════════ -->
     <section class="section-py bg-pale">
         <div class="container">
             <div class="d-flex align-items-end justify-content-between mb-4">
@@ -295,9 +215,9 @@
             </div>
 
             <!-- Filter tabs -->
-            <ul class="nav filter-tabs mb-4 gap-2 flex-wrap" role="tablist">
+            <ul class="nav filter-tabs mb-4 gap-2 flex-nowrap overflow-auto product-tabs-scroll" role="tablist">
                 @foreach ($parentCategories as $parentCategory)
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item flex-shrink-0" role="presentation">
                         <button class="nav-link {{ $loop->first ? 'active' : '' }}" id="product-tab-{{ $parentCategory->id }}"
                             data-bs-toggle="tab" data-bs-target="#product-category-{{ $parentCategory->id }}" type="button"
                             role="tab">
@@ -388,76 +308,121 @@
 
 
     <!-- ═══════════════════════════════════════
-                                                                                                             PROMO BANNERS
-                                                                                            ═══════════════════════════════════════ -->
-    <section class="section-py">
-        <div class="container">
-            <div class="row g-3">
-                <!-- Big banner -->
-                <div class="col-md-6">
-                    <div class="promo-banner promo-banner-1" style="min-height:240px;">
-                        <div class="promo-banner-content">
-                            <div
-                                style="font-size:.75rem;color:#8dd5d7;font-weight:600;letter-spacing:2px;text-transform:uppercase;">
-                                Ưu đãi đặc biệt</div>
-                            <h3 style="color:#fff;font-family:'Playfair Display',serif;margin:10px 0;">Hoa cưới trọn
-                                gói<br><em>Giảm
-                                    25%</em></h3>
-                            <p style="color:#b2e8ea;font-size:.85rem;margin-bottom:18px;">Dịch vụ trang trí đám cưới từ
-                                A-Z. Đặt lịch
-                                trước 30 ngày.</p>
-                            <a href="#" style="color:#f0c88c;font-size:.82rem;font-weight:600;text-decoration:none;">Đặt
-                                ngay
-                                →</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Two small banners -->
-                <div class="col-md-6">
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <div class="promo-banner promo-banner-2" style="min-height:110px;">
-                                <div class="promo-banner-content" style="padding:20px 24px;">
-                                    <div
-                                        style="font-size:.72rem;color:#f0c8a0;font-weight:600;letter-spacing:2px;text-transform:uppercase;">
-                                        Mỗi ngày</div>
-                                    <h5 style="color:#fff;font-family:'Playfair Display',serif;margin:6px 0 8px;">Combo
-                                        hoa + bánh
-                                        kem<br>chỉ từ <span style="color:#f0c88c;">599.000đ</span></h5>
-                                    <a href="#"
-                                        style="color:#f0c88c;font-size:.82rem;font-weight:600;text-decoration:none;">Đặt
-                                        ngay
-                                        →</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="promo-banner promo-banner-3" style="min-height:110px;">
-                                <div class="promo-banner-content" style="padding:20px 24px;">
-                                    <div
-                                        style="font-size:.72rem;color:#a0b8f0;font-weight:600;letter-spacing:2px;text-transform:uppercase;">
-                                        Tặng kèm</div>
-                                    <h5 style="color:#fff;font-family:'Playfair Display',serif;margin:6px 0 8px;">Thiệp
-                                        & ruy-băng miễn
-                                        phí<br>cho mọi đơn từ <span style="color:#a0c8f0;">200.000đ</span></h5>
-                                    <a href="#"
-                                        style="color:#a0c8f0;font-size:.82rem;font-weight:600;text-decoration:none;">Tìm
-                                        hiểu
-                                        →</a>
-                                </div>
-                            </div>
-                        </div>
+                                                                                                                                             PROMO BANNERS
+                                                                                                                            ═══════════════════════════════════════ -->
+    @if(isset($promoBanners) && $promoBanners->count())
+        @php
+            $bigBanner = $promoBanners->where('size', 'big')->first();
+            $smallBanners = $promoBanners->where('size', 'small')->take(2);
+        @endphp
 
-                    </div>
+        <section class="section-py">
+            <div class="container">
+                <div class="row g-3">
+
+                    {{-- Big banner --}}
+                    @if($bigBanner)
+                        <div class="col-md-6">
+                            <div class="promo-banner {{ $bigBanner->css_class }}" style="
+                                                                                min-height:240px;
+                                                                                @if($bigBanner->image)
+                                                                                    background-image:url('{{ asset('storage/' . $bigBanner->image) }}');
+                                                                                @endif
+                                                                             ">
+                                <div class="promo-banner-content">
+                                    @if($bigBanner->badge_text)
+                                        <div
+                                            style="font-size:.75rem;color:#8dd5d7;font-weight:600;letter-spacing:2px;text-transform:uppercase;">
+                                            {{ $bigBanner->badge_text }}
+                                        </div>
+                                    @endif
+
+                                    <h3 style="color:#fff;font-family:'Playfair Display',serif;margin:10px 0;">
+                                        {{ $bigBanner->title }}
+
+                                        @if($bigBanner->highlight_text)
+                                            <br>
+                                            <em>{{ $bigBanner->highlight_text }}</em>
+                                        @endif
+                                    </h3>
+
+                                    @if($bigBanner->description)
+                                        <p style="color:#b2e8ea;font-size:.85rem;margin-bottom:18px;">
+                                            {{ $bigBanner->description }}
+                                        </p>
+                                    @endif
+
+                                    @if($bigBanner->button_text)
+                                        <a href="{{ $bigBanner->button_url ?? '#' }}"
+                                            style="color:#f0c88c;font-size:.82rem;font-weight:600;text-decoration:none;">
+                                            {{ $bigBanner->button_text }}
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- Two small banners --}}
+                    @if($smallBanners->count())
+                        <div class="col-md-6">
+                            <div class="row g-3">
+                                @foreach($smallBanners as $banner)
+                                    <div class="col-12">
+                                        <div class="promo-banner {{ $banner->css_class }}" style="
+                                                                                                            min-height:110px;
+                                                                                                            @if($banner->image)
+                                                                                                                background-image:url('{{ asset('storage/' . $banner->image) }}');
+                                                                                                            @endif
+                                                                                                         ">
+                                            <div class="promo-banner-content" style="padding:20px 24px;">
+                                                @if($banner->badge_text)
+                                                    <div
+                                                        style="font-size:.72rem;color:#f0c8a0;font-weight:600;letter-spacing:2px;text-transform:uppercase;">
+                                                        {{ $banner->badge_text }}
+                                                    </div>
+                                                @endif
+
+                                                <h5 style="color:#fff;font-family:'Playfair Display',serif;margin:6px 0 8px;">
+                                                    {{ $banner->title }}
+
+                                                    @if($banner->highlight_text)
+                                                        <br>
+                                                        <span style="color:#f0c88c;">
+                                                            {{ $banner->highlight_text }}
+                                                        </span>
+                                                    @endif
+                                                </h5>
+
+                                                @if($banner->description)
+                                                    <p style="color:#b2e8ea;font-size:.8rem;margin-bottom:8px;">
+                                                        {{ $banner->description }}
+                                                    </p>
+                                                @endif
+
+                                                @if($banner->button_text)
+                                                    <a href="{{ $banner->button_url ?? '#' }}"
+                                                        style="color:#f0c88c;font-size:.82rem;font-weight:600;text-decoration:none;">
+                                                        {{ $banner->button_text }}
+                                                    </a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    @endif
 
 
     <!-- ═══════════════════════════════════════
-    TESTIMONIALS
-     ═══════════════════════════════════════ -->
+                                    TESTIMONIALS
+                                     ═══════════════════════════════════════ -->
     <section class="section-py bg-pale">
         <div class="container">
             <div class="text-center mb-5">
@@ -522,8 +487,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                                                                                                             BLOG / TIN TỨC
-                                                                                                            ═══════════════════════════════════════ -->
+                            BLOG / TIN TỨC
+                            ═══════════════════════════════════════ -->
     <section class="section-py">
         <div class="container">
             <div class="d-flex align-items-end justify-content-between mb-4">
@@ -578,9 +543,9 @@
 
 
     <!-- ═══════════════════════════════════════
-                                                                                                             NEWSLETTER
-                                                                                                            ═══════════════════════════════════════ -->
-    <section class="py-5">
+                             NEWSLETTER
+                            ═══════════════════════════════════════ -->
+    <section class="py-5" hidden>
         <div class="container">
             <div class="newsletter-section p-4 p-md-5 text-center">
                 <div class="row justify-content-center">
