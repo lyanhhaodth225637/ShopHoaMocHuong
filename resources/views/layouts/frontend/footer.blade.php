@@ -60,7 +60,7 @@
                 <h6>Liên hệ</h6>
                 <ul class="list-unstyled"
                     style="display:flex;flex-direction:column;gap:10px;font-size:.84rem;color:#7ec8ca;">
-                    <li><i class="bi bi-geo-alt me-2"></i>123 Đường Hoa, Q. Tân Bình, TP.HCM</li>
+                    <li><i class="bi bi-geo-alt me-2"></i>Số 223, đường cặp rạch Gòi Lớn, khóm Mỹ Phú, phường Long Xuyên, tỉnh An Giang</li>
                     <li><a href="tel:0888796364"><i class="bi bi-telephone me-2"></i>08.88.79.63.64</a></li>
                     <li><a href="mailto:hochuong@florist.vn"><i class="bi bi-envelope me-2"></i>hochuong@florist.vn</a>
                     </li>

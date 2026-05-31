@@ -460,7 +460,7 @@
             {{-- Logo --}}
             <a href="{{ route('frontend.home.index') }}" class="brand-name me-3 flex-shrink-0">
                 <img src="{{ asset('assets/img/logo/logo.jpeg') }}" alt="Mộc Hương"
-                    style="height:52px;width:52px;object-fit:cover;border-radius:50%;">
+                    style="height:30px;width:30px;object-fit:cover;border-radius:50%;">
                 <span class="brand-text">Mộc <em>Hương</em></span>
             </a>
 
