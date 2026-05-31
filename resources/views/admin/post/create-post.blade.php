@@ -4,7 +4,7 @@
             @csrf
 
             <div class="modal-header">
-                <h5 class="modal-title">Them bai viet</h5>
+                <h5 class="modal-title">Thêm bài viết</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
@@ -42,9 +42,9 @@
                             <label class="form-label">Loai bai viet</label>
                             <select name="type" class="form-select @error('type') is-invalid @enderror">
                                 <option value="news" @selected(old('type', 'news') === 'news')>Tin tuc</option>
-                                <option value="tip" @selected(old('type') === 'tip')>Meo</option>
-                                <option value="guide" @selected(old('type') === 'guide')>Huong dan</option>
-                                <option value="event" @selected(old('type') === 'event')>Su kien</option>
+                                <option value="tip" @selected(old('type') === 'tip')>Mẹo</option>
+                                <option value="guide" @selected(old('type') === 'guide')>Hướng dẫn</option>
+                                <option value="event" @selected(old('type') === 'event')>Sự kiện</option>
                             </select>
                             @error('type')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -54,11 +54,11 @@
 
                     <div class="col-lg-3">
                         <div class="mb-3">
-                            <label class="form-label">Trang thai</label>
+                            <label class="form-label">Trạng thái</label>
                             <select name="status" class="form-select @error('status') is-invalid @enderror">
-                                <option value="draft" @selected(old('status', 'draft') === 'draft')>Ban nhap</option>
-                                <option value="published" @selected(old('status') === 'published')>Da dang</option>
-                                <option value="hidden" @selected(old('status') === 'hidden')>An</option>
+                                <option value="draft" @selected(old('status', 'draft') === 'draft')>Nháp</option>
+                                <option value="published" @selected(old('status') === 'published')>Đăng</option>
+                                <option value="hidden" @selected(old('status') === 'hidden')>Ẩn</option>
                             </select>
                             @error('status')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -68,7 +68,7 @@
 
                     <div class="col-lg-3">
                         <div class="mb-3">
-                            <label class="form-label">Ngay dang</label>
+                            <label class="form-label">Ngày Đăng</label>
                             <input type="datetime-local" name="published_at" class="form-control @error('published_at') is-invalid @enderror" value="{{ old('published_at') }}">
                             @error('published_at')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -88,7 +88,7 @@
 
                     <div class="col-lg-6">
                         <div class="mb-3">
-                            <label class="form-label">Thumbnail</label>
+                            <label class="form-label">Ảnh chính</label>
                             <input type="file" name="thumbnail" accept="image/*" class="form-control @error('thumbnail') is-invalid @enderror">
                             @error('thumbnail')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -98,7 +98,7 @@
 
                     <div class="col-lg-6">
                         <div class="mb-3">
-                            <label class="form-label">Anh phu</label>
+                            <label class="form-label">Ảnh phụ</label>
                             <input type="file" name="images[]" accept="image/*" multiple class="form-control @error('images') is-invalid @enderror @error('images.*') is-invalid @enderror">
                             @error('images')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -111,7 +111,7 @@
 
                     <div class="col-lg-6">
                         <div class="mb-3">
-                            <label class="form-label">Tom tat</label>
+                            <label class="form-label">Tóm tắt</label>
                             <textarea name="excerpt" rows="3" class="form-control @error('excerpt') is-invalid @enderror">{{ old('excerpt') }}</textarea>
                             @error('excerpt')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -121,7 +121,7 @@
 
                     <div class="col-lg-6">
                         <div class="mb-3">
-                            <label class="form-label">Noi dung</label>
+                            <label class="form-label">Nội dung</label>
                             <textarea name="content" rows="6" class="form-control @error('content') is-invalid @enderror">{{ old('content') }}</textarea>
                             @error('content')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -153,7 +153,7 @@
                         <label class="form-check form-switch">
                             <input type="hidden" name="is_active" value="0">
                             <input class="form-check-input" type="checkbox" name="is_active" value="1" @checked(old('is_active', true))>
-                            <span class="form-check-label">Hien thi</span>
+                            <span class="form-check-label">Hiển thị</span>
                         </label>
                     </div>
 
@@ -161,15 +161,15 @@
                         <label class="form-check form-switch">
                             <input type="hidden" name="is_featured" value="0">
                             <input class="form-check-input" type="checkbox" name="is_featured" value="1" @checked(old('is_featured'))>
-                            <span class="form-check-label">Noi bat</span>
+                            <span class="form-check-label">Nổi bật</span>
                         </label>
                     </div>
                 </div>
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-link link-secondary" data-bs-dismiss="modal">Huy</button>
-                <button type="submit" class="btn btn-primary ms-auto">Luu bai viet</button>
+                <button type="button" class="btn btn-link link-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="submit" class="btn btn-primary ms-auto">Lưu bài viết</button>
             </div>
         </form>
     </div>

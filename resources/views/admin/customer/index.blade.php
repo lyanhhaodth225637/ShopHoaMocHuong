@@ -2,7 +2,7 @@
 
 @section('admin-content')
     <div class="container mt-4">
-        <h1 class="mb-4">Khách hàng - Mộc Hương Flower Shop</h1>
+        <h1 class="mb-4">Khách hàng - Hoa Gỗ Mộc Hương</h1>
 
        <h1>chức năng chưa phát triễn</h1>
 

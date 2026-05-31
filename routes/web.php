@@ -43,7 +43,7 @@ Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->nam
 // });
 
 
-Route::prefix('admin')->middleware(['auth', 'single_session', 'role:super-admin|admin'])->name('admin.')->group(function () {
+Route::prefix('hoagomochuong-admin-6364')->middleware(['auth', 'single_session', 'role:super-admin|admin'])->name('admin.')->group(function () {
     //2FA
     Route::get('/2fa/setup', [TwoFactorController::class, 'setup'])->name('2fa.setup');
     Route::post('/2fa/enable', [TwoFactorController::class, 'enable'])->name('2fa.enable');
@@ -51,7 +51,7 @@ Route::prefix('admin')->middleware(['auth', 'single_session', 'role:super-admin|
     Route::get('/2fa/challenge', [TwoFactorController::class, 'challenge'])->name('2fa.challenge');
     Route::post('/2fa/verify', [TwoFactorController::class, 'verify'])->name('2fa.verify');
 
-    Route::middleware('')->group(function () {
+    Route::middleware('2fa')->group(function () {
         Route::get('/', [AdminDashboard::class, 'index'])->name('index');
 
         //category
@@ -189,7 +189,7 @@ Route::prefix('/user')->name('user.')->group(function () {
 
 
 
-Route::prefix('super-admin')
+Route::prefix('hoagomochuong-super-admin-6364')
     ->middleware(['auth', 'single_session', 'role:super-admin'])
     ->name('admin.')
     ->group(function () {
@@ -201,7 +201,7 @@ Route::prefix('super-admin')
         Route::get('/2fa/challenge', [TwoFactorController::class, 'challenge'])->name('2fa.challenge');
         Route::post('/2fa/verify', [TwoFactorController::class, 'verify'])->name('2fa.verify');
 
-        Route::middleware('')->group(function () {
+        Route::middleware('2fa')->group(function () {
             Route::get('/', [SPAdminHome::class, 'index'])->name('dashboard');
 
             Route::prefix('warehouse')->name('warehouse.')->group(function () {

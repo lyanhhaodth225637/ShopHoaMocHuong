@@ -1,4 +1,11 @@
 @extends('layouts.frontend.app')
+@section('meta_description', $product->meta_description ?? $product->short_description ?? ('Khám phá sản phẩm ' . $product->name . ' tại Hoa Mộc Hương với thiết kế tinh tế và giao hàng nhanh tại Long Xuyên.'))
+@section('meta_keywords', $product->meta_keywords ?? ($product->name . ', hoa tươi Long Xuyên, shop hoa Mộc Hương'))
+@section('canonical', $product->canonical_url ?? route('frontend.product.show', ['id' => $product->id, 'slug' => $product->slug]))
+@section('og_title', $product->meta_title ?? $product->name)
+@section('og_description', $product->meta_description ?? $product->short_description ?? ('Sản phẩm ' . $product->name . ' tại Hoa Mộc Hương.'))
+@section('og_image', $product->og_image ? asset('storage/' . $product->og_image) : ($product->main_image ? asset('storage/' . $product->main_image) : asset('assets/img/logo.png')))
+@section('og_type', 'product')
 
 @section('title', $product->meta_title ?? $product->name)
 

@@ -2,26 +2,57 @@
 <html lang="vi" data-bs-theme="light">
 
 <head>
+    @php
+        $siteName = 'Hoa Mộc Hương';
+        $defaultTitle = 'Hoa Mộc Hương - Hoa tươi, sen đá, cây cảnh tại Long Xuyên';
+        $pageTitle = trim($__env->yieldContent('title'));
+        $seoTitle = $pageTitle !== '' ? $pageTitle . ' - ' . $siteName : $defaultTitle;
+        $metaDescription = trim($__env->yieldContent('meta_description')) ?: 'Hoa Mộc Hương chuyên hoa tươi, sen đá, cây cảnh, hoa sự kiện và quà tặng tại Long Xuyên.';
+        $metaKeywords = trim($__env->yieldContent('meta_keywords')) ?: 'hoa tươi Long Xuyên, sen đá Long Xuyên, cây cảnh mini, Hoa Mộc Hương';
+        $canonicalUrl = trim($__env->yieldContent('canonical')) ?: url()->current();
+        $ogTitle = trim($__env->yieldContent('og_title')) ?: $seoTitle;
+        $ogDescription = trim($__env->yieldContent('og_description')) ?: $metaDescription;
+        $ogImage = trim($__env->yieldContent('og_image')) ?: asset('assets/img/logo/logo.jpeg');
+        $ogType = trim($__env->yieldContent('og_type')) ?: 'website';
+        $twitterCard = trim($__env->yieldContent('twitter_card')) ?: 'summary_large_image';
+    @endphp
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Moc Huong Flower Shop</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- Bootstrap 5 -->
+    <title>{{ $seoTitle }}</title>
+
+    <meta name="description" content="{{ $metaDescription }}">
+    <meta name="keywords" content="{{ $metaKeywords }}">
+    <meta name="robots" content="@yield('robots', 'index, follow')">
+    <meta name="author" content="{{ $siteName }}">
+
+    <link rel="canonical" href="{{ $canonicalUrl }}">
+
+    <meta property="og:locale" content="vi_VN">
+    <meta property="og:site_name" content="{{ $siteName }}">
+    <meta property="og:title" content="{{ $ogTitle }}">
+    <meta property="og:description" content="{{ $ogDescription }}">
+    <meta property="og:image" content="{{ $ogImage }}">
+    <meta property="og:url" content="{{ $canonicalUrl }}">
+    <meta property="og:type" content="{{ $ogType }}">
+
+    <meta name="twitter:card" content="{{ $twitterCard }}">
+    <meta name="twitter:title" content="{{ $ogTitle }}">
+    <meta name="twitter:description" content="{{ $ogDescription }}">
+    <meta name="twitter:image" content="{{ $ogImage }}">
+
+    <link rel="icon" href="{{ asset('assets/img/logo/logo.jpeg') }}">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
-    <!-- Cartzilla Theme -->
-    <link rel="stylesheet" href="assets/css/theme.min.css" />
-    <!-- Cartzilla Icons -->
-    <link rel="stylesheet" href="assets/icons/cartzilla-icons.min.css" />
-    <!-- Bootstrap Icons fallback -->
+    <link rel="stylesheet" href="{{ asset('assets/css/theme.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/icons/cartzilla-icons.min.css') }}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-
-    <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap"
         rel="stylesheet" />
-
     <link rel="stylesheet" href="{{ asset('assets/css/frontend/home.css') }}">
-
     <link rel="stylesheet" href="{{ asset('font-awesome/css/all.min.css') }}">
 </head>
 
@@ -37,14 +68,12 @@
 
     @include('layouts.frontend.footer')
 
-    <!-- Scroll to top -->
     <button onclick="window.scrollTo({top:0,behavior:'smooth'})"
         style="position:fixed;bottom:24px;right:24px;width:44px;height:44px;border-radius:50%;background:var(--green-main);color:#fff;border:none;box-shadow:0 4px 16px rgba(0,0,0,.2);font-size:1.1rem;cursor:pointer;z-index:999;display:flex;align-items:center;justify-content:center;"
         title="Len dau trang">
         <i class="bi bi-chevron-up"></i>
     </button>
 
-    <!-- Zalo float button -->
     <a href="https://zalo.me/0888796364" target="_blank"
         style="position:fixed;bottom:80px;right:24px;width:50px;height:50px;border-radius:50%;background:#0068ff;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 4px 16px rgba(0,0,0,.2);text-decoration:none;z-index:999;"
         title="Chat Zalo">💬</a>

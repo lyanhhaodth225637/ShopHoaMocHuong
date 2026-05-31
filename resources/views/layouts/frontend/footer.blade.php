@@ -3,7 +3,7 @@
         <div class="row g-4">
             <!-- Brand -->
             <div class="col-lg-3 col-md-6">
-                <div class="d-flex align-items-center gap-2 mb-3"><img src="{{ asset('assets/tablar-logo.png    ') }}" alt="Mộc Hương"
+                <div class="d-flex align-items-center gap-2 mb-3"><img src="{{ asset('assets/img/logo/logo.jpeg') }}" alt="Mộc Hương"
                         style="height:48px;width:48px;object-fit:cover;border-radius:50%;"><span
                         style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#fff;">Mộc
                         <em style="color:#b2e8ea;">Hương</em></span></div>

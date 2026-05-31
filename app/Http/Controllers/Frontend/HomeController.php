@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\ProductService;
 use App\Services\Settings\HomeHeroService;
 use App\Models\Category;
+use App\Models\Post;
 use App\Models\Product;
 
 class HomeController extends Controller
@@ -33,6 +34,32 @@ class HomeController extends Controller
     $featureBoxes = $heroData['featureBoxes'] ?? collect();
     $occasionCategories = $heroData['occasionCategories'] ?? collect();
     $promoBanners = $heroData['promoBanners'] ?? collect();
+    $featuredPosts = Post::query()
+        ->with(['category', 'user', 'activeImages'])
+        ->where('is_active', true)
+        ->where('status', 'published')
+        ->whereNotNull('published_at')
+        ->where('published_at', '<=', now())
+        ->where('is_featured', true)
+        ->latest('published_at')
+        ->limit(3)
+        ->get();
+
+    // if ($featuredPosts->count() < 3) {
+    //     $featuredPosts = Post::query()
+    //         ->with(['category', 'user', 'activeImages'])
+    //         ->where('is_active', true)
+    //         ->where('status', 'published')
+    //         ->whereNotNull('published_at')
+    //         ->where('published_at', '<=', now())
+    //         ->when($featuredPosts->isNotEmpty(), function ($query) use ($featuredPosts) {
+    //             $query->whereNotIn('id', $featuredPosts->pluck('id'));
+    //         })
+    //         ->latest('published_at')
+    //         ->limit(3 - $featuredPosts->count())
+    //         ->get()
+    //         ->pipe(fn($posts) => $featuredPosts->concat($posts));
+    // }
 
     return view('frontend.home', compact(
         'parentCategories',
@@ -43,7 +70,8 @@ class HomeController extends Controller
         'heroStats',
         'featureBoxes',
         'occasionCategories',
-        'promoBanners'
+        'promoBanners',
+        'featuredPosts'
     ));
 }
     public function show($id, $slug)

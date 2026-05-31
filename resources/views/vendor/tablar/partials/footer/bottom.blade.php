@@ -2,7 +2,7 @@
     <div class="container-xl">
         <div class="row text-center align-items-center flex-row-reverse">
             <div class="col-lg-auto ms-lg-auto">
-                <ul class="list-inline list-inline-dots mb-0">
+                <ul class="list-inline list-inline-dots mb-0" hidden>
                     <li class="list-inline-item"><a href="https://github.com/takielias/tablar" target="_blank"
                                                     class="link-secondary" rel="noopener">Source code</a></li>
                     <li class="list-inline-item">

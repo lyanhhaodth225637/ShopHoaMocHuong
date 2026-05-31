@@ -1,4 +1,7 @@
 @extends('layouts.frontend.app')
+@section('meta_description', 'Xem lại các sản phẩm đã chọn tại Hoa Mộc Hương và liên hệ đặt hàng nhanh qua Zalo, điện thoại hoặc Facebook Messenger.')
+@section('meta_keywords', 'giỏ hàng Hoa Mộc Hương, đặt hoa online, mua hoa Long Xuyên')
+@section('robots', 'noindex, follow')
 
 @section('title', 'Giỏ hàng')
 

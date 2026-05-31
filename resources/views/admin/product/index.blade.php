@@ -2,7 +2,7 @@
 
 @section('admin-content')
     <div class="container mt-4">
-        <h1 class="mb-4">Sản phẩm - Mộc Hương Flower Shop</h1>
+        <h1 class="mb-4">Sản phẩm - Hoa Gỗ Mộc Hương</h1>
 
         <div>
             @include('admin.partials.alert')

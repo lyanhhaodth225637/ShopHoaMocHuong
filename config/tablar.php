@@ -30,7 +30,7 @@ return [
 
         [
             'text' => 'Dashboard',
-            'url' => '/admin',
+            'url' => '/hoagomochuong-admin-6364',
             'icon' => 'ti ti-home',
         ],
 
@@ -38,13 +38,13 @@ return [
 
         [
             'text' => 'Sản phẩm',
-            'url' => '/admin/san-pham',
+            'url' => '/hoagomochuong-admin-6364/san-pham',
             'icon' => 'ti ti-package',
         ],
 
         [
             'text' => 'Danh mục',
-            'url' => 'admin/danh-muc',
+            'url' => 'hoagomochuong-admin-6364/danh-muc',
             'icon' => 'ti ti-category',
         ],
 
@@ -52,13 +52,13 @@ return [
 
         [
             'text' => 'Đơn hàng',
-            'url' => '/admin/orders',
+            'url' => '/hoagomochuong-admin-6364/#',
             'icon' => 'ti ti-shopping-cart',
         ],
 
         [
             'text' => 'Khách hàng',
-            'url' => '/admin/khach-hang',
+            'url' => '/hoagomochuong-admin-6364/khach-hang',
             'icon' => 'ti ti-users',
         ],
 
@@ -66,7 +66,7 @@ return [
 
         [
             'text' => 'Khuyến mãi',
-            'url' => '/admin/promotions',
+            'url' => '/hoagomochuong-admin-6364/#',
             'icon' => 'ti ti-discount',
         ],
 
@@ -74,13 +74,13 @@ return [
 
         [
             'text' => 'Bài viết',
-            'url' => '/admin/bai-viet',
+            'url' => '/hoagomochuong-admin-6364/bai-viet',
             'icon' => 'ti ti-news',
         ],
 
         [
             'text' => 'Thống kê',
-            'url' => '/admin/reports',
+            'url' => '/hoagomochuong-admin-6364/#',
             'icon' => 'ti ti-chart-pie',
         ],
 
@@ -88,14 +88,10 @@ return [
 
         [
             'text' => 'Cài đặt chung',
-            'url' => '/admin/settings',
+            'url' => '/hoagomochuong-admin-6364/settings',
             'icon' => 'ti ti-settings',
         ],
 
-        [
-            'text' => 'Icons',
-            'url' => '/admin/icons',
-            'icon' => 'ti ti-logout',
-        ],
+        
     ],
 ];

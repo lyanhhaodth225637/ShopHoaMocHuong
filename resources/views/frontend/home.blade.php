@@ -1,10 +1,12 @@
 @extends('layouts.frontend.app')
+@section('meta_description', 'Hoa Mộc Hương chuyên hoa tươi, sen đá, cây cảnh và quà tặng tại Long Xuyên. Đặt hoa nhanh, thiết kế theo yêu cầu, giao nội thành trong 2 giờ.')
+@section('meta_keywords', 'hoa tươi Long Xuyên, shop hoa Mộc Hương, đặt hoa online, sen đá Long Xuyên, cây cảnh quà tặng')
+@section('og_image', !empty($hero?->circle_image) ? asset('storage/' . $hero->circle_image) : asset('assets/img/logo.png'))
+@section('title', 'Trang Chủ')
 @section('content')
-
     <div>
         @include('admin.partials.alert')
     </div>
-
     <section class="hero-section">
         {{-- ── Background slider ── --}}
         <div class="hero-bg-slides" id="heroBgSlides">
@@ -497,46 +499,46 @@
                     <h2 class="section-title mb-0">Bí quyết chọn hoa</h2>
                     <div class="divider-leaf"></div>
                 </div>
-                <a href="#" class="btn-outline-green d-none d-md-inline-block">Xem thêm <i
+                <a href="{{ route('frontend.blog.index') }}" class="btn-outline-green d-none d-md-inline-block">Xem thêm <i
                         class="bi bi-arrow-right ms-1"></i></a>
             </div>
             <div class="row g-3">
-                <div class="col-md-4">
-                    <div class="blog-card h-100">
-                        <div class="img-wrap">
-                            <img src="assets/img/blog/05.jpg" alt="Blog" />
-                        </div>
-                        <div class="blog-card-body">
-                            <div class="blog-tag">Cẩm nang hoa</div>
-                            <h5 class="blog-title"><a href="#">10 loại hoa tặng mẹ ý nghĩa nhất nhân dịp 20/10</a></h5>
-                            <div class="blog-meta"><i class="bi bi-calendar3 me-1"></i> 15/10/2024 · 5 phút đọc</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="blog-card h-100">
-                        <div class="img-wrap">
-                            <img src="assets/img/blog/06.jpg" alt="Blog" />
-                        </div>
-                        <div class="blog-card-body">
-                            <div class="blog-tag">Hoa cưới</div>
-                            <h5 class="blog-title"><a href="#">Xu hướng hoa cưới 2025: minimalist & tự nhiên</a></h5>
-                            <div class="blog-meta"><i class="bi bi-calendar3 me-1"></i> 08/10/2024 · 7 phút đọc</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="blog-card h-100">
-                        <div class="img-wrap">
-                            <img src="assets/img/blog/07.jpg" alt="Blog" />
-                        </div>
-                        <div class="blog-card-body">
-                            <div class="blog-tag">Mẹo hay</div>
-                            <h5 class="blog-title"><a href="#">Cách bảo quản hoa tươi lâu hơn tại nhà</a></h5>
-                            <div class="blog-meta"><i class="bi bi-calendar3 me-1"></i> 01/10/2024 · 4 phút đọc</div>
+                @forelse($featuredPosts ?? collect() as $post)
+                    @php
+                        $postImage = $post->thumbnail
+                            ? asset('storage/' . $post->thumbnail)
+                            : ($post->activeImages->first()?->image
+                                ? asset('storage/' . $post->activeImages->first()->image)
+                                : asset('assets/img/logo.png'));
+                        $readTime = max(1, (int) ceil(str_word_count(strip_tags((string) $post->content)) / 200));
+                    @endphp
+                    <div class="col-md-4">
+                        <div class="blog-card h-100">
+                            <div class="img-wrap">
+                                <a href="{{ route('frontend.blog.show', $post->slug) }}">
+                                    <img src="{{ $postImage }}" alt="{{ $post->title }}" />
+                                </a>
+                            </div>
+                            <div class="blog-card-body">
+                                <div class="blog-tag">{{ $post->category->name ?? 'Tin tức' }}</div>
+                                <h5 class="blog-title">
+                                    <a href="{{ route('frontend.blog.show', $post->slug) }}">{{ $post->title }}</a>
+                                </h5>
+                                <div class="blog-meta">
+                                    <i class="bi bi-calendar3 me-1"></i>
+                                    {{ optional($post->published_at ?? $post->created_at)->format('d/m/Y') }}
+                                    · {{ $readTime }} phút đọc
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @empty
+                    <div class="col-12">
+                        <div class="text-center text-muted py-4">
+                            Chưa có bài viết nổi bật để hiển thị.
+                        </div>
+                    </div>
+                @endforelse
             </div>
         </div>
     </section>

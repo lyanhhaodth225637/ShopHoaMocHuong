@@ -1,4 +1,8 @@
 @extends('layouts.frontend.app')
+@section('meta_description', 'Liên hệ Hoa Mộc Hương tại Long Xuyên để đặt hoa tươi, hoa cưới, hoa sinh nhật và quà tặng. Hỗ trợ nhanh qua điện thoại, Zalo, Facebook và Instagram.')
+@section('meta_keywords', 'liên hệ shop hoa, Hoa Mộc Hương, địa chỉ shop hoa Long Xuyên, số điện thoại đặt hoa')
+@section('canonical', route('frontend.contact.index'))
+@section('og_image', asset('assets/img/logo/logo.jpeg'))
 
 @section('title', 'Liên hệ - Mộc Hương Flower')
 
@@ -367,7 +371,7 @@
                 <div class="contact-hero-inner">
                     <img src="{{ asset('assets/img/logo/logo.jpeg') }}" alt="Mộc Hương" class="contact-hero-logo">
                     <div class="contact-hero-text">
-                        <h1>Mộc <em>Hương</em> Flower</h1>
+                        <h1>Mộc Hương</h1>
                         <p>Shop hoa tươi uy tín — Long Xuyên, An Giang</p>
                     </div>
                     <div class="contact-hero-divider"></div>

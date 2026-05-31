@@ -5,21 +5,21 @@
 @section('admin-content')
     @php
         $typeLabels = [
-            'tip' => ['label' => 'Meo', 'class' => 'bg-green-lt'],
-            'news' => ['label' => 'Tin tuc', 'class' => 'bg-blue-lt'],
-            'guide' => ['label' => 'Huong dan', 'class' => 'bg-yellow-lt'],
-            'event' => ['label' => 'Su kien', 'class' => 'bg-purple-lt'],
+            'tip' => ['label' => 'Mẹo', 'class' => 'bg-green-lt'],
+            'news' => ['label' => 'Tin Tức', 'class' => 'bg-blue-lt'],
+            'guide' => ['label' => 'Hướng dẫn', 'class' => 'bg-yellow-lt'],
+            'event' => ['label' => 'Sự kiện', 'class' => 'bg-purple-lt'],
         ];
 
         $statusLabels = [
-            'draft' => ['label' => 'Ban nhap', 'class' => 'bg-warning-lt'],
-            'published' => ['label' => 'Da dang', 'class' => 'bg-success-lt'],
-            'hidden' => ['label' => 'An', 'class' => 'bg-secondary-lt'],
+            'draft' => ['label' => 'Nháp', 'class' => 'bg-warning-lt'],
+            'published' => ['label' => 'Đăng', 'class' => 'bg-success-lt'],
+            'hidden' => ['label' => 'Ẩn', 'class' => 'bg-secondary-lt'],
         ];
     @endphp
 
     <div class="container mt-4">
-        <h1 class="mb-4">Bai viet - Moc Huong Flower Shop</h1>
+        <h1 class="mb-4">Bài Viết - Hoa Gỗ Mộc Hương</h1>
 
         <div>
             @include('admin.partials.alert')
@@ -29,16 +29,16 @@
             <div class="container-xl">
                 <div class="row g-2 align-items-center">
                     <div class="col">
-                        <h2 class="page-title">Bai viet</h2>
+                        <h2 class="page-title">Bài viết</h2>
                     </div>
 
                     <div class="col-12 col-md-auto ms-auto d-print-none">
                         <div class="btn-list">
                             <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-create-post-category">
-                                Them chu de
+                                Thêm chủ đề
                             </a>
                             <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-create-post">
-                                Them bai viet
+                                Thêm bài viết
                             </a>
                         </div>
                     </div>
@@ -55,12 +55,12 @@
                                 <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
                                     <li class="nav-item" role="presentation">
                                         <a href="#tab-post-categories" class="nav-link active" data-bs-toggle="tab" aria-selected="true" role="tab">
-                                            Danh muc bai viet
+                                           Danh mục bài viết
                                         </a>
                                     </li>
                                     <li class="nav-item" role="presentation">
                                         <a href="#tab-posts" class="nav-link" data-bs-toggle="tab" aria-selected="false" role="tab">
-                                            Bai viet
+                                            Bài viết
                                         </a>
                                     </li>
                                 </ul>
@@ -91,12 +91,12 @@
                                         <table class="table card-table table-vcenter text-nowrap datatable" id="postCategoryTable">
                                             <thead>
                                                 <tr>
-                                                    <th>Ten danh muc</th>
+                                                    <th>Tên Danh mục</th>
                                                     <th>Slug</th>
-                                                    <th>Tieu de SEO</th>
-                                                    <th>Thu tu</th>
-                                                    <th>Trang thai</th>
-                                                    <th class="text-end">Thao tac</th>
+                                                    <th>Tiêu đề SEO</th>
+                                                    <th>Thứ tự</th>
+                                                    <th>Trạng thái</th>
+                                                    <th class="text-end">Thao tác</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -125,7 +125,7 @@
                                                         <td class="text-end">
                                                             <div class="dropdown">
                                                                 <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                                    Thao tac
+                                                                    Thao tác
                                                                 </button>
                                                                 <div class="dropdown-menu dropdown-menu-end">
                                                                     <a
@@ -142,10 +142,10 @@
                                                                         data-sort-order="{{ $item->sort_order }}"
                                                                         data-is-active="{{ $item->is_active ? 1 : 0 }}"
                                                                     >
-                                                                        Cap nhat
+                                                                        Cập nhật
                                                                     </a>
                                                                     <a class="dropdown-item text-danger btn-delete-post-category" href="#" data-delete-url="{{ route('admin.post.destroy_category', ['id' => $item->id]) }}">
-                                                                        Xoa
+                                                                        Xóa
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -185,15 +185,15 @@
                                         <table class="table card-table table-vcenter text-nowrap datatable" id="postTable">
                                             <thead>
                                                 <tr>
-                                                    <th>Anh</th>
-                                                    <th>Bai viet</th>
-                                                    <th>Chu de</th>
-                                                    <th>Loai</th>
-                                                    <th>Trang thai</th>
-                                                    <th>Noi bat</th>
-                                                    <th>Luot xem</th>
-                                                    <th>Ngay dang</th>
-                                                    <th class="text-end">Thao tac</th>
+                                                    <th>Ảnh</th>
+                                                    <th>Bài viết</th>
+                                                    <th>Chủ đề</th>
+                                                    <th>Loại</th>
+                                                    <th>Trạng thái</th>
+                                                    <th>Nổi bật</th>
+                                                    <th>Lượt Xem</th>
+                                                    <th>Ngày đăng</th>
+                                                    <th class="text-end">Thao tác</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -236,7 +236,7 @@
                                                         <td class="text-end">
                                                             <div class="dropdown">
                                                                 <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                                                    Thao tac
+                                                                    Thao tác
                                                                 </button>
                                                                 <div class="dropdown-menu dropdown-menu-end">
                                                                     <a
@@ -260,12 +260,12 @@
                                                                         data-thumbnail-url="{{ $post->thumbnail ? asset('storage/' . $post->thumbnail) : '' }}"
                                                                         data-gallery-images='@json($post->images->map(fn($image) => ["id" => $image->id, "url" => asset("storage/" . $image->image)])->values())'
                                                                     >
-                                                                        Cap nhat
+                                                                        Cập nhật
                                                                     </a>
                                                                     <form action="{{ route('admin.post.destroy', ['id' => $post->id]) }}" method="POST" onsubmit="return confirm('Ban co chac muon xoa bai viet nay?')">
                                                                         @csrf
                                                                         @method('DELETE')
-                                                                        <button type="submit" class="dropdown-item text-danger">Xoa</button>
+                                                                        <button type="submit" class="dropdown-item text-danger">Xóa</button>
                                                                     </form>
                                                                 </div>
                                                             </div>
@@ -273,7 +273,7 @@
                                                     </tr>
                                                 @empty
                                                     <tr>
-                                                        <td colspan="9" class="text-center text-muted py-4">Chua co bai viet nao.</td>
+                                                        <td colspan="9" class="text-center text-muted py-4">Chưa có bài viết nào.</td>
                                                     </tr>
                                                 @endforelse
                                             </tbody>

@@ -1,4 +1,6 @@
 @extends('layouts.frontend.app')
+@section('meta_description', 'Cập nhật tin tức, cảm hứng và cẩm nang về hoa từ Hoa Mộc Hương: ý nghĩa các loài hoa, cách chăm sóc và gợi ý quà tặng cho nhiều dịp.')
+@section('meta_keywords', 'tin tức hoa, cẩm nang hoa, blog Hoa Mộc Hương, cách chăm sóc hoa, ý nghĩa các loài hoa')
 
 @section('title', 'Tin tức & Cẩm nang hoa')
 
@@ -293,7 +295,7 @@
     <div class="blog-hero">
         <div class="container blog-hero-inner">
             <div class="section-label">Kiến thức & Cảm hứng</div>
-            <h1 class="section-title">Tin tức & <em>Cẩm nang</em> hoa</h1>
+            <h1 class="section-title">Tin tức & Mẹo vặt </h1>
             <p>Chia sẻ kiến thức về hoa, ý nghĩa từng loài, bí quyết chăm sóc và cảm hứng trang trí.</p>
             <div class="blog-search-wrap">
                 <form action="{{ route('frontend.blog.index') }}" method="GET">
@@ -468,7 +470,7 @@
                         </div>
 
                         {{-- Newsletter --}}
-                        <div class="sidebar-newsletter">
+                        <div class="sidebar-newsletter" hidden>
                             <i class="bi bi-envelope-heart"></i>
                             <h6>Nhận cẩm nang hoa</h6>
                             <p>Đăng ký để nhận các bài viết hay và ưu đãi độc quyền mỗi tuần.</p>
