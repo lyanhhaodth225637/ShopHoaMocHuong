@@ -425,7 +425,7 @@
     <!-- ═══════════════════════════════════════
                                     TESTIMONIALS
                                      ═══════════════════════════════════════ -->
-    <section class="section-py bg-pale">
+    <section class="section-py bg-pale" hidden>
         <div class="container">
             <div class="text-center mb-5">
                 <div class="section-label">Khách hàng nói gì</div>
