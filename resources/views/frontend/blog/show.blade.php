@@ -1,9 +1,9 @@
 @extends('layouts.frontend.app')
-@section('meta_description', $post->meta_description ?: ($post->excerpt ?: ('Bài viết ' . $post->title . ' từ Hoa Mộc Hương.')))
-@section('meta_keywords', ($post->category->name ?? 'tin tức hoa') . ', ' . $post->title . ', blog Hoa Mộc Hương')
+@section('meta_description', $post->meta_description ?: ($post->excerpt ?: ('Bài viết ' . $post->title . ' từ Hoa Gỗ Mộc Hương.')))
+@section('meta_keywords', ($post->category->name ?? 'tin tức hoa') . ', ' . $post->title . ', blog Hoa Gỗ Mộc Hương')
 @section('canonical', route('frontend.blog.show', $post->slug))
 @section('og_title', $post->meta_title ?: $post->title)
-@section('og_description', $post->meta_description ?: ($post->excerpt ?: ('Bài viết ' . $post->title . ' từ Hoa Mộc Hương.')))
+@section('og_description', $post->meta_description ?: ($post->excerpt ?: ('Bài viết ' . $post->title . ' từ Hoa Gỗ Mộc Hương.')))
 @section('og_image', $post->thumbnail ? asset('storage/' . $post->thumbnail) : asset('assets/img/logo.png'))
 @section('og_type', 'article')
 
