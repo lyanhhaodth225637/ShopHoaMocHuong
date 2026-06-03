@@ -1,6 +1,6 @@
 @extends('layouts.frontend.app')
-@section('meta_description', 'Liên hệ Hoa Mộc Hương tại Long Xuyên để đặt hoa tươi, hoa cưới, hoa sinh nhật và quà tặng. Hỗ trợ nhanh qua điện thoại, Zalo, Facebook và Instagram.')
-@section('meta_keywords', 'liên hệ shop hoa, Hoa Mộc Hương, địa chỉ shop hoa Long Xuyên, số điện thoại đặt hoa')
+@section('meta_description', 'Liên hệ Hoa Gỗ Mộc Hương tại Long Xuyên để đặt hoa tươi, hoa cưới, hoa sinh nhật và quà tặng. Hỗ trợ nhanh qua điện thoại, Zalo, Facebook và Instagram.')
+@section('meta_keywords', 'liên hệ shop hoa, Hoa Gỗ Mộc Hương, địa chỉ shop hoa Long Xuyên, số điện thoại đặt hoa')
 @section('canonical', route('frontend.contact.index'))
 @section('og_image', asset('assets/img/logo/logo.jpeg'))
 

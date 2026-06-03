@@ -1,6 +1,6 @@
 @extends('layouts.frontend.app')
-@section('meta_description', 'Cập nhật tin tức, cảm hứng và cẩm nang về hoa từ Hoa Mộc Hương: ý nghĩa các loài hoa, cách chăm sóc và gợi ý quà tặng cho nhiều dịp.')
-@section('meta_keywords', 'tin tức hoa, cẩm nang hoa, blog Hoa Mộc Hương, cách chăm sóc hoa, ý nghĩa các loài hoa')
+@section('meta_description', 'Cập nhật tin tức, cảm hứng và cẩm nang về hoa từ Hoa Gỗ Mộc Hương: ý nghĩa các loài hoa, cách chăm sóc và gợi ý quà tặng cho nhiều dịp.')
+@section('meta_keywords', 'tin tức hoa, cẩm nang hoa, blog Hoa Gỗ Mộc Hương, cách chăm sóc hoa, ý nghĩa các loài hoa')
 
 @section('title', 'Tin tức & Cẩm nang hoa')
 

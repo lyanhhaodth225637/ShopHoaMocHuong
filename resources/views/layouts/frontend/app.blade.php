@@ -3,12 +3,12 @@
 
 <head>
     @php
-        $siteName = 'Hoa Mộc Hương';
-        $defaultTitle = 'Hoa Mộc Hương - Hoa tươi, sen đá, cây cảnh tại Long Xuyên';
+        $siteName = 'Hoa Gỗ Mộc Hương';
+        $defaultTitle = 'Hoa Gỗ Mộc Hương - Hoa tươi, sen đá, cây cảnh tại Long Xuyên';
         $pageTitle = trim($__env->yieldContent('title'));
         $seoTitle = $pageTitle !== '' ? $pageTitle . ' - ' . $siteName : $defaultTitle;
-        $metaDescription = trim($__env->yieldContent('meta_description')) ?: 'Hoa Mộc Hương chuyên hoa tươi, sen đá, cây cảnh, hoa sự kiện và quà tặng tại Long Xuyên.';
-        $metaKeywords = trim($__env->yieldContent('meta_keywords')) ?: 'hoa tươi Long Xuyên, sen đá Long Xuyên, cây cảnh mini, Hoa Mộc Hương';
+        $metaDescription = trim($__env->yieldContent('meta_description')) ?: 'Hoa Gỗ Mộc Hương chuyên hoa tươi, sen đá, cây cảnh, hoa sự kiện và quà tặng tại Long Xuyên.';
+        $metaKeywords = trim($__env->yieldContent('meta_keywords')) ?: 'hoa tươi Long Xuyên, sen đá Long Xuyên, cây cảnh mini, Hoa Gỗ Mộc Hương';
         $canonicalUrl = trim($__env->yieldContent('canonical')) ?: url()->current();
         $ogTitle = trim($__env->yieldContent('og_title')) ?: $seoTitle;
         $ogDescription = trim($__env->yieldContent('og_description')) ?: $metaDescription;

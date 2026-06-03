@@ -1,5 +1,5 @@
 @extends('layouts.frontend.app')
-@section('meta_description', 'Hoa Mộc Hương chuyên hoa tươi, sen đá, cây cảnh và quà tặng tại Long Xuyên. Đặt hoa nhanh, thiết kế theo yêu cầu, giao nội thành trong 2 giờ.')
+@section('meta_description', 'Hoa Gỗ Mộc Hương chuyên hoa tươi, sen đá, cây cảnh và quà tặng tại Long Xuyên. Đặt hoa nhanh, thiết kế theo yêu cầu, giao nội thành trong 2 giờ.')
 @section('meta_keywords', 'hoa tươi Long Xuyên, shop hoa Mộc Hương, đặt hoa online, sen đá Long Xuyên, cây cảnh quà tặng')
 @section('og_image', !empty($hero?->circle_image) ? asset('storage/' . $hero->circle_image) : asset('assets/img/logo.png'))
 @section('title', 'Trang Chủ')

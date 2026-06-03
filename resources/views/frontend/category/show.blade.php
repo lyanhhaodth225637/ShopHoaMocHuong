@@ -1,6 +1,6 @@
 @extends('layouts.frontend.app')
 @section('title', $category->meta_title ?? $category->name)
-@section('meta_description', $category->meta_description ?? $category->description ?? ('Danh mục ' . $category->name . ' tại Hoa Mộc Hương với nhiều mẫu hoa và quà tặng đẹp, giao nhanh tại Long Xuyên.'))
+@section('meta_description', $category->meta_description ?? $category->description ?? ('Danh mục ' . $category->name . ' tại Hoa Gỗ Mộc Hương với nhiều mẫu hoa và quà tặng đẹp, giao nhanh tại Long Xuyên.'))
 @section('meta_keywords', $category->name . ', danh mục hoa, hoa tươi Long Xuyên, shop hoa Mộc Hương')
 @section('canonical', route('frontend.category.show', ['id' => $category->id, 'slug' => $category->slug]))
 

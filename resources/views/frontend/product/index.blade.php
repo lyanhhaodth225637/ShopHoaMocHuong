@@ -1,5 +1,5 @@
 @extends('layouts.frontend.app')
-@section('meta_description', 'Khám phá tất cả sản phẩm tại Hoa Mộc Hương: hoa tươi, bó hoa, giỏ hoa, quà tặng và các mẫu thiết kế dành cho nhiều dịp đặc biệt.')
+@section('meta_description', 'Khám phá tất cả sản phẩm tại Hoa Gỗ Mộc Hương: hoa tươi, bó hoa, giỏ hoa, quà tặng và các mẫu thiết kế dành cho nhiều dịp đặc biệt.')
 @section('meta_keywords', 'tất cả sản phẩm hoa, hoa tươi Long Xuyên, bó hoa đẹp, giỏ hoa quà tặng, shop hoa Mộc Hương')
 
 @section('title', 'Tất cả sản phẩm')
