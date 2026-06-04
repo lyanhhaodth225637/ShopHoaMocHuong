@@ -500,7 +500,7 @@
                     <i class="bi bi-sliders2"></i>
                     <span>Bộ lọc</span>
                 </button>
-                <a href="#" class="header-icon-btn d-none d-sm-flex">
+                <a href="https://www.google.com/maps?ll=10.359215,105.439281&z=18&t=m&hl=vi&gl=US&mapclient=embed&cid=2862165156442762907" class="header-icon-btn d-none d-sm-flex">
                     <i class="bi bi-geo-alt"></i>
                     <span>Cửa hàng</span>
                 </a>
