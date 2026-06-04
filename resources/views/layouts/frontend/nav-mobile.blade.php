@@ -271,9 +271,9 @@
                 @endforeach
 
                 <div class="mobile-nav-section-label" style="margin-top:4px;">Thông tin</div>
-                <a href="{{ route('frontend.product.index') }}" class="mac-plain">Tin tức & Cẩm nang</a>
+                <a href="{{ route('frontend.blog.index') }}" class="mac-plain">Tin tức & Cẩm nang</a>
                 <a href="{{ route('frontend.contact.index') }}" class="mac-plain">Liên hệ</a>
-                <a href="{{ route('frontend.contact.index') }}" class="mac-plain">Câu hỏi thường gặp</a>
+                <a href="{{ route('frontend.blog.index') }}" class="mac-plain">Câu hỏi thường gặp</a>
             </div>
         </div>
 
