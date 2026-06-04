@@ -197,7 +197,7 @@
                 <span>Bộ lọc</span>
             </button>
 
-            <a href="#" class="mobile-quick-link">
+            <a href="#" class="mobile-quick-link" hidden>
                 <i class="bi bi-heart"></i>
                 <span>Yêu thích</span>
                 <span class="mnq-badge">3</span>

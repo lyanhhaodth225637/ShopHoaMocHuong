@@ -506,7 +506,7 @@
                 </a>
 
 
-                <a href="#" class="header-icon-btn">
+                <a href="#" class="header-icon-btn" hidden>
                     <i class="bi bi-heart"></i>
                     <span class="badge">3</span>
                     <span class="d-none d-sm-inline">Yêu thích</span>
