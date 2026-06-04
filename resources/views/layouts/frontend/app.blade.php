@@ -42,6 +42,7 @@
     <meta name="twitter:title" content="{{ $ogTitle }}">
     <meta name="twitter:description" content="{{ $ogDescription }}">
     <meta name="twitter:image" content="{{ $ogImage }}">
+    <meta name="google-site-verification" content="EzrOOm5kB8YhC9s6rULzXIdpOXKG6S6uD5L9cK2dh8w" />
 
     <link rel="icon" href="{{ asset('assets/img/logo/logo.jpeg') }}">
 
