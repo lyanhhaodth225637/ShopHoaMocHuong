@@ -210,7 +210,7 @@
                 <span class="mnq-badge" data-cart-count>{{ $cartCount ?? 0 }}</span>
             </button>
 
-            <a href="{{ route('frontend.contact.index') }}" class="mobile-quick-link">
+            <a href="https://www.google.com/maps?ll=10.359215,105.439281&z=18&t=m&hl=vi&gl=US&mapclient=embed&cid=2862165156442762907" class="mobile-quick-link">
                 <i class="bi bi-geo-alt"></i>
                 <span>Cửa hàng</span>
             </a>
