@@ -8,7 +8,9 @@
 
 @section('content')
     <style>
-        .contact-page { background: var(--cream); }
+        .contact-page {
+            background: var(--cream);
+        }
 
         /* ─── HERO ─── */
         .contact-hero {
@@ -17,12 +19,14 @@
             position: relative;
             overflow: hidden;
         }
+
         .contact-hero::before {
             content: '';
             position: absolute;
             inset: 0;
             background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/svg%3E") repeat;
         }
+
         .contact-hero-inner {
             position: relative;
             z-index: 1;
@@ -30,15 +34,17 @@
             align-items: center;
             gap: 28px;
         }
+
         .contact-hero-logo {
             width: 96px;
             height: 96px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid rgba(255,255,255,.35);
-            box-shadow: 0 8px 32px rgba(0,0,0,.2);
+            border: 3px solid rgba(255, 255, 255, .35);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .2);
             flex-shrink: 0;
         }
+
         .contact-hero-text h1 {
             font-family: 'Playfair Display', serif;
             color: #fff;
@@ -46,18 +52,30 @@
             font-weight: 700;
             margin-bottom: 6px;
         }
-        .contact-hero-text h1 em { color: #8dd5d7; font-style: italic; }
-        .contact-hero-text p { color: #b2e8ea; font-size: 0.9rem; margin: 0; }
+
+        .contact-hero-text h1 em {
+            color: #8dd5d7;
+            font-style: italic;
+        }
+
+        .contact-hero-text p {
+            color: #b2e8ea;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
         .contact-hero-divider {
             width: 1px;
             height: 60px;
-            background: rgba(255,255,255,.25);
+            background: rgba(255, 255, 255, .25);
             flex-shrink: 0;
         }
+
         .contact-hero-stats {
             display: flex;
             gap: 32px;
         }
+
         .contact-hero-stat strong {
             display: block;
             font-size: 1.4rem;
@@ -65,17 +83,29 @@
             color: #fff;
             line-height: 1;
         }
+
         .contact-hero-stat span {
             font-size: 0.75rem;
             color: #7ec8ca;
             margin-top: 4px;
             display: block;
         }
-        @media(max-width:767px){
+
+        @media(max-width:767px) {
+
             .contact-hero-stats,
-            .contact-hero-divider { display: none; }
-            .contact-hero-inner { gap: 16px; }
-            .contact-hero-logo { width: 72px; height: 72px; }
+            .contact-hero-divider {
+                display: none;
+            }
+
+            .contact-hero-inner {
+                gap: 16px;
+            }
+
+            .contact-hero-logo {
+                width: 72px;
+                height: 72px;
+            }
         }
 
         /* ─── ABOUT SECTION ─── */
@@ -84,9 +114,29 @@
             padding: 56px 0;
             border-bottom: 1.5px solid #e8f5f5;
         }
-        .about-section .section-label { color: var(--green-main); font-size:.72rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; }
-        .about-section .section-title { font-family:'Playfair Display',serif; font-size:clamp(1.4rem,3vw,2rem); color:var(--text-dark); font-weight:700; margin:8px 0 0; }
-        .about-desc { font-size:.9rem; color:var(--text-muted); line-height:1.85; margin-top:16px; }
+
+        .about-section .section-label {
+            color: var(--green-main);
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .about-section .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            color: var(--text-dark);
+            font-weight: 700;
+            margin: 8px 0 0;
+        }
+
+        .about-desc {
+            font-size: .9rem;
+            color: var(--text-muted);
+            line-height: 1.85;
+            margin-top: 16px;
+        }
 
         .about-feature {
             display: flex;
@@ -99,11 +149,13 @@
             transition: all .25s;
             height: 100%;
         }
+
         .about-feature:hover {
             border-color: var(--green-main);
-            box-shadow: 0 6px 20px rgba(43,170,173,.1);
+            box-shadow: 0 6px 20px rgba(43, 170, 173, .1);
             transform: translateY(-3px);
         }
+
         .about-feature-icon {
             width: 46px;
             height: 46px;
@@ -116,11 +168,24 @@
             color: var(--green-main);
             flex-shrink: 0;
         }
-        .about-feature-title { font-weight: 700; font-size: .88rem; color: var(--text-dark); margin-bottom: 3px; }
-        .about-feature-desc { font-size: .78rem; color: var(--text-muted); line-height: 1.5; }
+
+        .about-feature-title {
+            font-weight: 700;
+            font-size: .88rem;
+            color: var(--text-dark);
+            margin-bottom: 3px;
+        }
+
+        .about-feature-desc {
+            font-size: .78rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
 
         /* ─── CONTACT SECTION ─── */
-        .contact-section { padding: 56px 0; }
+        .contact-section {
+            padding: 56px 0;
+        }
 
         /* ─── INFO CARD ─── */
         .cinfo-card {
@@ -130,6 +195,7 @@
             overflow: hidden;
             height: 100%;
         }
+
         .cinfo-card-header {
             background: var(--green-dark);
             padding: 18px 24px;
@@ -137,14 +203,22 @@
             align-items: center;
             gap: 10px;
         }
-        .cinfo-card-header i { color: #b2e8ea; font-size: 1rem; }
+
+        .cinfo-card-header i {
+            color: #b2e8ea;
+            font-size: 1rem;
+        }
+
         .cinfo-card-header span {
             font-family: 'Playfair Display', serif;
             font-size: 1rem;
             font-weight: 700;
             color: #fff;
         }
-        .cinfo-card-body { padding: 20px 24px; }
+
+        .cinfo-card-body {
+            padding: 20px 24px;
+        }
 
         .cinfo-row {
             display: flex;
@@ -153,8 +227,16 @@
             padding: 12px 0;
             border-bottom: 1px solid #f0f9f9;
         }
-        .cinfo-row:last-child { border-bottom: none; padding-bottom: 0; }
-        .cinfo-row:first-child { padding-top: 0; }
+
+        .cinfo-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .cinfo-row:first-child {
+            padding-top: 0;
+        }
+
         .cinfo-icon {
             width: 36px;
             height: 36px;
@@ -167,6 +249,7 @@
             color: var(--green-main);
             flex-shrink: 0;
         }
+
         .cinfo-label {
             font-size: .7rem;
             font-weight: 700;
@@ -175,16 +258,29 @@
             color: var(--text-muted);
             margin-bottom: 2px;
         }
+
         .cinfo-value {
             font-size: .85rem;
             color: var(--text-dark);
             line-height: 1.5;
         }
-        .cinfo-value a { color: var(--text-dark); text-decoration: none; }
-        .cinfo-value a:hover { color: var(--green-main); }
+
+        .cinfo-value a {
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+
+        .cinfo-value a:hover {
+            color: var(--green-main);
+        }
 
         /* Social buttons */
-        .social-list { display: flex; flex-direction: column; gap: 8px; }
+        .social-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
         .social-item {
             display: flex;
             align-items: center;
@@ -198,7 +294,11 @@
             font-weight: 500;
             transition: all .2s;
         }
-        .social-item:hover { transform: translateX(4px); }
+
+        .social-item:hover {
+            transform: translateX(4px);
+        }
+
         .social-item-icon {
             width: 34px;
             height: 34px;
@@ -209,17 +309,63 @@
             font-size: 1rem;
             flex-shrink: 0;
         }
-        .social-item small { font-size: .72rem; color: var(--text-muted); display: block; font-weight:400; }
-        .si-phone .social-item-icon { background:#e8f5e9; color:#2e7d32; }
-        .si-phone:hover { border-color:#a5d6a7; background:#f1f8f1; }
-        .si-zalo  .social-item-icon { background:#e3f2fd; color:#1565c0; }
-        .si-zalo:hover  { border-color:#90caf9; background:#f0f7ff; }
-        .si-fb    .social-item-icon { background:#e8eaf6; color:#1565c0; }
-        .si-fb:hover    { border-color:#9fa8da; background:#f3f4fb; }
-        .si-ig    .social-item-icon { background:#fce4ec; color:#ad1457; }
-        .si-ig:hover    { border-color:#f48fb1; background:#fdf3f6; }
-        .si-tt    .social-item-icon { background:#f3e5f5; color:#4a148c; }
-        .si-tt:hover    { border-color:#ce93d8; background:#faf3fc; }
+
+        .social-item small {
+            font-size: .72rem;
+            color: var(--text-muted);
+            display: block;
+            font-weight: 400;
+        }
+
+        .si-phone .social-item-icon {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .si-phone:hover {
+            border-color: #a5d6a7;
+            background: #f1f8f1;
+        }
+
+        .si-zalo .social-item-icon {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .si-zalo:hover {
+            border-color: #90caf9;
+            background: #f0f7ff;
+        }
+
+        .si-fb .social-item-icon {
+            background: #e8eaf6;
+            color: #1565c0;
+        }
+
+        .si-fb:hover {
+            border-color: #9fa8da;
+            background: #f3f4fb;
+        }
+
+        .si-ig .social-item-icon {
+            background: #fce4ec;
+            color: #ad1457;
+        }
+
+        .si-ig:hover {
+            border-color: #f48fb1;
+            background: #fdf3f6;
+        }
+
+        .si-tt .social-item-icon {
+            background: #f3e5f5;
+            color: #4a148c;
+        }
+
+        .si-tt:hover {
+            border-color: #ce93d8;
+            background: #faf3fc;
+        }
 
         /* Hours */
         .hours-row {
@@ -230,9 +376,20 @@
             border-bottom: 1px solid #f0f9f9;
             color: var(--text-muted);
         }
-        .hours-row:last-child { border-bottom: none; }
-        .hours-row strong { color: var(--text-dark); font-size: .82rem; }
-        .hours-open { color: var(--green-main); font-weight: 600; }
+
+        .hours-row:last-child {
+            border-bottom: none;
+        }
+
+        .hours-row strong {
+            color: var(--text-dark);
+            font-size: .82rem;
+        }
+
+        .hours-open {
+            color: var(--green-main);
+            font-weight: 600;
+        }
 
         /* Map */
         .contact-map {
@@ -242,7 +399,13 @@
             height: 240px;
             margin-top: 20px;
         }
-        .contact-map iframe { width:100%; height:100%; border:none; display:block; }
+
+        .contact-map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
 
         /* ─── FEEDBACK SECTION ─── */
         .feedback-section {
@@ -250,11 +413,13 @@
             padding: 56px 0;
             border-top: 1.5px solid #e8f5f5;
         }
+
         .feedback-track-wrap {
             position: relative;
             overflow: hidden;
             margin: 0 -8px;
         }
+
         .feedback-track {
             display: flex;
             gap: 20px;
@@ -265,8 +430,14 @@
             scrollbar-width: none;
             cursor: grab;
         }
-        .feedback-track:active { cursor: grabbing; }
-        .feedback-track::-webkit-scrollbar { display: none; }
+
+        .feedback-track:active {
+            cursor: grabbing;
+        }
+
+        .feedback-track::-webkit-scrollbar {
+            display: none;
+        }
 
         .feedback-card {
             background: #fff;
@@ -280,10 +451,12 @@
             transition: box-shadow .25s, transform .25s;
             position: relative;
         }
+
         .feedback-card:hover {
-            box-shadow: 0 10px 32px rgba(43,170,173,.12);
+            box-shadow: 0 10px 32px rgba(43, 170, 173, .12);
             transform: translateY(-3px);
         }
+
         .feedback-card::before {
             content: '\201C';
             font-family: 'Playfair Display', serif;
@@ -297,18 +470,50 @@
         }
 
         /* feedback ảnh */
-        .feedback-card.is-image { padding: 0; overflow: hidden; }
-        .feedback-card.is-image img { width:100%; height:220px; object-fit:cover; display:block; }
+        .feedback-card.is-image {
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .feedback-card.is-image img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
         .feedback-card.is-image .fb-img-caption {
             padding: 12px 16px;
             font-size: .78rem;
             color: var(--text-muted);
         }
-        .feedback-card.is-image::before { display: none; }
 
-        .fb-stars { color: var(--gold); font-size: .85rem; margin-bottom: 10px; }
-        .fb-text { font-size: .85rem; color: var(--text-muted); line-height: 1.7; font-style: italic; margin-bottom: 14px; position: relative; z-index: 1; }
-        .fb-author { display: flex; align-items: center; gap: 10px; }
+        .feedback-card.is-image::before {
+            display: none;
+        }
+
+        .fb-stars {
+            color: var(--gold);
+            font-size: .85rem;
+            margin-bottom: 10px;
+        }
+
+        .fb-text {
+            font-size: .85rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-style: italic;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .fb-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         .fb-avatar {
             width: 38px;
             height: 38px;
@@ -323,11 +528,24 @@
             flex-shrink: 0;
             font-family: 'Playfair Display', serif;
         }
-        .fb-name { font-weight: 700; font-size: .84rem; color: var(--text-dark); }
-        .fb-date { font-size: .72rem; color: var(--text-muted); }
+
+        .fb-name {
+            font-weight: 700;
+            font-size: .84rem;
+            color: var(--text-dark);
+        }
+
+        .fb-date {
+            font-size: .72rem;
+            color: var(--text-muted);
+        }
 
         /* Nav arrows */
-        .feedback-nav { display: flex; gap: 8px; }
+        .feedback-nav {
+            display: flex;
+            gap: 8px;
+        }
+
         .feedback-nav-btn {
             width: 38px;
             height: 38px;
@@ -342,6 +560,7 @@
             font-size: .9rem;
             transition: all .2s;
         }
+
         .feedback-nav-btn:hover {
             background: var(--green-main);
             border-color: var(--green-main);
@@ -359,8 +578,16 @@
             z-index: 2;
             pointer-events: none;
         }
-        .feedback-track-wrap::before { left: 0; background: linear-gradient(to right, #fff, transparent); }
-        .feedback-track-wrap::after  { right: 0; background: linear-gradient(to left, #fff, transparent); }
+
+        .feedback-track-wrap::before {
+            left: 0;
+            background: linear-gradient(to right, #fff, transparent);
+        }
+
+        .feedback-track-wrap::after {
+            right: 0;
+            background: linear-gradient(to left, #fff, transparent);
+        }
     </style>
 
     <div class="contact-page">
@@ -393,10 +620,13 @@
                         <h2 class="section-title">Hơn 8 năm <br>ươm trồng yêu thương</h2>
                         <div class="divider-leaf"></div>
                         <p class="about-desc">
-                            Mộc Hương Flower ra đời từ tình yêu thuần túy với hoa tươi. Từ một tiệm hoa nhỏ tại Long Xuyên, chúng tôi đã phục vụ hàng chục nghìn khách hàng với phương châm <strong>hoa đẹp – giao nhanh – giá hợp lý</strong>.
+                            Mộc Hương Flower ra đời từ tình yêu thuần túy với hoa tươi. Từ một tiệm hoa nhỏ tại Long Xuyên,
+                            chúng tôi đã phục vụ hàng chục nghìn khách hàng với phương châm <strong>hoa đẹp – giao nhanh –
+                                giá hợp lý</strong>.
                         </p>
                         <p class="about-desc" style="margin-top:0;">
-                            Mỗi bó hoa là một thông điệp yêu thương được chúng tôi gửi gắm tỉ mỉ từ khâu chọn hoa, thiết kế đến tận tay người nhận trong vòng 2 giờ.
+                            Mỗi bó hoa là một thông điệp yêu thương được chúng tôi gửi gắm tỉ mỉ từ khâu chọn hoa, thiết kế
+                            đến tận tay người nhận trong vòng 2 giờ.
                         </p>
                     </div>
                     <div class="col-lg-7">
@@ -451,7 +681,8 @@
                                     <div class="cinfo-icon"><i class="fas fa-map-marker-alt"></i></div>
                                     <div>
                                         <div class="cinfo-label">Địa chỉ</div>
-                                        <div class="cinfo-value">Số 223, đường cặp rạch Gòi Lớn, khóm Mỹ Phú, phường Long Xuyên, tỉnh An Giang</div>
+                                        <div class="cinfo-value">Số 223, đường cặp rạch Gòi Lớn, khóm Mỹ Phú, phường Long
+                                            Xuyên, tỉnh An Giang</div>
                                     </div>
                                 </div>
                                 <div class="cinfo-row">
@@ -465,13 +696,17 @@
                                     <div class="cinfo-icon"><i class="fas fa-envelope"></i></div>
                                     <div>
                                         <div class="cinfo-label">Email</div>
-                                        <div class="cinfo-value"><a href="mailto:mochuong@gmail.com">mochuong@gmail.com</a></div>
+                                        <div class="cinfo-value"><a href="mailto:
+    store.mochuong@gmail.com">
+                                                store.mochuong@gmail.com</a></div>
                                     </div>
                                 </div>
                                 <div style="margin-top:16px;padding-top:16px;border-top:1px solid #f0f9f9;">
                                     <div class="cinfo-label" style="margin-bottom:10px;">Giờ mở cửa</div>
-                                    <div class="hours-row"><strong>Thứ 2 – Thứ 7</strong><span class="hours-open">7:00 – 21:00</span></div>
-                                    <div class="hours-row"><strong>Chủ nhật</strong><span class="hours-open">8:00 – 20:00</span></div>
+                                    <div class="hours-row"><strong>Thứ 2 – Thứ 7</strong><span class="hours-open">7:00 –
+                                            21:00</span></div>
+                                    <div class="hours-row"><strong>Chủ nhật</strong><span class="hours-open">8:00 –
+                                            20:00</span></div>
                                 </div>
                             </div>
                         </div>
@@ -498,11 +733,12 @@
                                         <div class="social-item-icon"><i class="fab fa-facebook-f"></i></div>
                                         <div>Facebook<small>facebook.com/mochuongflower</small></div>
                                     </a>
-                                    <a href="https://instagram.com/mochuongflower" target="_blank" class="social-item si-ig">
+                                    <a href="https://instagram.com/mochuongflower" target="_blank"
+                                        class="social-item si-ig" hidden>
                                         <div class="social-item-icon"><i class="fab fa-instagram"></i></div>
                                         <div>Instagram<small>@mochuongflower</small></div>
                                     </a>
-                                    <a href="https://tiktok.com/@mochuongflower" target="_blank" class="social-item si-tt">
+                                    <a href="https://tiktok.com/@mochuongflower" target="_blank" class="social-item si-tt" hidden>
                                         <div class="social-item-icon"><i class="fab fa-tiktok"></i></div>
                                         <div>TikTok<small>@mochuongflower</small></div>
                                     </a>
@@ -520,8 +756,8 @@
                             </div>
                             <iframe
                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d980.9!2d105.4386824!3d10.3592447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x310a73000eb67ca7%3A0x27b8740b9e456e9b!2sShop%20Hoa%20M%E1%BB%99c%20H%C6%B0%C6%A1ng!5e0!3m2!1svi!2svn!4v1"
-                                style="width:100%;height:340px;border:none;display:block;"
-                                allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                                style="width:100%;height:340px;border:none;display:block;" allowfullscreen loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade">
                             </iframe>
                         </div>
                     </div>
@@ -607,31 +843,31 @@
     </div>
 
     <script>
-    (function () {
-        const track   = document.getElementById('feedbackTrack');
-        const btnPrev = document.getElementById('fbPrev');
-        const btnNext = document.getElementById('fbNext');
-        if (!track) return;
+        (function () {
+            const track = document.getElementById('feedbackTrack');
+            const btnPrev = document.getElementById('fbPrev');
+            const btnNext = document.getElementById('fbNext');
+            if (!track) return;
 
-        const step = 320; // px mỗi lần bấm
+            const step = 320; // px mỗi lần bấm
 
-        if (btnNext) btnNext.addEventListener('click', function () {
-            track.scrollBy({ left: step, behavior: 'smooth' });
-        });
-        if (btnPrev) btnPrev.addEventListener('click', function () {
-            track.scrollBy({ left: -step, behavior: 'smooth' });
-        });
+            if (btnNext) btnNext.addEventListener('click', function () {
+                track.scrollBy({ left: step, behavior: 'smooth' });
+            });
+            if (btnPrev) btnPrev.addEventListener('click', function () {
+                track.scrollBy({ left: -step, behavior: 'smooth' });
+            });
 
-        // Drag to scroll
-        let isDown = false, startX, scrollLeft;
-        track.addEventListener('mousedown',  function(e){ isDown=true; startX=e.pageX-track.offsetLeft; scrollLeft=track.scrollLeft; });
-        track.addEventListener('mouseleave', function(){ isDown=false; });
-        track.addEventListener('mouseup',    function(){ isDown=false; });
-        track.addEventListener('mousemove',  function(e){
-            if (!isDown) return;
-            e.preventDefault();
-            track.scrollLeft = scrollLeft - (e.pageX - track.offsetLeft - startX);
-        });
-    })();
+            // Drag to scroll
+            let isDown = false, startX, scrollLeft;
+            track.addEventListener('mousedown', function (e) { isDown = true; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; });
+            track.addEventListener('mouseleave', function () { isDown = false; });
+            track.addEventListener('mouseup', function () { isDown = false; });
+            track.addEventListener('mousemove', function (e) {
+                if (!isDown) return;
+                e.preventDefault();
+                track.scrollLeft = scrollLeft - (e.pageX - track.offsetLeft - startX);
+            });
+        })();
     </script>
 @endsection
