@@ -3,15 +3,15 @@
         <div class="row g-4">
             <!-- Brand -->
             <div class="col-lg-3 col-md-6">
-                <div class="d-flex align-items-center gap-2 mb-3"><img src="{{ asset('assets/img/logo/logo.jpeg') }}" alt="Mộc Hương"
-                        style="height:48px;width:48px;object-fit:cover;border-radius:50%;"><span
+                <div class="d-flex align-items-center gap-2 mb-3"><img src="{{ asset('assets/img/logo/logo.jpeg') }}"
+                        alt="Mộc Hương" style="height:48px;width:48px;object-fit:cover;border-radius:50%;"><span
                         style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#fff;">Mộc
                         <em style="color:#b2e8ea;">Hương</em></span></div>
                 <p style="font-size:.84rem;line-height:1.7;color:#7ec8ca;">Shop hoa tươi uy tín tại TP.HCM. Hơn 8
                     năm kinh
                     nghiệm phục vụ khách hàng với chất lượng hoa đảm bảo.</p>
                 <div class="d-flex gap-2 mt-3">
-                    <a href="#" class="social-btn"><i class="bi bi-facebook"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=61573483087976" class="social-btn"><i class="bi bi-facebook"></i></a>
                     <a href="#" class="social-btn"><i class="bi bi-instagram"></i></a>
                     <a href="#" class="social-btn"><i class="bi bi-tiktok"></i></a>
                     <a href="#" class="social-btn"><i class="bi bi-youtube"></i></a>
@@ -22,12 +22,12 @@
             <div class="col-lg-2 col-md-6">
                 <h6>Danh mục hoa</h6>
                 <ul class="list-unstyled" style="display:flex;flex-direction:column;gap:8px;">
-                    <li><a href="#">Hoa hồng</a></li>
-                    <li><a href="#">Hoa lan</a></li>
+                    <li><a href="#">Hoa tươi</a></li>
                     <li><a href="#">Hoa cưới</a></li>
-                    <li><a href="#">Hoa sinh nhật</a></li>
-                    <li><a href="#">Hoa khai trương</a></li>
-                    <li><a href="#">Hoa sáp</a></li>
+                    <li><a href="#">Quà tạng</a></li>
+                    <li><a href="#">Sự kiện</a></li>
+                    <li><a href="#">Phụ kiện</a></li>
+                    <li><a href="#">Đồ gỗ</a></li>
                 </ul>
             </div>
 
@@ -60,9 +60,12 @@
                 <h6>Liên hệ</h6>
                 <ul class="list-unstyled"
                     style="display:flex;flex-direction:column;gap:10px;font-size:.84rem;color:#7ec8ca;">
-                    <li><i class="bi bi-geo-alt me-2"></i>Số 223, đường cặp rạch Gòi Lớn, khóm Mỹ Phú, phường Long Xuyên, tỉnh An Giang</li>
+                    <li><i class="bi bi-geo-alt me-2"></i>Số 223, đường cặp rạch Gòi Lớn, khóm Mỹ Phú, phường Long
+                        Xuyên, tỉnh An Giang</li>
                     <li><a href="tel:0888796364"><i class="bi bi-telephone me-2"></i>08.88.79.63.64</a></li>
-                    <li><a href="mailto:hochuong@florist.vn"><i class="bi bi-envelope me-2"></i>hochuong@florist.vn</a>
+                    <li><a href="mailto:
+store.mochuong@gmail.com"><i class="bi bi-envelope me-2"></i>
+                            store.mochuong@gmail.com</a>
                     </li>
                     <li><i class="bi bi-clock me-2"></i>7:00 – 21:00 mỗi ngày</li>
                 </ul>
@@ -85,7 +88,7 @@
     </div>
     <div class="footer-bottom mt-4 py-3">
         <div class="container text-center">
-            © 2026 Shop Hoa Mộc Hương. Mọi quyền được bảo lưu. | Long Xuyên - An Giang
+            © 2026 Hoa Gỗ Mộc Hương. Mọi quyền được bảo lưu. | Long Xuyên - An Giang
         </div>
     </div>
 </footer>

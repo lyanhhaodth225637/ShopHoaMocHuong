@@ -3,7 +3,8 @@
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex gap-3">
                 <span><i class="bi bi-telephone-fill me-1"></i> 08.88.79.63.64</span>
-                <span class="d-none d-md-inline"><i class="bi bi-envelope-fill me-1"></i> hochuong@florist.vn</span>
+                <span class="d-none d-md-inline"><i class="bi bi-envelope-fill me-1"></i>
+                    store.mochuong@gmail.com</span>
                 <span class="d-none d-md-inline"><i class="bi bi-alarm-fill"></i>
                     <span id="live-clock">{{ now()->format('H:i:s d/m/Y') }}</span></span>
             </div>
