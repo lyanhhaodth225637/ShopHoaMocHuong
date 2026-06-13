@@ -8,6 +8,7 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
+    //nhà cung cấp
     public function up(): void
     {
         Schema::create('suppliers', function (Blueprint $table) {

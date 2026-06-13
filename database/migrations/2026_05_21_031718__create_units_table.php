@@ -8,13 +8,13 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
+    //đơn vị
     public function up(): void
     {
         Schema::create('units', function (Blueprint $table) {
             $table->id();
 
             $table->string('name');
-            // $table->string('code')->unique(); bỏ
 
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);

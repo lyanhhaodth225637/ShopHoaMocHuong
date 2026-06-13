@@ -11,7 +11,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="subheader">Tổng SKU</div>
-                    <div class="h1 mb-3">0</div>
+                    <div class="h1 mb-3">{{ number_format($totalSkus ?? 0) }}</div>
                     <div class="text-secondary">Mã hàng trong kho</div>
                 </div>
             </div>
@@ -21,7 +21,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="subheader">Phiếu nhập</div>
-                    <div class="h1 mb-3">0</div>
+                    <div class="h1 mb-3">{{ number_format($totalInputSlips ?? 0) }}</div>
                     <div class="text-secondary">Tổng phiếu nhập</div>
                 </div>
             </div>
@@ -31,7 +31,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="subheader">Phiếu xuất</div>
-                    <div class="h1 mb-3">0</div>
+                    <div class="h1 mb-3">{{ number_format($totalOutputSlips ?? 0) }}</div>
                     <div class="text-secondary">Tổng phiếu xuất</div>
                 </div>
             </div>
@@ -41,8 +41,28 @@
             <div class="card">
                 <div class="card-body">
                     <div class="subheader">Sắp hết hàng</div>
-                    <div class="h1 mb-3 text-warning">0</div>
+                    <div class="h1 mb-3 text-warning">{{ number_format($lowStockSkus ?? 0) }}</div>
                     <div class="text-secondary">SKU dưới tồn tối thiểu</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="subheader">Tổng doanh thu</div>
+                    <div class="h1 mb-3 text-success">{{ number_format($totalRevenue ?? 0) }} đ</div>
+                    <div class="text-secondary">Từ các phiếu xuất hoàn thành</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="subheader">Tổng giá nhập</div>
+                    <div class="h1 mb-3 text-danger">{{ number_format($totalInputCost ?? 0) }} đ</div>
+                    <div class="text-secondary">Từ các phiếu nhập hoàn thành</div>
                 </div>
             </div>
         </div>

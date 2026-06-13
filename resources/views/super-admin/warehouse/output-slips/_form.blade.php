@@ -77,7 +77,7 @@
             @foreach ($oldItems as $index => $item)
                 <tr>
                     <td>
-                        <select name="items[{{ $index }}][sku_id]" class="form-select" required>
+                        <select name="items[{{ $index }}][sku_id]" class="form-select tom-select" required>
                             <option value="">-- Chọn SKU --</option>
                             @foreach ($skus as $sku)
                                 <option value="{{ $sku->id }}" @selected(($item['sku_id'] ?? '') == $sku->id)>
@@ -110,9 +110,32 @@
     <i class="ti ti-plus"></i> Thêm dòng
 </button>
 
+@push('styles')
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
+<style>
+    .ts-control { min-height: 38px; border-radius: 4px; }
+    .ts-dropdown { z-index: 9999 !important; }
+</style>
+@endpush
+
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 <script>
     let outputIndex = {{ count($oldItems) }};
+
+    function initTomSelect(element) {
+        if (!element.tomselect) {
+            new TomSelect(element, {
+                create: false,
+                dropdownParent: 'body',
+                sortField: { field: "text", direction: "asc" }
+            });
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.tom-select').forEach(el => initTomSelect(el));
+    });
 
     function skuOptions() {
         return `
@@ -129,7 +152,7 @@
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>
-                <select name="items[${outputIndex}][sku_id]" class="form-select" required>
+                <select name="items[${outputIndex}][sku_id]" class="form-select tom-select" required>
                     ${skuOptions()}
                 </select>
             </td>
@@ -148,6 +171,10 @@
         `;
 
         tbody.appendChild(row);
+        
+        const newSelect = tbody.lastElementChild.querySelector('.tom-select');
+        if (newSelect) initTomSelect(newSelect);
+
         outputIndex++;
     }
 

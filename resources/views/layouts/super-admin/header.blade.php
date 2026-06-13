@@ -5,6 +5,12 @@
         </button>
 
         <div class="navbar-nav flex-row order-md-last">
+            <div class="nav-item d-none d-md-flex me-3">
+                <a href="{{ route('admin.index') }}" class="btn btn-outline-primary">
+                    <i class="ti ti-arrow-left me-2"></i> Về Admin Dashboard
+                </a>
+            </div>
+            
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
                     <span class="avatar avatar-sm">

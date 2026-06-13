@@ -49,7 +49,7 @@
 
                         <a class="dropdown-item {{ request()->routeIs('admin.warehouse.skus.*') ? 'active' : '' }}"
                            href="{{ route('admin.warehouse.skus.index') }}">
-                            SKU kho
+                            Tồn kho (SKU)
                         </a>
 
                         <div class="dropdown-divider"></div>

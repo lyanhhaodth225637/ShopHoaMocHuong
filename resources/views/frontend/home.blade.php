@@ -200,8 +200,8 @@
         </section>
     @endif
     <!-- ═══════════════════════════════════════
-                                                                                                                                             FEATURED PRODUCTS
-                                                                                                                                            ═══════════════════════════════════════ -->
+                                                                                                                                                 FEATURED PRODUCTS
+                                                                                                                                                ═══════════════════════════════════════ -->
     <section class="section-py bg-pale">
         <div class="container">
             <div class="d-flex align-items-end justify-content-between mb-4">
@@ -303,15 +303,15 @@
             </div>
 
             <div class="text-center mt-4 d-md-none">
-                <a href="#" class="btn-green">Xem tất cả sản phẩm</a>
+                <a href="{{ route('frontend.product.index') }}" class="btn-green">Xem tất cả sản phẩm</a>
             </div>
         </div>
     </section>
 
 
     <!-- ═══════════════════════════════════════
-                                                                                                                                             PROMO BANNERS
-                                                                                                                            ═══════════════════════════════════════ -->
+                                                                                                                                                 PROMO BANNERS
+                                                                                                                                ═══════════════════════════════════════ -->
     @if(isset($promoBanners) && $promoBanners->count())
         @php
             $bigBanner = $promoBanners->where('size', 'big')->first();
@@ -326,11 +326,11 @@
                     @if($bigBanner)
                         <div class="col-md-6">
                             <div class="promo-banner {{ $bigBanner->css_class }}" style="
-                                                                                min-height:240px;
-                                                                                @if($bigBanner->image)
-                                                                                    background-image:url('{{ asset('storage/' . $bigBanner->image) }}');
-                                                                                @endif
-                                                                             ">
+                                                                                            min-height:240px;
+                                                                                            @if($bigBanner->image)
+                                                                                                background-image:url('{{ asset('storage/' . $bigBanner->image) }}');
+                                                                                            @endif
+                                                                                         ">
                                 <div class="promo-banner-content">
                                     @if($bigBanner->badge_text)
                                         <div
@@ -372,11 +372,11 @@
                                 @foreach($smallBanners as $banner)
                                     <div class="col-12">
                                         <div class="promo-banner {{ $banner->css_class }}" style="
-                                                                                                            min-height:110px;
-                                                                                                            @if($banner->image)
-                                                                                                                background-image:url('{{ asset('storage/' . $banner->image) }}');
-                                                                                                            @endif
-                                                                                                         ">
+                                                                                                                            min-height:110px;
+                                                                                                                            @if($banner->image)
+                                                                                                                                background-image:url('{{ asset('storage/' . $banner->image) }}');
+                                                                                                                            @endif
+                                                                                                                         ">
                                             <div class="promo-banner-content" style="padding:20px 24px;">
                                                 @if($banner->badge_text)
                                                     <div
@@ -423,8 +423,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                                    TESTIMONIALS
-                                     ═══════════════════════════════════════ -->
+                                        TESTIMONIALS
+                                         ═══════════════════════════════════════ -->
     <section class="section-py bg-pale" hidden>
         <div class="container">
             <div class="text-center mb-5">
@@ -489,8 +489,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                            BLOG / TIN TỨC
-                            ═══════════════════════════════════════ -->
+                                BLOG / TIN TỨC
+                                ═══════════════════════════════════════ -->
     <section class="section-py">
         <div class="container">
             <div class="d-flex align-items-end justify-content-between mb-4">
@@ -545,8 +545,8 @@
 
 
     <!-- ═══════════════════════════════════════
-                             NEWSLETTER
-                            ═══════════════════════════════════════ -->
+                                 NEWSLETTER
+                                ═══════════════════════════════════════ -->
     <section class="py-5" hidden>
         <div class="container">
             <div class="newsletter-section p-4 p-md-5 text-center">
